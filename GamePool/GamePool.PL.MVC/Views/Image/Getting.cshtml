@@ -1,0 +1,19 @@
+﻿@model int
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Get</title>
+</head>
+<body>
+    <div> 
+        <img src="@Url.Action("Get", "Image", new { id = Model })" alt="some text" style="width: 500px; height: 500px"/>
+    </div>
+</body>
+</html>
