@@ -277,10 +277,12 @@
     <Content Include="Content\_vendor\normalize-scss\sass\normalize\_import-now.scss" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutomapperConfig.cs" />
     <Compile Include="App_Start\CommonRoleProvider.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -289,8 +291,6 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <None Include="packages.config" />
-    <Content Include="Views\Image\Index.cshtml" />
-    <Content Include="Views\Image\Getting.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Content\scss\_global.scss" />
@@ -399,6 +399,7 @@
     <Content Include="Content\scss\components\_badge.scss" />
     <Content Include="Content\scss\components\_accordion.scss" />
     <Content Include="Content\scss\components\_accordion-menu.scss" />
+    <Content Include="Views\Product\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
