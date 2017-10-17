@@ -9,7 +9,7 @@ namespace GamePool.BLL.Core.Helpers
 {
     internal static class StringExtensions
     {
-        public static string ComputeSHA256Hash(this string input)
+        public static string ComputeSHA512Hash(this string input)
         {
             SHA512 alg = SHA512.Create();
 

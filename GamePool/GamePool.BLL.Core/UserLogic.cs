@@ -23,7 +23,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                user.Password = user.Password.ComputeSHA256Hash();
+                user.Password = user.Password.ComputeSHA512Hash();
 
                 return this.userDAO.Add(user);
             }
@@ -37,7 +37,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                user.Password = user.Password.ComputeSHA256Hash();
+                user.Password = user.Password.ComputeSHA512Hash();
 
                 return this.userDAO.IsExists(user);
             }
