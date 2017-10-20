@@ -6,7 +6,7 @@ using System.Web;
 
 namespace GamePool.PL.MVC.App_Start
 {
-    public class AutomapperConfig
+    public class AutoMapperConfig
     {
         public static void RegisterMaps()
         {
