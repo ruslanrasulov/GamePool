@@ -42,7 +42,9 @@
   <ItemGroup>
     <Compile Include="GameEntity.cs" />
     <Compile Include="ImageEntity.cs" />
+    <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rating.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="SystemRequirements.cs" />
     <Compile Include="User.cs" />

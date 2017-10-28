@@ -32,39 +32,59 @@ namespace GamePool.Common.NinjectApp
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
+
             kernel
                 .Bind<IGameDAO>()
                 .To<GameDAO>()
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
+
             kernel
                 .Bind<IImageDAO>()
                 .To<ImageDAO>()
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
+
             kernel
                 .Bind<IScreenshotDAO>()
                 .To<ScreenshotDAO>()
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
+
             kernel
                 .Bind<ISystemRequirementsDAO>()
                 .To<SystemRequirementsDAO>()
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
+
             kernel
                 .Bind<IUserDAO>()
                 .To<UserDAO>()
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
+
             kernel
                 .Bind<IUserRoleDAO>()
                 .To<UserRoleDAO>()
+                .InSingletonScope()
+                .WithConstructorArgument("connectionString", connectionString)
+                .WithConstructorArgument("providerName", providerName);
+
+            kernel
+                .Bind<IOrderDAO>()
+                .To<OrderDAO>()
+                .InSingletonScope()
+                .WithConstructorArgument("connectionString", connectionString)
+                .WithConstructorArgument("providerName", providerName);
+
+            kernel
+                .Bind<IRatingDAO>()
+                .To<RatingDAO>()
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
@@ -75,29 +95,45 @@ namespace GamePool.Common.NinjectApp
                 .Bind<IAvatarLogic>()
                 .To<AvatarLogic>()
                 .InSingletonScope();
+
             kernel
                 .Bind<IGameLogic>()
                 .To<GameLogic>()
                 .InSingletonScope();
+
             kernel
                 .Bind<IImageLogic>()
                 .To<ImageLogic>()
                 .InSingletonScope();
+
             kernel
                 .Bind<IScreenshotLogic>()
                 .To<ScreenshotLogic>()
                 .InSingletonScope();
+
             kernel
                 .Bind<ISystemRequirementsLogic>()
                 .To<SystemRequirementsLogic>()
                 .InSingletonScope();
+
             kernel
                 .Bind<IUserLogic>()
                 .To<UserLogic>()
                 .InSingletonScope();
+
             kernel
                 .Bind<IUserRoleLogic>()
                 .To<UserRoleLogic>()
+                .InSingletonScope();
+
+            kernel
+                .Bind<IOrderLogic>()
+                .To<OrderLogic>()
+                .InSingletonScope();
+
+            kernel
+                .Bind<IRatingLogic>()
+                .To<RatingLogic>()
                 .InSingletonScope();
             #endregion
         }

@@ -43,6 +43,8 @@
     <Compile Include="IAvatarDAO.cs" />
     <Compile Include="IGameDAO.cs" />
     <Compile Include="IImageDAO.cs" />
+    <Compile Include="IOrderDAO.cs" />
+    <Compile Include="IRatingDAO.cs" />
     <Compile Include="IScreenshotDAO.cs" />
     <Compile Include="ISystemRequirementsDAO.cs" />
     <Compile Include="IUserDAO.cs" />

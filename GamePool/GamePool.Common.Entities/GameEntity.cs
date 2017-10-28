@@ -23,5 +23,7 @@ namespace GamePool.Common.Entities
         public IEnumerable<int> ScreenshotIds { get; set; }
 
         public IEnumerable<string> Genres { get; set; }
+
+        public decimal? Rating { get; set; }
     }
 }
