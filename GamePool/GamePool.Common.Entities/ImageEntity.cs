@@ -10,7 +10,7 @@ namespace GamePool.Common.Entities
     {
         public int Id { get; set; }
 
-        public byte[] Content { get; set; }
+        public string Path { get; set; }
 
         public string MimeType { get; set; }
 

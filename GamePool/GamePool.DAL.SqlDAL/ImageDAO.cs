@@ -31,7 +31,7 @@ namespace GamePool.DAL.SqlDAL
                 DynamicParameters parameters = new DynamicParameters();
 
                 parameters.Add("@Id", imageEntity.Id, direction: ParameterDirection.Output);
-                parameters.Add("@Content", imageEntity.Content);
+                parameters.Add("@Path", imageEntity.Path);
                 parameters.Add("@MimeType", imageEntity.MimeType);
                 parameters.Add("@AlternativeText", imageEntity.AlternativeText);
 
