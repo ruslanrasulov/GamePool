@@ -76,7 +76,7 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 return connection.ExecuteScalar(
-                    sql: "User_IsLoginExist",
+                    sql: "User_IsLoginExists",
                     param: parameters,
                     commandType: CommandType.StoredProcedure) != null;
             }

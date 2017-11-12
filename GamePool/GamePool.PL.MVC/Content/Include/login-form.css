@@ -31,3 +31,7 @@
 .hidden {
     display: none;
 }
+
+.validation-summary-errors {
+    text-align: left;
+}

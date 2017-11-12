@@ -1,0 +1,27 @@
+﻿@model UserRegisterVM
+
+@using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { id = "registration-form", @class = "hidden" }))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="form-group">
+        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { placeholder = "Username:", @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Username, string.Empty, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Password:", @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Password, string.Empty, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { placeholder = "Confirm password:", @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ConfirmPassword, string.Empty, new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <div class="col-lg-6 col-lg-offset-3">
+            <button type="submit" class="form-control btn btn-success">Sign up!</button>
+        </div>
+    </div>
+}
