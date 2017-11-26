@@ -36,6 +36,7 @@ namespace GamePool.DAL.SqlDAL
 
                 return connection.Query<Role>(
                     sql: "UserRole_GetRolesByUserLogin",
+                    param: parameters,
                     commandType: CommandType.StoredProcedure);
             }
         }

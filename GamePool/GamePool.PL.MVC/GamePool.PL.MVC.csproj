@@ -110,6 +110,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Include\admin-panel.css" />
     <Content Include="Content\Include\cart.css" />
     <Content Include="Content\Include\common.css" />
     <Content Include="Content\Include\login-form.css" />
@@ -148,6 +149,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
@@ -156,6 +158,7 @@
     <Compile Include="Models\Account\UserAggregatedVM.cs" />
     <Compile Include="Models\Account\UserLoginVM.cs" />
     <Compile Include="Models\Account\UserRegisterVM.cs" />
+    <Compile Include="Models\Admin\CreateGameVM.cs" />
     <Compile Include="Models\Search\SearchParametersVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -172,6 +175,10 @@
     <Content Include="Views\Shared\_AccountInfoPartial.cshtml" />
     <Content Include="Views\Product\Cart.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Admin\UserList.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Admin\AddGame.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

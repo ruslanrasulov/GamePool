@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Include/common.css" rel="stylesheet" />
+    <link href="~/Content/Include/admin-panel.css" rel="stylesheet" />
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="~/" class="navbar-brand">Game Pool</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.Partial("_AccountInfoPartial")
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid mt-60">
+        <div class="row">
+            <div class="col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li>@Html.ActionLink("Orders", "Orders")</li>
+                    <li>@Html.ActionLink("User list", "UserList")</li>
+                    <li>@Html.ActionLink("Add game", "AddGame")</li>
+                </ul>
+            </div>
+            <div class="col-md-10 col-md-offset-2 main">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
