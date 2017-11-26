@@ -1,0 +1,85 @@
+﻿@model SearchParametersVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-100">
+    <div class="jumbotron">
+        <h3>Advanced search</h3>
+
+        @using (Html.BeginForm("Index", "Search", FormMethod.Get, new { @class = "form-horizontal" }))
+        {
+            <input type="hidden" id="Page" name="Page" value="1">
+            <div class="row mt-20">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.GameName)
+                    @Html.EditorFor(model => model.GameName, new { htmlAttributes = new { @class = "form-control", placeholder = "Name:" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.PriceFrom)
+                    @Html.EditorFor(model => model.PriceFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "Price from:" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.PriceTo)
+                    @Html.EditorFor(model => model.PriceTo, new { htmlAttributes = new { @class = "form-control", placeholder = "Price to:" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.ReleaseDate)
+                    <input type="date" id="ReleaseDate" name="ReleaseDate" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row mt-20">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.GenreIds)
+                    @Html.DropDownListFor(model => model.GenreIds, Enumerable.Empty<SelectListItem>(), new { @class = "form-control", multiply = "multiply"})
+                </div>
+            </div>
+
+            <div class="row mt-40">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-block btn-info">Search</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @{
+        Random r = new Random();
+        int blockCount = 9;
+    }
+
+    @while (blockCount > 0)
+    {
+        <div class="row">
+            @for (int i = 0; i < 4 && blockCount > 0; i++, blockCount--)
+            {
+                <div class="col-lg-3 col-sm-6">
+                    <h3>Some game</h3>
+                    <img src="http://placehold.it/250x250" class="thumbnail" alt="Alternate Text" />
+                    @if (r.Next(2) == 0)
+                    {
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    }
+                    else
+                    {
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    }
+                    <button type="button" class="btn btn-default center-block">Buy</button>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="row text-center">
+        <ul class="pagination">
+            @for (int i = 0; i < 10; i++)
+            {
+                <li><a href="#">@(i + 1)</a></li>
+            }
+        </ul>
+    </div>
+</div>
+
