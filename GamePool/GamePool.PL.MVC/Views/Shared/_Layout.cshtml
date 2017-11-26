@@ -8,32 +8,29 @@
 <head>
     <title>@ViewBag.Title</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Include/common.css" rel="stylesheet" />
     @RenderSection("styles", required: false)
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a href="~/" class="navbar-brand">GamePool</a>
+                <a href="~/" class="navbar-brand">Game Pool</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Genres <span class="caret"></span></a>
-
-                        <ul class="dropdown-menu">
-                            @for (int i = 0; i < 15; i++)
-                            {
-                                <li><a href="#">Some genre</a></li>
-                            }
-                        </ul>
-
+                        @Html.ActionLink("Search", "Index", "Search")
                     </li>
                 </ul>
                 @Html.Partial("_AccountInfoPartial")
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Cart", "Cart", "Product")</li>
+                </ul>
             </div>
         </div>
     </div>
+
     @RenderBody()
 
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
