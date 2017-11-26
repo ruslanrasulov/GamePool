@@ -13,5 +13,10 @@ namespace GamePool.PL.MVC.Controllers
         {
             return View(parameters);
         }
+
+        public ActionResult SearchInput()
+        {
+            return PartialView("~/Views/Shared/_SearchInputPartial.cshtml", new SearchParametersVM());
+        }
     }
 }

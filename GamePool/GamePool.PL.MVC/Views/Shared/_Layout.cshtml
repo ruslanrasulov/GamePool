@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>@ViewBag.Title</title>
+    <link href="~/Content/normalize.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Include/common.css" rel="stylesheet" />
     @RenderSection("styles", required: false)
@@ -14,13 +15,11 @@
                 <a href="~/" class="navbar-brand">Game Pool</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        @Html.ActionLink("Search", "Index", "Search")
-                    </li>
-                </ul>
                 @Html.Partial("_AccountInfoPartial")
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        @Html.Action("SearchInput", "Search")
+                    </li>
                     <li>@Html.ActionLink("Cart", "Cart", "Product")</li>
                 </ul>
             </div>
