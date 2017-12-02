@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container mt-100">
+    <div class="jumbotron">
+        <div class="row">
+            <img src="http://placehold.it/600x400" alt="Alternate Text" class="game-img-preview img-thumbnail" />
+            <div class="game-props">
+                <header>Some game</header>
+                <dl class="dl-horizontal">
+                    <dt>Name:</dt>
+                    <dd>Some game</dd>
+
+                    <dt>Price:</dt>
+                    <dd>10000</dd>
+
+                    <dt>Release date:</dt>
+                    <dd>08-08-2016</dd>
+
+                    <dt>Genres:</dt>
+                    <dd>Shooter, RPG, MMORPG, Lorem</dd>
+                </dl>
+                <button type="button" class="btn btn-default">Edit</button>
+                <button type="button" class="btn btn-default">Remove</button>
+            </div>
+        </div>
+        <div class="row mt-20 game-description">
+            <header>Description</header>
+            <p>
+                Mattis ut vitae feugiat augue cras ut metus a risus iaculis scelerisque eu ac ante fusce non varius purus aenean nec magna felis fusce vestibulum velit mollis odio sollicitudin lacinia aliquam posuere, sapien elementum lobortis tincidunt, turpis dui ornare nisl, sollicitudin interdum turpis nunc eget sem nulla eu ultricies orci praesent id augue nec lorem pretium congue sit amet ac nunc fusce iaculis lorem eu diam hendrerit at mattis purus dignissim vivamus mauris tellus, fringilla.
+            </p>
+        </div>
+        <div class="row mt-40">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#min-requirements" data-toggle="tab">Minimal system requirements</a></li>
+                <li><a href="#rec-requirements" data-toggle="tab">Recommended system requirememts</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active system-requirements" id="min-requirements">
+                    <dl class="dl-horizontal">
+                        <dt>Processor:</dt>
+                        <dd>Intel core i3 2100</dd>
+
+                        <dt>Memory:</dt>
+                        <dd>4gb</dd>
+
+                        <dt>OS:</dt>
+                        <dd>Windows 7, 8, 10</dd>
+
+                        <dt>Graphics:</dt>
+                        <dd>Nvidia Geforce GTX 550</dd>
+
+                        <dt>Storage:</dt>
+                        <dd>23gb</dd>
+
+                        <dt>DirectX:</dt>
+                        <dd>11</dd>
+                    </dl>
+                </div>
+                <div class="tab-pane system-requirements" id="rec-requirements">
+                    <dl class="dl-horizontal">
+                        <dt>Processor:</dt>
+                        <dd>Intel core i5 4600</dd>
+
+                        <dt>Memory:</dt>
+                        <dd>8gb</dd>
+
+                        <dt>OS:</dt>
+                        <dd>Windows 7, 8, 10</dd>
+
+                        <dt>Graphics:</dt>
+                        <dd>Nvidia Geforce GTX 950</dd>
+
+                        <dt>Storage:</dt>
+                        <dd>23gb</dd>
+
+                        <dt>DirectX:</dt>
+                        <dd>11</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -36,3 +36,56 @@
     border: 0;
     border-radius: 0 4px 4px 0;
 }
+
+.game-img-preview {
+    float: left;
+}
+
+.game-props {
+    width: 400px;
+    float: right;
+}
+
+.game-props dl {
+    margin-top: 20px;
+}
+
+.game-props dt,
+.system-requirements dt {
+    text-align: left;
+}
+
+.game-props dd,
+.system-requirements dd {
+    margin-left: 0;
+}
+
+.game-props > header {
+    text-align: center;
+    font-size: 30px;
+    border-bottom: 1px solid #888;
+}
+
+.game-props > button {
+    width: 100px;
+}
+
+.game-props > button:last-child {
+    margin-left: 15px;
+}
+
+.game-description > header {
+    font-size: 24px;
+}
+
+.game-description > p {
+    font-size: 14px;
+}
+
+.system-requirements {
+    margin-top: 20px;
+}
+
+.system-requirements > dl {
+    margin-left: 10px;
+}
