@@ -159,6 +159,7 @@
     <Compile Include="Models\Account\UserLoginVM.cs" />
     <Compile Include="Models\Account\UserRegisterVM.cs" />
     <Compile Include="Models\Admin\CreateGameVM.cs" />
+    <Compile Include="Models\Admin\CreateSystemRequirementsVM.cs" />
     <Compile Include="Models\Search\SearchParametersVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

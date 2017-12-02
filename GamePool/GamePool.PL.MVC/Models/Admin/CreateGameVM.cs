@@ -14,5 +14,9 @@ namespace GamePool.PL.MVC.Models.Admin
         public DateTime ReleaseDate { get; set; }
 
         public IEnumerable<int> GenreIds { get; set; }
+
+        public CreateSystemRequirementsVM MiminalRequirements { get; set; }
+
+        public CreateSystemRequirementsVM RecommendedRequirements { get; set; }
     }
 }
