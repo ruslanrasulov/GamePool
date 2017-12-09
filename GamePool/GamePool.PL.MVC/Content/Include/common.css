@@ -1,4 +1,5 @@
 ﻿html {
+    min-height: 100%;
     position: relative;
 }
 
@@ -18,16 +19,20 @@
     margin-top: 60px;
 }
 
+.pb-100 {
+    padding-bottom: 100px;
+}
+
 .width-60-percent {
     width: 60%;
 }
 
 .footer {
     position: absolute;
-    bottom: -100px;
+    bottom: 0;
+    width: 100%;
     background-color: black;
     height: 80px;
-    width: 100%;
     line-height: 80px;
     text-align: center;
     border-top: 1px solid #282828;
