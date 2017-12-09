@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameEntity.cs" />
+    <Compile Include="Genre.cs" />
     <Compile Include="ImageEntity.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

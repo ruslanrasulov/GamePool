@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IAvatarDAO.cs" />
     <Compile Include="IGameDAO.cs" />
+    <Compile Include="IGenreDAO.cs" />
     <Compile Include="IImageDAO.cs" />
     <Compile Include="IOrderDAO.cs" />
     <Compile Include="IRatingDAO.cs" />

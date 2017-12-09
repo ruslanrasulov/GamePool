@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IAvatarLogic.cs" />
     <Compile Include="IGameLogic.cs" />
+    <Compile Include="IGenreLogic.cs" />
     <Compile Include="IImageLogic.cs" />
     <Compile Include="IOrderLogic.cs" />
     <Compile Include="IRatingLogic.cs" />

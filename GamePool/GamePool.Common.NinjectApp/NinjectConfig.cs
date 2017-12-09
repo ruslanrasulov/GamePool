@@ -88,6 +88,13 @@ namespace GamePool.Common.NinjectApp
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", connectionString)
                 .WithConstructorArgument("providerName", providerName);
+
+            kernel
+                .Bind<IGenreDAO>()
+                .To<GenreDAO>()
+                .InSingletonScope()
+                .WithConstructorArgument("connectionString", connectionString)
+                .WithConstructorArgument("providerName", providerName);
             #endregion
 
             #region LogicContracts
@@ -134,6 +141,11 @@ namespace GamePool.Common.NinjectApp
             kernel
                 .Bind<IRatingLogic>()
                 .To<RatingLogic>()
+                .InSingletonScope();
+
+            kernel
+                .Bind<IGenreLogic>()
+                .To<GenreLogic>()
                 .InSingletonScope();
             #endregion
         }
