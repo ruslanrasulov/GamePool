@@ -1,13 +1,9 @@
 ﻿using GamePool.DAL.DALContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GamePool.Common.Entities;
 using System.Data;
 using Dapper;
 using System.Data.Common;
+using System.Linq;
 
 namespace GamePool.DAL.SqlDAL
 {
@@ -50,7 +46,7 @@ namespace GamePool.DAL.SqlDAL
             }
         }
 
-        public IEnumerable<GameEntity> GetAll(int pageNumber, int pageSize)
+        public PagedData<GameEntity> GetAll(int pageNumber, int pageSize)
         {
             using (IDbConnection connection = factory.CreateConnection())
             {
@@ -63,10 +59,19 @@ namespace GamePool.DAL.SqlDAL
 
                 connection.Open();
 
-                return connection.Query<GameEntity>(
+                var multipleQuery = connection.QueryMultiple(
                     sql: "Game_GetAll",
                     param: parameters,
                     commandType: CommandType.StoredProcedure);
+
+                var games = multipleQuery.Read<GameEntity>().ToList();
+                var count = multipleQuery.ReadFirst<int>();
+
+                return new PagedData<GameEntity>
+                {
+                    Data = games,
+                    Count = count
+                };
             }
         }
 
@@ -82,10 +87,41 @@ namespace GamePool.DAL.SqlDAL
 
                 connection.Open();
 
-                return connection.QuerySingleOrDefault<GameEntity>(
+                var game = connection.QuerySingleOrDefault<dynamic>(
                     sql: "Game_GetById",
                     param: parameters,
                     commandType: CommandType.StoredProcedure);
+
+                return new GameEntity
+                {
+                    Id = game.Id,
+                    AvatarId = game.AvatarId,
+                    Name = game.Name,
+                    Description = game.Description,
+                    Price = game.Price,
+                    MinimalSystemRequirements = new SystemRequirements
+                    {
+                        Id = game.MinId,
+                        GameId = game.MinGameId,
+                        Processor = game.MinProcessor,
+                        OperationSystem = game.MinOperationSystem,
+                        Storage = game.MinStorage,
+                        Memory = game.MinMemory,
+                        Graphics = game.MinGraphics,
+                        DirectX = game.MinDirectX
+                    },
+                    ReccomendedSystemRequirements = new SystemRequirements
+                    {
+                        Id = game.RecId,
+                        GameId = game.RecGameId,
+                        Processor = game.RecProcessor,
+                        OperationSystem = game.RecOperationSystem,
+                        Storage = game.RecStorage,
+                        Memory = game.RecMemory,
+                        Graphics = game.RecGraphics,
+                        DirectX = game.RecnDirectX
+                    }
+                };
             }
         }
 

@@ -39,6 +39,18 @@ namespace GamePool.BLL.Core
             }
         }
 
+        public IEnumerable<Genre> GetByGameId(int gameId)
+        {
+            try
+            {
+                return this.genreDAO.GetByGameId(gameId);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public IEnumerable<Genre> GetByIds(IEnumerable<int> ids)
         {
             try

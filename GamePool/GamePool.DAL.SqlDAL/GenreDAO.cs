@@ -60,6 +60,21 @@ namespace GamePool.DAL.SqlDAL
             }
         }
 
+        public IEnumerable<Genre> GetByGameId(int gameId)
+        {
+            using (IDbConnection connection = this.factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                connection.Open();
+
+                return connection.Query<Genre>(
+                    sql: "Genre_GetByGameId",
+                    param: new { GameId = gameId },
+                    commandType: CommandType.StoredProcedure);
+            }
+        }
+
         public IEnumerable<Genre> GetByIds (IEnumerable<int> ids)
         {
             using (IDbConnection connection = this.factory.CreateConnection())

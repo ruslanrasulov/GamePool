@@ -232,7 +232,9 @@
     <Compile Include="Models\Admin\CreateGameVM.cs" />
     <Compile Include="Models\Admin\CreateSystemRequirementsVM.cs" />
     <Compile Include="Models\Admin\Select2GenreVM.cs" />
+    <Compile Include="Models\Product\GamePreviewVM.cs" />
     <Compile Include="Models\Search\SearchParametersVM.cs" />
+    <Compile Include="Models\Shared\PagedItems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -254,7 +256,6 @@
     <Content Include="Views\Admin\AddGame.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Shared\_SearchInputPartial.cshtml" />
-    <Content Include="Views\Admin\View.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

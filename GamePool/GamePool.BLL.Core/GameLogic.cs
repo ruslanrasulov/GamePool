@@ -1,9 +1,5 @@
 ﻿using GamePool.BLL.LogicContracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GamePool.Common.Entities;
 using GamePool.DAL.DALContracts;
 
@@ -30,11 +26,11 @@ namespace GamePool.BLL.Core
             }
         }
 
-        public IEnumerable<GameEntity> GetAll(int pageNumber, int pageSize)
+        public PagedData<GameEntity> GetAll(int pageNumber, int pageSize)
         {
             try
             {
-                return this.gameDAO.GetAll(pageNumber, pageSize).ToArray();
+                return this.gameDAO.GetAll(pageNumber, pageSize);
             }
             catch (Exception)
             {

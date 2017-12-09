@@ -2,6 +2,7 @@
 using GamePool.Common.Entities;
 using GamePool.PL.MVC.Models.Account;
 using GamePool.PL.MVC.Models.Admin;
+using GamePool.PL.MVC.Models.Product;
 using UserEntity = GamePool.Common.Entities.User;
 
 namespace GamePool.PL.MVC.App_Start
@@ -25,9 +26,9 @@ namespace GamePool.PL.MVC.App_Start
                 cfg.CreateMap<CreateGameVM, GameEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.AvatarId, opt => opt.Ignore())
-                    .ForMember(dest => dest.ScreenshotIds, opt => opt.Ignore())
-                    .ForMember(dest => dest.Rating, opt => opt.Ignore())
-                    .ForMember(dest => dest.Genres, opt => opt.Ignore());
+                    .ForMember(dest => dest.MinimalSystemRequirements, opt => opt.Ignore())
+                    .ForMember(dest => dest.ReccomendedSystemRequirements, opt => opt.Ignore())
+                    .ForMember(dest => dest.Rating, opt => opt.Ignore());
 
                 cfg.CreateMap<CreateSystemRequirementsVM, SystemRequirements>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -35,6 +36,8 @@ namespace GamePool.PL.MVC.App_Start
 
                 cfg.CreateMap<Genre, Select2GenreVM>()
                     .ForMember(dest => dest.Text, opt => opt.ResolveUsing(src => src.Name));
+
+                cfg.CreateMap<GameEntity, GamePreviewVM>();
             });
 
             Mapper.AssertConfigurationIsValid();

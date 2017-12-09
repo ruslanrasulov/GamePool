@@ -9,6 +9,8 @@ namespace GamePool.BLL.LogicContracts
 
         IEnumerable<Genre> GetByIds(IEnumerable<int> ids);
 
+        IEnumerable<Genre> GetByGameId(int gameId);
+
         bool Add(Genre genre);
 
         bool AddRange(int gameId, IEnumerable<int> ids);
