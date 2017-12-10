@@ -14,7 +14,7 @@ $(function () {
             newUrl = currUrl.replace(/PageNumber=\d*/i, "PageNumber=" + pageNumber);
             newUrl = newUrl.replace(/&amp;/g, "&");
         }
-        console.log(pageNumber);
+        
         this.setAttribute("href", newUrl);
     });
 });

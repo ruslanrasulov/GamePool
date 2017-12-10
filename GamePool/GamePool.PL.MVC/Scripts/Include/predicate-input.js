@@ -1,15 +1,15 @@
 ﻿"use strict";
 
+var CFG = CFG || {};
+
 ﻿$(function () {
      var $genresInput = $(".genres-input");
 
-
-     if (CFG.genreIds && CFG.genreIds.length !== 0) {
+     if (CFG && CFG.genreIds && CFG.genreIds.length !== 0) {
          $.post(
              "/Admin/GetGenresByIds",
              $.param({ ids: CFG.genreIds }, true),
              function (data) {
-                 console.log(data);
                  renderOptions(data);
              });
      }
