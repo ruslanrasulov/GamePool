@@ -5,6 +5,16 @@
     ViewBag.Title = "Home";
 }
 
+@section scripts {
+    <script>
+        var CFG = CFG || {};
+
+        CFG.action = "@Url.Action("Index", "Product")";
+        
+    </script>
+    <script src="~/Scripts/Include/common.js"></script>
+}
+
 <div class="container-fluid">
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -59,10 +69,15 @@
 
         rowCount++;
 
-        if (rowCount == 3)
+        if (rowCount == 4)
         {
             @Html.Raw("</div>")
         }
+    }
+
+    @if (rowCount != 4 && rowCount != 0)
+    {
+        @Html.Raw("</div>")
     }
 
     @{

@@ -7,7 +7,7 @@ namespace GamePool.PL.MVC.Models.Search
     public class SearchParametersVM
     {
         [Display(Name = "Name:")]
-        public string GameName { get; set; }
+        public string Name { get; set; }
 
         [Display(Name = "Price from:")]
         public int? PriceFrom { get; set; }
@@ -16,12 +16,12 @@ namespace GamePool.PL.MVC.Models.Search
         public int? PriceTo { get; set; }
 
         [Display(Name = "Release date:")]
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         [Display(Name = "Genres:")]
         public IEnumerable<int> GenreIds { get; set; }
 
         [Required]
-        public int Page { get; set; }
+        public int PageNumber { get; set; }
     }
 }

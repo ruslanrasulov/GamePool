@@ -25,15 +25,15 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(int? page = 1)
+        public ActionResult Index(int? pageNumber = 1)
         {
-            var games = this.gameLogic.GetAll(page.Value, this.PageSize);
+            var games = this.gameLogic.GetAll(pageNumber.Value, this.PageSize);
             var gamePreviews = Mapper.Map<IEnumerable<GameEntity>, IEnumerable<GamePreviewVM>>(games.Data);
 
             return View(new PagedItems<GamePreviewVM>
             {
                 Data = gamePreviews,
-                CurrentPage = page.Value,
+                CurrentPage = pageNumber.Value,
                 MaxPageSelectors = this.MaxPageSelectors,
                 TotalPages = (int)Math.Ceiling((double)games.Count / this.PageSize)
             });

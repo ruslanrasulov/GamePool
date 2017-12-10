@@ -196,6 +196,7 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Scripts\Include\common.js" />
     <Content Include="Scripts\Include\login-form.js" />
     <Content Include="Scripts\Include\predicate-input.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -234,6 +235,7 @@
     <Compile Include="Models\Admin\Select2GenreVM.cs" />
     <Compile Include="Models\Product\GamePreviewVM.cs" />
     <Compile Include="Models\Search\SearchParametersVM.cs" />
+    <Compile Include="Models\Search\SearchResultsVM.cs" />
     <Compile Include="Models\Shared\PagedItems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

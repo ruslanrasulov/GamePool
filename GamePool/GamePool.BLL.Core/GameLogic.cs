@@ -62,6 +62,18 @@ namespace GamePool.BLL.Core
             }
         }
 
+        public PagedData<GameEntity> Search(SearchParameters searchParameters)
+        {
+            try
+            {
+                return this.gameDAO.Search(searchParameters);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public bool Update(GameEntity gameEntity)
         {
             try

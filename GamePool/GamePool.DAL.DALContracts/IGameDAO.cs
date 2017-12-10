@@ -13,5 +13,7 @@ namespace GamePool.DAL.DALContracts
         GameEntity GetById(int id);
 
         PagedData<GameEntity> GetAll(int pageNumber, int pageSize);
+
+        PagedData<GameEntity> Search(SearchParameters searchParameters);
     }
 }

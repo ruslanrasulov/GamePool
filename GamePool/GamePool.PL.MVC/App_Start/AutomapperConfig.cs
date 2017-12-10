@@ -3,6 +3,7 @@ using GamePool.Common.Entities;
 using GamePool.PL.MVC.Models.Account;
 using GamePool.PL.MVC.Models.Admin;
 using GamePool.PL.MVC.Models.Product;
+using GamePool.PL.MVC.Models.Search;
 using UserEntity = GamePool.Common.Entities.User;
 
 namespace GamePool.PL.MVC.App_Start
@@ -38,6 +39,9 @@ namespace GamePool.PL.MVC.App_Start
                     .ForMember(dest => dest.Text, opt => opt.ResolveUsing(src => src.Name));
 
                 cfg.CreateMap<GameEntity, GamePreviewVM>();
+
+                cfg.CreateMap<SearchParametersVM, SearchParameters>()
+                    .ForMember(dest => dest.PageSize, opt => opt.Ignore());
             });
 
             Mapper.AssertConfigurationIsValid();

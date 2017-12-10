@@ -48,6 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rating.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="SearchParameters.cs" />
     <Compile Include="SystemRequirements.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>

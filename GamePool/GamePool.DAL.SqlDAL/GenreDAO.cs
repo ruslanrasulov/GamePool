@@ -81,12 +81,12 @@ namespace GamePool.DAL.SqlDAL
             {
                 connection.ConnectionString = this.connectionString;
 
-                var json = JsonConvert.SerializeObject(ids);
+                var json = JsonConvert.SerializeObject(new { ids = ids });
 
                 connection.Open();
 
                 return connection.Query<Genre>(
-                    sql: "Genre_AddRange",
+                    sql: "Genre_GetByIds",
                     param: new { Ids = json },
                     commandType: CommandType.StoredProcedure);
             }

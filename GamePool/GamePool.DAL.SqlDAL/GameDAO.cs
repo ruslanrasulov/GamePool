@@ -4,6 +4,7 @@ using System.Data;
 using Dapper;
 using System.Data.Common;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace GamePool.DAL.SqlDAL
 {
@@ -141,6 +142,43 @@ namespace GamePool.DAL.SqlDAL
                     sql: "Game_Remove",
                     param: parameters,
                     commandType: CommandType.StoredProcedure) > 0;
+            }
+        }
+
+        public PagedData<GameEntity> Search(SearchParameters searchParameters)
+        {
+            using (IDbConnection connection = factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("@Name", searchParameters.Name);
+                parameters.Add("@PriceFrom", searchParameters.PriceFrom);
+                parameters.Add("@PriceTo", searchParameters.PriceTo);
+                parameters.Add("@ReleaseDate", searchParameters.ReleaseDate);
+
+                var json = (searchParameters.GenreIds == null) ? null : JsonConvert.SerializeObject(new { ids = searchParameters.GenreIds });
+
+                parameters.Add("@GenreIds", json);
+                parameters.Add("@PageNumber", searchParameters.PageNumber);
+                parameters.Add("@PageSize", searchParameters.PageSize);
+
+                connection.Open();
+
+                var multipleQuery = connection.QueryMultiple(
+                    sql: "Game_Search",
+                    param: parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                var games = multipleQuery.Read<GameEntity>().ToList();
+                var count = multipleQuery.ReadFirst<int>();
+
+                return new PagedData<GameEntity>
+                {
+                    Data = games,
+                    Count = count
+                };
             }
         }
 

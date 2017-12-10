@@ -86,12 +86,26 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult GetGenresByNamePart(string name)
         {
-            var genreEntites = this.genreLogic.GetByNamePart(name);
+            var genreEntities = this.genreLogic.GetByNamePart(name);
 
-            var genres = Mapper.Map<IEnumerable<Genre>, IEnumerable<Select2GenreVM>>(genreEntites);
+            var genres = Mapper.Map<IEnumerable<Genre>, IEnumerable<Select2GenreVM>>(genreEntities);
 
             var json = JsonConvert.SerializeObject(
                 genres,
+                Formatting.Indented,
+                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            return Content(json);
+        }
+
+        [HttpPost]
+        public ActionResult GetGenresByIds(IEnumerable<int> ids)
+        {
+            var genreEntities = this.genreLogic.GetByIds(ids);
+            var genres = Mapper.Map<IEnumerable<Genre>, IEnumerable<Select2GenreVM>>(genreEntities);
+
+            var json = JsonConvert.SerializeObject(
+                new { Genres = genres },
                 Formatting.Indented,
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
