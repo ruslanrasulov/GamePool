@@ -1,4 +1,6 @@
-﻿@{
+﻿@model DisplayGameVM
+
+@{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -9,17 +11,17 @@
             <div class="game-props">
                 <header>Some game</header>
                 <dl class="dl-horizontal">
-                    <dt>Name:</dt>
-                    <dd>Some game</dd>
+                    <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+                    <dd>@Html.DisplayFor(model => model.Name)</dd>
 
-                    <dt>Price:</dt>
-                    <dd>10000</dd>
+                    <dt>@Html.DisplayNameFor(model => model.Price)</dt>
+                    <dd>@Html.DisplayFor(model => model.Price)</dd>
 
-                    <dt>Release date:</dt>
-                    <dd>08-08-2016</dd>
+                    <dt>@Html.DisplayNameFor(model => model.ReleaseDate)</dt>
+                    <dd>@Html.DisplayFor(model => model.ReleaseDate)</dd>
 
-                    <dt>Genres:</dt>
-                    <dd>Shooter, RPG, MMORPG, Lorem</dd>
+                    <dt>@Html.DisplayNameFor(model => model.Genres)</dt>
+                    <dd>@Html.DisplayFor(model => model.Genres)</dd>
                 </dl>
                 <button type="button" class="btn btn-default">Edit</button>
                 <button type="button" class="btn btn-default">Remove</button>
@@ -28,7 +30,7 @@
         <div class="row mt-20 game-description">
             <header>Description</header>
             <p>
-                Mattis ut vitae feugiat augue cras ut metus a risus iaculis scelerisque eu ac ante fusce non varius purus aenean nec magna felis fusce vestibulum velit mollis odio sollicitudin lacinia aliquam posuere, sapien elementum lobortis tincidunt, turpis dui ornare nisl, sollicitudin interdum turpis nunc eget sem nulla eu ultricies orci praesent id augue nec lorem pretium congue sit amet ac nunc fusce iaculis lorem eu diam hendrerit at mattis purus dignissim vivamus mauris tellus, fringilla.
+                @Model.Description
             </p>
         </div>
         <div class="row mt-40">
@@ -40,44 +42,44 @@
             <div class="tab-content">
                 <div class="tab-pane active system-requirements" id="min-requirements">
                     <dl class="dl-horizontal">
-                        <dt>Processor:</dt>
-                        <dd>Intel core i3 2100</dd>
+                        <dt>@Html.DisplayNameFor(model => model.MinimalSystemRequirements.Processor)</dt>
+                        <dd>@Html.DisplayFor(model => model.MinimalSystemRequirements.Processor)</dd>
 
-                        <dt>Memory:</dt>
-                        <dd>4gb</dd>
+                        <dt>@Html.DisplayNameFor(model => model.MinimalSystemRequirements.Memory)</dt>
+                        <dd>@Html.DisplayFor(model => model.MinimalSystemRequirements.Memory)</dd>
 
-                        <dt>OS:</dt>
-                        <dd>Windows 7, 8, 10</dd>
+                        <dt>@Html.DisplayNameFor(model => model.MinimalSystemRequirements.OperationSystem)</dt>
+                        <dd>@Html.DisplayFor(model => model.MinimalSystemRequirements.OperationSystem)</dd>
 
-                        <dt>Graphics:</dt>
-                        <dd>Nvidia Geforce GTX 550</dd>
+                        <dt>@Html.DisplayNameFor(model => model.MinimalSystemRequirements.Graphics)</dt>
+                        <dd>@Html.DisplayFor(model => model.MinimalSystemRequirements.Graphics)</dd>
 
-                        <dt>Storage:</dt>
-                        <dd>23gb</dd>
+                        <dt>@Html.DisplayNameFor(model => model.MinimalSystemRequirements.Storage)</dt>
+                        <dd>@Html.DisplayFor(model => model.MinimalSystemRequirements.Storage)</dd>
 
-                        <dt>DirectX:</dt>
-                        <dd>11</dd>
+                        <dt>@Html.DisplayNameFor(model => model.MinimalSystemRequirements.DirectX)</dt>
+                        <dd>@Html.DisplayFor(model => model.MinimalSystemRequirements.DirectX)</dd>
                     </dl>
                 </div>
                 <div class="tab-pane system-requirements" id="rec-requirements">
                     <dl class="dl-horizontal">
-                        <dt>Processor:</dt>
-                        <dd>Intel core i5 4600</dd>
+                        <dt>@Html.DisplayNameFor(model => model.RecommendedSystemRequirements.Processor)</dt>
+                        <dd>@Html.DisplayFor(model => model.RecommendedSystemRequirements.Processor)</dd>
 
-                        <dt>Memory:</dt>
-                        <dd>8gb</dd>
+                        <dt>@Html.DisplayNameFor(model => model.RecommendedSystemRequirements.Memory)</dt>
+                        <dd>@Html.DisplayFor(model => model.RecommendedSystemRequirements.Memory)</dd>
 
-                        <dt>OS:</dt>
-                        <dd>Windows 7, 8, 10</dd>
+                        <dt>@Html.DisplayNameFor(model => model.RecommendedSystemRequirements.OperationSystem)</dt>
+                        <dd>@Html.DisplayFor(model => model.RecommendedSystemRequirements.OperationSystem)</dd>
 
-                        <dt>Graphics:</dt>
-                        <dd>Nvidia Geforce GTX 950</dd>
+                        <dt>@Html.DisplayNameFor(model => model.RecommendedSystemRequirements.Graphics)</dt>
+                        <dd>@Html.DisplayFor(model => model.RecommendedSystemRequirements.Graphics)</dd>
 
-                        <dt>Storage:</dt>
-                        <dd>23gb</dd>
+                        <dt>@Html.DisplayNameFor(model => model.RecommendedSystemRequirements.Storage)</dt>
+                        <dd>@Html.DisplayFor(model => model.RecommendedSystemRequirements.Storage)</dd>
 
-                        <dt>DirectX:</dt>
-                        <dd>11</dd>
+                        <dt>@Html.DisplayNameFor(model => model.RecommendedSystemRequirements.DirectX)</dt>
+                        <dd>@Html.DisplayFor(model => model.RecommendedSystemRequirements.DirectX)</dd>
                     </dl>
                 </div>
             </div>

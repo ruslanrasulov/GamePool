@@ -28,7 +28,7 @@ namespace GamePool.PL.MVC.App_Start
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.AvatarId, opt => opt.Ignore())
                     .ForMember(dest => dest.MinimalSystemRequirements, opt => opt.Ignore())
-                    .ForMember(dest => dest.ReccomendedSystemRequirements, opt => opt.Ignore())
+                    .ForMember(dest => dest.RecommendedSystemRequirements, opt => opt.Ignore())
                     .ForMember(dest => dest.Rating, opt => opt.Ignore());
 
                 cfg.CreateMap<CreateSystemRequirementsVM, SystemRequirements>()
@@ -42,6 +42,16 @@ namespace GamePool.PL.MVC.App_Start
 
                 cfg.CreateMap<SearchParametersVM, SearchParameters>()
                     .ForMember(dest => dest.PageSize, opt => opt.Ignore());
+
+                cfg.CreateMap<SystemRequirements, DisplaySystemRequirementsVM>();
+
+                cfg.CreateMap<GameEntity, DisplayGameVM>()
+                    .ForMember(dest => dest.Genres, opt => opt.Ignore())
+                    .AfterMap((src, dest, context) =>
+                    {
+                        dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVM>(src.MinimalSystemRequirements);
+                        dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVM>(src.RecommendedSystemRequirements);
+                    });
             });
 
             Mapper.AssertConfigurationIsValid();

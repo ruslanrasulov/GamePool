@@ -12,7 +12,7 @@ namespace GamePool.Common.Entities
 
         public string Description { get; set; }
 
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         public DateTime ReleaseDate { get; set; }
 
@@ -20,6 +20,6 @@ namespace GamePool.Common.Entities
 
         public SystemRequirements MinimalSystemRequirements { get; set; }
 
-        public SystemRequirements ReccomendedSystemRequirements { get; set; }
+        public SystemRequirements RecommendedSystemRequirements { get; set; }
     }
 }

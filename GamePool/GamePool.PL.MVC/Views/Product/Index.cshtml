@@ -61,9 +61,11 @@
         }
 
         <div class="col-lg-3" data-id="@game.Id">
-            <h3>@game.Name</h3>
-            <img src="http://placehold.it/250x250" class="thumbnail" alt="Alternate Text" />
-            <p>@game.Description</p>
+            <a href="@Url.Action("Details", "Product", new { id = game.Id })">
+                <h3>@game.Name</h3>
+                <img src="http://placehold.it/250x250" class="thumbnail" alt="Alternate Text" />
+                <p>@game.Description</p>
+            </a>
             <button type="button" class="btn btn-default center-block">Buy</button>
         </div>
 

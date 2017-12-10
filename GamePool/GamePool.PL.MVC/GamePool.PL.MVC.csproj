@@ -233,6 +233,8 @@
     <Compile Include="Models\Admin\CreateGameVM.cs" />
     <Compile Include="Models\Admin\CreateSystemRequirementsVM.cs" />
     <Compile Include="Models\Admin\Select2GenreVM.cs" />
+    <Compile Include="Models\Product\DisplayGameVM.cs" />
+    <Compile Include="Models\Product\DisplaySystemRequirementsVM.cs" />
     <Compile Include="Models\Product\GamePreviewVM.cs" />
     <Compile Include="Models\Search\SearchParametersVM.cs" />
     <Compile Include="Models\Search\SearchResultsVM.cs" />

@@ -93,12 +93,18 @@ namespace GamePool.DAL.SqlDAL
                     param: parameters,
                     commandType: CommandType.StoredProcedure);
 
+                if (game == null)
+                {
+                    return null;
+                }
+
                 return new GameEntity
                 {
                     Id = game.Id,
                     AvatarId = game.AvatarId,
                     Name = game.Name,
                     Description = game.Description,
+                    ReleaseDate = game.ReleaseDate,
                     Price = game.Price,
                     MinimalSystemRequirements = new SystemRequirements
                     {
@@ -111,7 +117,7 @@ namespace GamePool.DAL.SqlDAL
                         Graphics = game.MinGraphics,
                         DirectX = game.MinDirectX
                     },
-                    ReccomendedSystemRequirements = new SystemRequirements
+                    RecommendedSystemRequirements = new SystemRequirements
                     {
                         Id = game.RecId,
                         GameId = game.RecGameId,
@@ -120,7 +126,7 @@ namespace GamePool.DAL.SqlDAL
                         Storage = game.RecStorage,
                         Memory = game.RecMemory,
                         Graphics = game.RecGraphics,
-                        DirectX = game.RecnDirectX
+                        DirectX = game.RecDirectX
                     }
                 };
             }
