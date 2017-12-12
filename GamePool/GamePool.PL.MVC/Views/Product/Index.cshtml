@@ -111,20 +111,23 @@
         }
     }
     <div class="row text-center">
-        <ul class="pagination">
-            <li><a class="page-link" data-page="1"><<</a></li>
-            @for (int i = 0; i < count; i++, startIndex++)
-            {
-                if (startIndex == Model.CurrentPage)
+        @if (Model.TotalPages > 0)
+        {
+            <ul class="pagination">
+                <li><a class="page-link" data-page="1"><<</a></li>
+                @for (int i = 0; i < count; i++, startIndex++)
                 {
-                    <li class="active"><a class="page-link" data-page="@startIndex">@startIndex</a></li>
+                    if (startIndex == Model.CurrentPage)
+                    {
+                        <li class="active"><a class="page-link" data-page="@startIndex">@startIndex</a></li>
+                    }
+                    else
+                    {
+                        <li><a class="page-link" data-page="@startIndex">@startIndex</a></li>
+                    }
                 }
-                else
-                {
-                    <li><a class="page-link" data-page="@startIndex">@startIndex</a></li>
-                }
-            }
-            <li><a class="page-link" data-page="@Model.TotalPages">>></a></li>
-        </ul>
+                <li><a class="page-link" data-page="@Model.TotalPages">>></a></li>
+            </ul>
+        }
     </div>
 </div>

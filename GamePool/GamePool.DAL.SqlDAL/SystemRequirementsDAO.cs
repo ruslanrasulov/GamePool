@@ -1,9 +1,4 @@
 ﻿using GamePool.DAL.DALContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GamePool.Common.Entities;
 using System.Data;
 using Dapper;
@@ -62,7 +57,6 @@ namespace GamePool.DAL.SqlDAL
                 DynamicParameters parameters = new DynamicParameters();
 
                 parameters.Add("@Id", systemRequirements.Id);
-                parameters.Add("@GameId", systemRequirements.GameId);
                 parameters.Add("@Processor", systemRequirements.Processor);
                 parameters.Add("@Memory", systemRequirements.Memory);
                 parameters.Add("@Graphics", systemRequirements.Graphics);

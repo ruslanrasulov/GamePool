@@ -85,9 +85,11 @@
         }
 
         <div class="col-lg-3" data-id="@game.Id">
-            <h3>@game.Name</h3>
-            <img src="http://placehold.it/250x250" class="thumbnail" alt="Alternate Text" />
-            <p>@game.Description</p>
+            <a href="@Url.Action("Details", "Product", new { id = game.Id })">
+                <h3>@game.Name</h3>
+                <img src="http://placehold.it/250x250" class="thumbnail" alt="Alternate Text" />
+                <p>@game.Description</p>
+            </a>
             <button type="button" class="btn btn-default center-block">Buy</button>
         </div>
 
@@ -135,21 +137,24 @@
         }
     }
     <div class="row text-center">
-        <ul class="pagination">
-            <li><a class="page-link" data-page="1"><<</a></li>
-            @for (int i = 0; i < count; i++, startIndex++)
-            {
-                if (startIndex == Model.Items.CurrentPage)
+        @if (Model.Items.TotalPages > 0)
+        {
+            <ul class="pagination">
+                <li><a class="page-link" data-page="1"><<</a></li>
+                @for (int i = 0; i < count; i++, startIndex++)
                 {
-                    <li class="active"><a class="page-link" data-page="@startIndex">@startIndex</a></li>
+                    if (startIndex == Model.Items.CurrentPage)
+                    {
+                        <li class="active"><a class="page-link" data-page="@startIndex">@startIndex</a></li>
+                    }
+                    else
+                    {
+                        <li><a class="page-link" data-page="@startIndex">@startIndex</a></li>
+                    }
                 }
-                else
-                {
-                    <li><a class="page-link" data-page="@startIndex">@startIndex</a></li>
-                }
-            }
-            <li><a class="page-link" data-page="@Model.Items.TotalPages">>></a></li>
-        </ul>
+                <li><a class="page-link" data-page="@Model.Items.TotalPages">>></a></li>
+            </ul>
+        }
     </div>
 </div>
 

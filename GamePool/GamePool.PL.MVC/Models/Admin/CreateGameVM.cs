@@ -20,16 +20,17 @@ namespace GamePool.PL.MVC.Models.Admin
         public decimal? Price { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime? ReleaseDate { get; set; }
 
         [Required]
         public IEnumerable<int> GenreIds { get; set; }
 
         [Required]
-        public CreateSystemRequirementsVM MiminalRequirements { get; set; }
+        public CreateSystemRequirementsVM MinimalSystemRequirements { get; set; }
 
         [Required]
-        public CreateSystemRequirementsVM RecommendedRequirements { get; set; }
+        public CreateSystemRequirementsVM RecommendedSystemRequirements { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

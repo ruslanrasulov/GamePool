@@ -11,7 +11,11 @@ namespace GamePool.DAL.DALContracts
 
         IEnumerable<Genre> GetByGameId(int gameId);
 
-        bool AddRange(int gameId, IEnumerable<int> ids);
+        bool AddGenresByGameId(int gameId, IEnumerable<int> ids);
+
+        bool UpdateGenresByGameId(int gameId, IEnumerable<int> ids);
+
+        bool RemoveGenresByGameId(int gameId, IEnumerable<int> ids);
 
         bool Add(Genre genre);
     }

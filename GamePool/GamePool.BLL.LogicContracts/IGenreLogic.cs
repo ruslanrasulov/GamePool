@@ -13,6 +13,10 @@ namespace GamePool.BLL.LogicContracts
 
         bool Add(Genre genre);
 
-        bool AddRange(int gameId, IEnumerable<int> ids);
+        bool AddGenresByGameId(int gameId, IEnumerable<int> ids);
+
+        bool UpdateGenresByGameId(int gameId, IEnumerable<int> ids);
+
+        bool RemoveGenresByGameId(int gameId, IEnumerable<int> ids);
     }
 }

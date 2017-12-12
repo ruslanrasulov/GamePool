@@ -33,8 +33,8 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 connection.Execute(
-                    sql: "Genre_AddRange",
-                    param: genre,
+                    sql: "Genre_Add",
+                    param: parameters,
                     commandType: CommandType.StoredProcedure);
 
                 genre.Id = parameters.Get<int>("@Id");
@@ -43,7 +43,7 @@ namespace GamePool.DAL.SqlDAL
             }
         }
 
-        public bool AddRange(int gameId, IEnumerable<int> ids)
+        public bool AddGenresByGameId(int gameId, IEnumerable<int> ids)
         {
             using (IDbConnection connection = this.factory.CreateConnection())
             {
@@ -54,7 +54,7 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "GameGenre_AddRange",
+                    sql: "GameGenre_AddGenresByGameId",
                     param: new { GameId = gameId, Ids = json },
                     commandType: CommandType.StoredProcedure) > 0;
             }
@@ -104,6 +104,40 @@ namespace GamePool.DAL.SqlDAL
                     sql: "Genre_GetByNamePart",
                     param: new { KeyWord = keyWord },
                     commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public bool RemoveGenresByGameId(int gameId, IEnumerable<int> ids)
+        {
+            using (IDbConnection connection = this.factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                var json = JsonConvert.SerializeObject(ids);
+
+                connection.Open();
+
+                return connection.Execute(
+                    sql: "GameGenre_RemoveGenresByGameId",
+                    param: new { GameId = gameId, @Ids = json },
+                    commandType: CommandType.StoredProcedure) > 0;
+            }
+        }
+
+        public bool UpdateGenresByGameId(int gameId, IEnumerable<int> ids)
+        {
+            using (IDbConnection connection = this.factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                var json = JsonConvert.SerializeObject(ids);
+
+                connection.Open();
+
+                return connection.Execute(
+                    sql: "GameGenre_UpdateGenresByGameId",
+                    param: new { GameId = gameId, @Ids = json },
+                    commandType: CommandType.StoredProcedure) > 0;
             }
         }
     }

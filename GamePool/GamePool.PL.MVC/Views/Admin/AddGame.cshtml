@@ -13,6 +13,20 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
+    <script>
+        var CFG = CFG || {},
+            i;
+
+        @if (Model.GenreIds != null)
+        {
+            @:CFG.genreIds = [];
+
+            foreach (var genreId in Model.GenreIds)
+            {
+                @:CFG.genreIds.push(@genreId);
+            }
+        }
+    </script>
     <script src="~/Scripts/Include/predicate-input.js"></script>
 }
 
@@ -53,82 +67,82 @@
     <h3>System requirements</h3>
     <h4>Minimal system requirements</h4>
 
-    @Html.HiddenFor(model => model.MiminalRequirements.Type, new { Value = "min" })
+    @Html.HiddenFor(model => model.MinimalSystemRequirements.Type, new { Value = "min" })
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MiminalRequirements.Processor)
-        @Html.EditorFor(model => model.MiminalRequirements.Processor, new { htmlAttributes = new { @class = "form-control", placeholder = "Processor:" } })
-        @Html.ValidationMessageFor(model => model.MiminalRequirements.Processor, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.MinimalSystemRequirements.Processor)
+        @Html.EditorFor(model => model.MinimalSystemRequirements.Processor, new { htmlAttributes = new { @class = "form-control", placeholder = "Processor:" } })
+        @Html.ValidationMessageFor(model => model.MinimalSystemRequirements.Processor, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MiminalRequirements.Memory)
-        @Html.EditorFor(model => model.MiminalRequirements.Memory, new { htmlAttributes = new { @class = "form-control", placeholder = "Memory:" } })
-        @Html.ValidationMessageFor(model => model.MiminalRequirements.Memory, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.MinimalSystemRequirements.Memory)
+        @Html.EditorFor(model => model.MinimalSystemRequirements.Memory, new { htmlAttributes = new { @class = "form-control", placeholder = "Memory:" } })
+        @Html.ValidationMessageFor(model => model.MinimalSystemRequirements.Memory, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MiminalRequirements.OperationSystem)
-        @Html.EditorFor(model => model.MiminalRequirements.OperationSystem, new { htmlAttributes = new { @class = "form-control", placeholder = "Opreation system:" } })
-        @Html.ValidationMessageFor(model => model.MiminalRequirements.OperationSystem, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.MinimalSystemRequirements.OperationSystem)
+        @Html.EditorFor(model => model.MinimalSystemRequirements.OperationSystem, new { htmlAttributes = new { @class = "form-control", placeholder = "Opreation system:" } })
+        @Html.ValidationMessageFor(model => model.MinimalSystemRequirements.OperationSystem, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MiminalRequirements.Graphics)
-        @Html.EditorFor(model => model.MiminalRequirements.Graphics, new { htmlAttributes = new { @class = "form-control", placeholder = "Graphics:" } })
-        @Html.ValidationMessageFor(model => model.MiminalRequirements.Graphics, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.MinimalSystemRequirements.Graphics)
+        @Html.EditorFor(model => model.MinimalSystemRequirements.Graphics, new { htmlAttributes = new { @class = "form-control", placeholder = "Graphics:" } })
+        @Html.ValidationMessageFor(model => model.MinimalSystemRequirements.Graphics, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MiminalRequirements.Storage)
-        @Html.EditorFor(model => model.MiminalRequirements.Storage, new { htmlAttributes = new { @class = "form-control", placeholder = "Storage:" } })
-        @Html.ValidationMessageFor(model => model.MiminalRequirements.Storage, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.MinimalSystemRequirements.Storage)
+        @Html.EditorFor(model => model.MinimalSystemRequirements.Storage, new { htmlAttributes = new { @class = "form-control", placeholder = "Storage:" } })
+        @Html.ValidationMessageFor(model => model.MinimalSystemRequirements.Storage, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.MiminalRequirements.DirectX)
-        @Html.EditorFor(model => model.MiminalRequirements.DirectX, new { htmlAttributes = new { @class = "form-control", placeholder = "DirectX:" } })
-        @Html.ValidationMessageFor(model => model.MiminalRequirements.DirectX, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.MinimalSystemRequirements.DirectX)
+        @Html.EditorFor(model => model.MinimalSystemRequirements.DirectX, new { htmlAttributes = new { @class = "form-control", placeholder = "DirectX:" } })
+        @Html.ValidationMessageFor(model => model.MinimalSystemRequirements.DirectX, "", new { @class = "text-danger" })
     </div>
 
     <h4>Recommended system requirements</h4>
 
-    @Html.HiddenFor(model => model.RecommendedRequirements.Type, new { Value = "rec" })
+    @Html.HiddenFor(model => model.RecommendedSystemRequirements.Type, new { Value = "rec" })
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RecommendedRequirements.Processor)
-        @Html.EditorFor(model => model.RecommendedRequirements.Processor, new { htmlAttributes = new { @class = "form-control", placeholder = "Processor:" } })
-        @Html.ValidationMessageFor(model => model.RecommendedRequirements.Processor, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.RecommendedSystemRequirements.Processor)
+        @Html.EditorFor(model => model.RecommendedSystemRequirements.Processor, new { htmlAttributes = new { @class = "form-control", placeholder = "Processor:" } })
+        @Html.ValidationMessageFor(model => model.RecommendedSystemRequirements.Processor, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RecommendedRequirements.Memory)
-        @Html.EditorFor(model => model.RecommendedRequirements.Memory, new { htmlAttributes = new { @class = "form-control", placeholder = "Memory:" } })
-        @Html.ValidationMessageFor(model => model.RecommendedRequirements.Memory, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.RecommendedSystemRequirements.Memory)
+        @Html.EditorFor(model => model.RecommendedSystemRequirements.Memory, new { htmlAttributes = new { @class = "form-control", placeholder = "Memory:" } })
+        @Html.ValidationMessageFor(model => model.RecommendedSystemRequirements.Memory, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RecommendedRequirements.OperationSystem)
-        @Html.EditorFor(model => model.RecommendedRequirements.OperationSystem, new { htmlAttributes = new { @class = "form-control", placeholder = "Opreation system:" } })
-        @Html.ValidationMessageFor(model => model.RecommendedRequirements.OperationSystem, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.RecommendedSystemRequirements.OperationSystem)
+        @Html.EditorFor(model => model.RecommendedSystemRequirements.OperationSystem, new { htmlAttributes = new { @class = "form-control", placeholder = "Opreation system:" } })
+        @Html.ValidationMessageFor(model => model.RecommendedSystemRequirements.OperationSystem, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RecommendedRequirements.Graphics)
-        @Html.EditorFor(model => model.RecommendedRequirements.Graphics, new { htmlAttributes = new { @class = "form-control", placeholder = "Graphics:" } })
-        @Html.ValidationMessageFor(model => model.RecommendedRequirements.Graphics, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.RecommendedSystemRequirements.Graphics)
+        @Html.EditorFor(model => model.RecommendedSystemRequirements.Graphics, new { htmlAttributes = new { @class = "form-control", placeholder = "Graphics:" } })
+        @Html.ValidationMessageFor(model => model.RecommendedSystemRequirements.Graphics, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RecommendedRequirements.Storage)
-        @Html.EditorFor(model => model.RecommendedRequirements.Storage, new { htmlAttributes = new { @class = "form-control", placeholder = "Storage:" } })
-        @Html.ValidationMessageFor(model => model.RecommendedRequirements.Storage, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.RecommendedSystemRequirements.Storage)
+        @Html.EditorFor(model => model.RecommendedSystemRequirements.Storage, new { htmlAttributes = new { @class = "form-control", placeholder = "Storage:" } })
+        @Html.ValidationMessageFor(model => model.RecommendedSystemRequirements.Storage, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RecommendedRequirements.DirectX)
-        @Html.EditorFor(model => model.RecommendedRequirements.DirectX, new { htmlAttributes = new { @class = "form-control", placeholder = "DirectX:" } })
-        @Html.ValidationMessageFor(model => model.RecommendedRequirements.DirectX, "", new { @class = "text-danger" })
+        @Html.LabelFor(model => model.RecommendedSystemRequirements.DirectX)
+        @Html.EditorFor(model => model.RecommendedSystemRequirements.DirectX, new { htmlAttributes = new { @class = "form-control", placeholder = "DirectX:" } })
+        @Html.ValidationMessageFor(model => model.RecommendedSystemRequirements.DirectX, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">

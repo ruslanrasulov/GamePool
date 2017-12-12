@@ -27,11 +27,11 @@ namespace GamePool.BLL.Core
             }
         }
 
-        public bool AddRange(int gameId, IEnumerable<int> ids)
+        public bool AddGenresByGameId(int gameId, IEnumerable<int> ids)
         {
             try
             {
-                return this.genreDAO.AddRange(gameId, ids);
+                return this.genreDAO.AddGenresByGameId(gameId, ids);
             }
             catch
             {
@@ -68,6 +68,30 @@ namespace GamePool.BLL.Core
             try
             {
                 return this.genreDAO.GetByNamePart(keyWord).ToArray();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public bool RemoveGenresByGameId(int gameId, IEnumerable<int> ids)
+        {
+            try
+            {
+                return this.genreDAO.RemoveGenresByGameId(gameId, ids);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public bool UpdateGenresByGameId(int gameId, IEnumerable<int> ids)
+        {
+            try
+            {
+                return this.genreDAO.UpdateGenresByGameId(gameId, ids);
             }
             catch
             {

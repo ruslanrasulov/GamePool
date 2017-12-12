@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
@@ -61,8 +62,8 @@ namespace GamePool.PL.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var gameEntity = Mapper.Map<CreateGameVM, GameEntity>(createGameVM);
-                var minimalSystemReq = Mapper.Map<CreateSystemRequirementsVM, SystemRequirements>(createGameVM.MiminalRequirements);
-                var recommendedSystemReq = Mapper.Map<CreateSystemRequirementsVM, SystemRequirements>(createGameVM.RecommendedRequirements);
+                var minimalSystemReq = Mapper.Map<CreateSystemRequirementsVM, SystemRequirements>(createGameVM.MinimalSystemRequirements);
+                var recommendedSystemReq = Mapper.Map<CreateSystemRequirementsVM, SystemRequirements>(createGameVM.RecommendedSystemRequirements);
 
                 if (gameLogic.Add(gameEntity))
                 {
@@ -71,7 +72,7 @@ namespace GamePool.PL.MVC.Controllers
 
                     if (systemRequirementsLogic.Add(minimalSystemReq) && 
                         systemRequirementsLogic.Add(recommendedSystemReq) &&
-                        genreLogic.AddRange(gameEntity.Id, createGameVM.GenreIds))
+                        genreLogic.AddGenresByGameId(gameEntity.Id, createGameVM.GenreIds))
                     {
                         return RedirectToAction("Index");
                     }
@@ -113,9 +114,43 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditGame()
+        public ActionResult EditGame(int id)
         {
-            return View();
+            var gameEntity = this.gameLogic.GetById(id);
+
+            if (gameEntity == null)
+            {
+                return HttpNotFound();
+            }
+
+            var gameForEdit = Mapper.Map<GameEntity, EditGameVM>(gameEntity);
+            gameForEdit.GenreIds = this.genreLogic.GetByGameId(gameForEdit.Id).Select(g => g.Id);
+
+            return View(gameForEdit);
+        }
+
+        [HttpPost]
+        public ActionResult EditGame(EditGameVM editGameVM)
+        {
+            if (editGameVM == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var gameEntity = Mapper.Map<EditGameVM, GameEntity>(editGameVM);
+                
+                if (this.gameLogic.Update(gameEntity) &&
+                    this.genreLogic.UpdateGenresByGameId(gameEntity.Id, editGameVM.GenreIds) &&
+                    this.systemRequirementsLogic.Update(gameEntity.MinimalSystemRequirements) &&
+                    this.systemRequirementsLogic.Update(gameEntity.RecommendedSystemRequirements))
+                {
+                    return RedirectToAction("Details", "Product", new { id = gameEntity.Id });
+                }
+            }
+
+            return View(editGameVM);
         }
     }
 }

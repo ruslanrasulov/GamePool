@@ -52,6 +52,28 @@ namespace GamePool.PL.MVC.App_Start
                         dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVM>(src.MinimalSystemRequirements);
                         dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVM>(src.RecommendedSystemRequirements);
                     });
+
+                cfg.CreateMap<EditSystemRequirementsVM, SystemRequirements>()
+                    .ForMember(dest => dest.GameId, opt => opt.Ignore());
+
+                cfg.CreateMap<EditGameVM, GameEntity>()
+                    .ForMember(dest => dest.AvatarId, opt => opt.Ignore())
+                    .ForMember(dest => dest.Rating, opt => opt.Ignore())
+                    .AfterMap((src, dest, context) =>
+                     {
+                         dest.MinimalSystemRequirements = context.Mapper.Map<EditSystemRequirementsVM, SystemRequirements>(src.MinimalSystemRequirements);
+                         dest.RecommendedSystemRequirements = context.Mapper.Map<EditSystemRequirementsVM, SystemRequirements>(src.RecommendedSystemRequirements);
+                     });
+
+                cfg.CreateMap<SystemRequirements, EditSystemRequirementsVM>();
+
+                cfg.CreateMap<GameEntity, EditGameVM>()
+                    .ForMember(dest => dest.GenreIds, opt => opt.Ignore())
+                    .AfterMap((src, dest, context) =>
+                    {
+                        dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVM>(src.MinimalSystemRequirements);
+                        dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVM>(src.RecommendedSystemRequirements);
+                    });
             });
 
             Mapper.AssertConfigurationIsValid();
