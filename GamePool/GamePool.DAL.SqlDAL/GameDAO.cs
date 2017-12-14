@@ -5,6 +5,7 @@ using Dapper;
 using System.Data.Common;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GamePool.DAL.SqlDAL
 {
@@ -128,6 +129,70 @@ namespace GamePool.DAL.SqlDAL
                         Graphics = game.RecGraphics,
                         DirectX = game.RecDirectX
                     }
+                };
+            }
+        }
+
+        public PagedData<GameEntity> GetByIds(IEnumerable<int> ids)
+        {
+            using (IDbConnection connection = factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                var json = JsonConvert.SerializeObject(ids);
+
+                connection.Open();
+
+                var query = connection.QueryMultiple(
+                    sql: "Game_GetByIds",
+                    param: new { Ids = json },
+                    commandType: CommandType.StoredProcedure);
+
+                var games = query.Read<dynamic>();
+
+                List<GameEntity> gameEntities = new List<GameEntity>();
+
+                foreach (var game in games)
+                {
+                    gameEntities.Add(new GameEntity
+                    {
+                        Id = game.Id,
+                        AvatarId = game.AvatarId,
+                        Name = game.Name,
+                        Description = game.Description,
+                        ReleaseDate = game.ReleaseDate,
+                        Price = game.Price,
+                        MinimalSystemRequirements = new SystemRequirements
+                        {
+                            Id = game.MinId,
+                            GameId = game.MinGameId,
+                            Processor = game.MinProcessor,
+                            OperationSystem = game.MinOperationSystem,
+                            Storage = game.MinStorage,
+                            Memory = game.MinMemory,
+                            Graphics = game.MinGraphics,
+                            DirectX = game.MinDirectX
+                        },
+                        RecommendedSystemRequirements = new SystemRequirements
+                        {
+                            Id = game.RecId,
+                            GameId = game.RecGameId,
+                            Processor = game.RecProcessor,
+                            OperationSystem = game.RecOperationSystem,
+                            Storage = game.RecStorage,
+                            Memory = game.RecMemory,
+                            Graphics = game.RecGraphics,
+                            DirectX = game.RecDirectX
+                        }
+                    });
+                }
+
+                var count = query.ReadSingle<int>();
+
+                return new PagedData<GameEntity>
+                {
+                    Data = gameEntities,
+                    Count = count
                 };
             }
         }

@@ -7,7 +7,14 @@
 <div class="container mt-100 pb-100">
     <div class="jumbotron">
         <div class="row">
-            <img src="http://placehold.it/600x400" alt="Alternate Text" class="game-img-preview img-thumbnail" />
+            @if (Model.AvatarId != null)
+            {
+                <img src="@Url.Action("GetImageById", "Image", new { id = Model.AvatarId.Value })" alt="Alternate Text" class="game-img-preview img-thumbnail" />
+            }
+            else
+            {
+                <img src="http://placehold.it/600x400", alt="AlternateText" class="game-img-preview img-thumbnail" />
+            }
             <div class="game-props">
                 <header>@Model.Name</header>
                 <dl class="dl-horizontal">

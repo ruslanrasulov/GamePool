@@ -30,9 +30,13 @@
     <script src="~/Scripts/Include/predicate-input.js"></script>
 }
 
-@using (Html.BeginForm("AddGame", "Admin", FormMethod.Post, new { @class = "form-horizontal game-form" }))
+@using (Html.BeginForm("AddGame", "Admin", FormMethod.Post, new { @class = "form-horizontal game-form", enctype = "multipart/form-data" }))
 {
     <h3>Main info</h3>
+    
+    <div class="form-group">
+        <input type="file" name="game-avatar" id="game-avatar" />
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Name)

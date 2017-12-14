@@ -32,8 +32,8 @@ a:active {
     padding-bottom: 100px;
 }
 
-.width-60-percent {
-    width: 60%;
+.width-50-percent {
+    width: 50%;
 }
 
 .footer {
@@ -77,7 +77,15 @@ a:active {
 }
 
 .game-img-preview {
+    width: 600px;
+    height: 400px;
     float: left;
+}
+
+.game-small-img-preview {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
 }
 
 .game-props {

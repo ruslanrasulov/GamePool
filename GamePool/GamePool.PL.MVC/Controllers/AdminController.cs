@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
 using GamePool.BLL.LogicContracts;
@@ -16,15 +19,24 @@ namespace GamePool.PL.MVC.Controllers
         private readonly IGameLogic gameLogic;
         private readonly ISystemRequirementsLogic systemRequirementsLogic;
         private readonly IGenreLogic genreLogic;
-
+        private readonly IAvatarLogic avatarLogic;
+        private readonly IImageLogic imageLogic;
+        private readonly string imagePath;
+        
         public AdminController(
             IGameLogic gameLogic,
             ISystemRequirementsLogic systemRequirementsLogic,
-            IGenreLogic genreLogic)
+            IGenreLogic genreLogic,
+            IAvatarLogic avatarLogic,
+            IImageLogic imageLogic)
         {
             this.gameLogic = gameLogic;
             this.systemRequirementsLogic = systemRequirementsLogic;
             this.genreLogic = genreLogic;
+            this.avatarLogic = avatarLogic;
+            this.imageLogic = imageLogic;
+
+            this.imagePath = ConfigurationManager.AppSettings["VirtualImagePath"];
         }
 
         [HttpGet]
@@ -48,7 +60,11 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult AddGame()
         {
-            return View();
+            return View(new CreateGameVM
+            {
+                MinimalSystemRequirements = new CreateSystemRequirementsVM(),
+                RecommendedSystemRequirements = new CreateSystemRequirementsVM()
+            });
         }
 
         [HttpPost]
@@ -74,6 +90,27 @@ namespace GamePool.PL.MVC.Controllers
                         systemRequirementsLogic.Add(recommendedSystemReq) &&
                         genreLogic.AddGenresByGameId(gameEntity.Id, createGameVM.GenreIds))
                     {
+                        var image = WebImage.GetImageFromRequest("game-avatar");
+
+                        if (image != null)
+                        {
+                            var newImage = new ImageEntity
+                            {
+                                MimeType = image.ImageFormat,
+                                Path = image.FileName,
+                                AlternativeText = "Game Avatar"
+                            };
+
+                            if (this.imageLogic.Add(newImage))
+                            {
+                                var path = Path.Combine(Server.MapPath(this.imagePath), image.FileName);
+
+                                image.Save(path);
+
+                                this.avatarLogic.SetForGame(gameEntity.Id, newImage.Id);
+                            }
+                        }
+
                         return RedirectToAction("Index");
                     }
                 }
@@ -140,12 +177,33 @@ namespace GamePool.PL.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var gameEntity = Mapper.Map<EditGameVM, GameEntity>(editGameVM);
-                
+
                 if (this.gameLogic.Update(gameEntity) &&
                     this.genreLogic.UpdateGenresByGameId(gameEntity.Id, editGameVM.GenreIds) &&
                     this.systemRequirementsLogic.Update(gameEntity.MinimalSystemRequirements) &&
                     this.systemRequirementsLogic.Update(gameEntity.RecommendedSystemRequirements))
                 {
+                    var image = WebImage.GetImageFromRequest("game-avatar");
+
+                    if (image != null)
+                    {
+                        var newImage = new ImageEntity
+                        {
+                            MimeType = image.ImageFormat,
+                            Path = image.FileName,
+                            AlternativeText = "Game Avatar"
+                        };
+                        
+                        if (this.imageLogic.Add(newImage))
+                        {
+                            var path = Path.Combine(Server.MapPath(this.imagePath), image.FileName);
+
+                            image.Save(path);
+
+                            this.avatarLogic.SetForGame(gameEntity.Id, newImage.Id);
+                        }                     
+                    }
+
                     return RedirectToAction("Details", "Product", new { id = gameEntity.Id });
                 }
             }

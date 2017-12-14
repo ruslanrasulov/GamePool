@@ -1,4 +1,5 @@
-﻿using GamePool.Common.Entities;
+﻿using System.Collections.Generic;
+using GamePool.Common.Entities;
 
 namespace GamePool.BLL.LogicContracts
 {
@@ -11,6 +12,8 @@ namespace GamePool.BLL.LogicContracts
         bool Update(GameEntity gameEntity);
 
         GameEntity GetById(int id);
+
+        PagedData<GameEntity> GetByIds(IEnumerable<int> ids);
 
         PagedData<GameEntity> GetAll(int pageNumber, int pageSize);
 

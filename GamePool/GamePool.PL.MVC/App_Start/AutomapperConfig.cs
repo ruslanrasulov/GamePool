@@ -74,6 +74,9 @@ namespace GamePool.PL.MVC.App_Start
                         dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVM>(src.MinimalSystemRequirements);
                         dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVM>(src.RecommendedSystemRequirements);
                     });
+
+                cfg.CreateMap<GameEntity, OrderedGameVM>()
+                    .ForMember(dest => dest.Quantity, opt => opt.Ignore());
             });
 
             Mapper.AssertConfigurationIsValid();

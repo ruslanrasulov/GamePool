@@ -198,6 +198,7 @@
     <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\Include\common.js" />
     <Content Include="Scripts\Include\login-form.js" />
+    <Content Include="Scripts\Include\pagination.js" />
     <Content Include="Scripts\Include\predicate-input.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
@@ -222,6 +223,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
@@ -238,6 +241,7 @@
     <Compile Include="Models\Product\DisplayGameVM.cs" />
     <Compile Include="Models\Product\DisplaySystemRequirementsVM.cs" />
     <Compile Include="Models\Product\GamePreviewVM.cs" />
+    <Compile Include="Models\Product\OrderedGameVM.cs" />
     <Compile Include="Models\Search\SearchParametersVM.cs" />
     <Compile Include="Models\Search\SearchResultsVM.cs" />
     <Compile Include="Models\Shared\PagedItems.cs" />
@@ -272,6 +276,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Image\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GamePool.BLL.LogicContracts\GamePool.BLL.LogicContracts.csproj">

@@ -2,6 +2,7 @@
 using System;
 using GamePool.Common.Entities;
 using GamePool.DAL.DALContracts;
+using System.Collections.Generic;
 
 namespace GamePool.BLL.Core
 {
@@ -46,6 +47,18 @@ namespace GamePool.BLL.Core
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public PagedData<GameEntity> GetByIds(IEnumerable<int> ids)
+        {
+            try
+            {
+                return this.gameDAO.GetByIds(ids);
+            }
+            catch (Exception)
+            { 
                 throw;
             }
         }

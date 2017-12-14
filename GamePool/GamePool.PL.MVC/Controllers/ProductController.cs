@@ -45,7 +45,14 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult Cart()
         {
-            return this.View();
+            var orderedGames = Session["OrderedGames"] as IEnumerable<OrderedGameVM>;
+
+            if (orderedGames == null)
+            {
+                return View(Enumerable.Empty<OrderedGameVM>());
+            }
+
+            return View(orderedGames);
         }
 
         [HttpGet]

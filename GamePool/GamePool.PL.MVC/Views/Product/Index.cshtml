@@ -13,6 +13,7 @@
         
     </script>
     <script src="~/Scripts/Include/common.js"></script>
+    <script src="~/Scripts/Include/pagination.js"></script>
 }
 
 <div class="container-fluid">
@@ -60,13 +61,22 @@
             @Html.Raw("<div class=\"row\">");
         }
 
-        <div class="col-lg-3" data-id="@game.Id">
+        <div class="col-lg-3">
             <a href="@Url.Action("Details", "Product", new { id = game.Id })">
                 <h3>@game.Name</h3>
-                <img src="http://placehold.it/250x250" class="thumbnail" alt="Alternate Text" />
+                
+                @if (game.AvatarId != null)
+                {
+                    <img src="@Url.Action("GetImageById", "Image", new { id = game.AvatarId.Value })" class="thumbnail game-small-img-preview" alt="Alternate Text" />
+                }
+                else
+                {
+                    <img src="http://placehold.it/250x250" class="thumbnail game-small-img-preview" alt="Alternate Text" />
+                }
+
                 <p>@game.Description</p>
             </a>
-            <button type="button" class="btn btn-default center-block">Buy</button>
+            <button type="button" class="btn btn-default center-block buy-btn" data-game-id="@game.Id">Buy</button>
         </div>
 
         rowCount++;
