@@ -131,6 +131,17 @@ namespace GamePool.PL.MVC.Controllers
             return View(orderVM);
         }
 
+        [HttpPost]
+        public ActionResult Remove(int id)
+        {
+            if (this.gameLogic.Remove(id))
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Details", new { id = id });
+        }
+
         private void SendEmail(IEnumerable<OrderedGameVM> orderedGames, OrderVM checkoutVM)
         {
             const string fromEmail = "qwertysakkal@gmail.com";
