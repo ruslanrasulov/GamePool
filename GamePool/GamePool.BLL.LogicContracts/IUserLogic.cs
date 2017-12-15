@@ -18,5 +18,7 @@ namespace GamePool.BLL.LogicContracts
         bool IsLoginExists(string name);
 
         bool IsExists(User user);
+
+        PagedData<User> GetAll(int pageNumber, int pageSize);
     }
 }

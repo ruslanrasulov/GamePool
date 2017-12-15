@@ -1,9 +1,4 @@
 ﻿using GamePool.Common.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamePool.DAL.DALContracts
 {
@@ -18,5 +13,7 @@ namespace GamePool.DAL.DALContracts
         bool IsLoginExists(string name);
 
         bool IsExists(User user);
+
+        PagedData<User> GetAll(int pageNumber, int pageSize);
     }
 }

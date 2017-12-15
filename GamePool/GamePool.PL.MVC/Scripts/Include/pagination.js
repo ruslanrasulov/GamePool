@@ -1,8 +1,16 @@
 ﻿"use strict";
 
+var CFG = CFG || {};
+
 $(function () {
     var $pageLinks = $(".page-link"),
-        currUrl = CFG.action || window.location.href;
+        currUrl;
+
+    if (CFG && CFG.action) {
+        currUrl = CFG.action;
+    } else {
+        currUrl = window.location.href;
+    }
 
     $pageLinks.each(function () {
         var newUrl,

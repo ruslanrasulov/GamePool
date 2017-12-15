@@ -22,6 +22,35 @@ namespace GamePool.DAL.SqlDAL
             this.factory = DbProviderFactories.GetFactory(providerName);
         }
 
+        public bool AddRoleToUser(string username, string roleName)
+        {
+            using (IDbConnection connection = this.factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                connection.Open();
+
+                return connection.Execute(
+                    sql: "UserRole_AddRoleToUser",
+                    param: new { UserName = username, RoleName = roleName },
+                    commandType: CommandType.StoredProcedure) > 0;
+            }
+        }
+
+        public IEnumerable<Role> GetAll()
+        {
+            using (IDbConnection connection = factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                connection.Open();
+
+                return connection.Query<Role>(
+                    sql: "Role_GetAll",
+                    commandType: CommandType.StoredProcedure);
+            }
+        }
+
         public IEnumerable<Role> GetByUserLogin(string username)
         {
             using (IDbConnection connection = factory.CreateConnection())
@@ -58,6 +87,21 @@ namespace GamePool.DAL.SqlDAL
                     sql: "UserRole_IsUserInRole",
                     param: parameters,
                     commandType: CommandType.StoredProcedure) != null;
+            }
+        }
+
+        public bool RemoveRoleFromUser(string username, string roleName)
+        {
+            using (IDbConnection connection = this.factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                connection.Open();
+
+                return connection.Execute(
+                    sql: "UserRole_RemoveRoleFromUser",
+                    param: new { UserName = username, RoleName = roleName },
+                    commandType: CommandType.StoredProcedure) > 0;
             }
         }
     }

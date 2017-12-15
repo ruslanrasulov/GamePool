@@ -43,6 +43,32 @@ namespace GamePool.DAL.SqlDAL
             }
         }
 
+        public PagedData<User> GetAll(int pageNumber, int pageSize)
+        {
+            using (IDbConnection connection = factory.CreateConnection())
+            {
+                connection.ConnectionString = this.connectionString;
+
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("@PageNumber", pageNumber);
+                parameters.Add("@PageSize", pageSize);
+
+                connection.Open();
+
+                var query = connection.QueryMultiple(
+                    sql: "User_GetAll",
+                    param: parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                return new PagedData<User>
+                {
+                    Data = query.Read<User>(),
+                    Count = query.ReadFirst<int>()
+                };
+            }
+        }
+
         public bool IsExists(User user)
         {
             using (IDbConnection connection = factory.CreateConnection())

@@ -23,6 +23,8 @@ namespace GamePool.PL.MVC.Controllers
         private readonly IAvatarLogic avatarLogic;
         private readonly IImageLogic imageLogic;
         private readonly IOrderLogic orderLogic;
+        private readonly IUserLogic userLogic;
+        private readonly IUserRoleLogic userRoleLogic;
 
         private readonly string imagePath;
         private readonly int pageSize;
@@ -34,7 +36,9 @@ namespace GamePool.PL.MVC.Controllers
             IGenreLogic genreLogic,
             IAvatarLogic avatarLogic,
             IImageLogic imageLogic,
-            IOrderLogic orderLogic)
+            IOrderLogic orderLogic,
+            IUserLogic userLogic,
+            IUserRoleLogic userRoleLogic)
         {
             this.gameLogic = gameLogic;
             this.systemRequirementsLogic = systemRequirementsLogic;
@@ -42,6 +46,8 @@ namespace GamePool.PL.MVC.Controllers
             this.avatarLogic = avatarLogic;
             this.imageLogic = imageLogic;
             this.orderLogic = orderLogic;
+            this.userLogic = userLogic;
+            this.userRoleLogic = userRoleLogic;
 
             this.imagePath = ConfigurationManager.AppSettings["VirtualImagePath"];
             this.pageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
@@ -55,9 +61,23 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult UserList()
+        public ActionResult UserList(int? pageNumber = 1)
         {
-            return View();
+            var pagedUsers = this.userLogic.GetAll(pageNumber.Value, this.pageSize);
+            var allRoles = this.userRoleLogic.GetAll().Select(r => r.Name);
+
+            var userListItems = Mapper.Map<IEnumerable<User>, IEnumerable<UserListItemVM>>(
+                pagedUsers.Data.Where(u => u.Name != User.Identity.Name));
+
+            var pagedItems = new PagedItems<UserListItemVM>
+            {
+                Data = FillRolesIntoUser(userListItems, allRoles),
+                CurrentPage = pageNumber.Value,
+                MaxPageSelectors = this.maxPageSelectors,
+                TotalPages = pagedUsers.Count
+            };
+
+            return View(pagedItems);
         }
 
         [HttpGet]
@@ -130,7 +150,7 @@ namespace GamePool.PL.MVC.Controllers
                             }
                         }
 
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", "Product");
                     }
                 }
 
@@ -228,6 +248,33 @@ namespace GamePool.PL.MVC.Controllers
             }
 
             return View(editGameVM);
+        }
+        
+        [HttpGet]
+        public ActionResult AddRoleToUser(string username, string roleName)
+        {
+            var result = this.userRoleLogic.AddRoleToUser(username, roleName);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RemoveRoleFromUser(string username, string roleName)
+        {
+            var result = this.userRoleLogic.RemoveRoleFromUser(username, roleName);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private IEnumerable<UserListItemVM> FillRolesIntoUser(IEnumerable<UserListItemVM> userListItemsVM, IEnumerable<string> allRoles)
+        {
+            foreach (var user in userListItemsVM)
+            {
+                user.CurrentRoles = this.userRoleLogic.GetByUserLogin(user.Name).Select(r => r.Name);
+                user.AvailableRoles = allRoles.Except(user.CurrentRoles);
+
+                yield return user;
+            }
         }
     }
 }

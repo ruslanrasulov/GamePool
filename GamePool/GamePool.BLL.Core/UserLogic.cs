@@ -33,6 +33,18 @@ namespace GamePool.BLL.Core
             }
         }
 
+        public PagedData<User> GetAll(int pageNumber, int pageSize)
+        {
+            try
+            {
+                return this.userDAO.GetAll(pageNumber, pageSize);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public bool IsExists(User user)
         {
             try

@@ -18,6 +18,30 @@ namespace GamePool.BLL.Core
             this.userRoleDAO = userRoleDAO;
         }
 
+        public bool AddRoleToUser(string username, string roleName)
+        {
+            try
+            {
+                return this.userRoleDAO.AddRoleToUser(username, roleName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public IEnumerable<Role> GetAll()
+        {
+            try
+            {
+                return this.userRoleDAO.GetAll().ToArray();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public IEnumerable<Role> GetByUserLogin(string username)
         {
             try
@@ -35,6 +59,18 @@ namespace GamePool.BLL.Core
             try
             {
                 return this.IsUserInRole(username, roleName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool RemoveRoleFromUser(string username, string roleName)
+        {
+            try
+            {
+                return this.userRoleDAO.RemoveRoleFromUser(username, roleName);
             }
             catch (Exception)
             {

@@ -200,6 +200,7 @@
     <Content Include="Scripts\Include\login-form.js" />
     <Content Include="Scripts\Include\pagination.js" />
     <Content Include="Scripts\Include\predicate-input.js" />
+    <Content Include="Scripts\Include\user-list.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -239,6 +240,7 @@
     <Compile Include="Models\Admin\EditSystemRequirementsVM.cs" />
     <Compile Include="Models\Admin\OrderListItemVM.cs" />
     <Compile Include="Models\Admin\Select2GenreVM.cs" />
+    <Compile Include="Models\Admin\UserListItemVM.cs" />
     <Compile Include="Models\Product\OrderVM.cs" />
     <Compile Include="Models\Product\DisplayGameVM.cs" />
     <Compile Include="Models\Product\DisplaySystemRequirementsVM.cs" />

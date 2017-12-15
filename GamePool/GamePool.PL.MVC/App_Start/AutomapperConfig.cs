@@ -16,13 +16,11 @@ namespace GamePool.PL.MVC.App_Start
             {
                 cfg.CreateMap<UserLoginVM, UserEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
-                    .ForMember(dest => dest.Name, opt => opt.ResolveUsing(src => src.Username))
-                    .ForMember(dest => dest.Roles, opt => opt.Ignore());
+                    .ForMember(dest => dest.Name, opt => opt.ResolveUsing(src => src.Username));
 
                 cfg.CreateMap<UserRegisterVM, UserEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
-                    .ForMember(dest => dest.Name, opt => opt.ResolveUsing(src => src.Username))
-                    .ForMember(dest => dest.Roles, opt => opt.Ignore());
+                    .ForMember(dest => dest.Name, opt => opt.ResolveUsing(src => src.Username));
 
                 cfg.CreateMap<CreateGameVM, GameEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -79,6 +77,10 @@ namespace GamePool.PL.MVC.App_Start
                     .ForMember(dest => dest.Quantity, opt => opt.Ignore());
 
                 cfg.CreateMap<Order, OrderListItemVM>();
+
+                cfg.CreateMap<UserEntity, UserListItemVM>()
+                    .ForMember(dest => dest.CurrentRoles, opt => opt.Ignore())
+                    .ForMember(dest => dest.AvailableRoles, opt => opt.Ignore());
             });
 
             Mapper.AssertConfigurationIsValid();
