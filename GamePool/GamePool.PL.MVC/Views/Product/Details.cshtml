@@ -27,8 +27,11 @@
                     <dt>@Html.DisplayNameFor(model => model.Genres)</dt>
                     <dd>@Html.DisplayFor(model => model.Genres)</dd>
                 </dl>
-                @Html.ActionLink("Edit", "EditGame", "Admin", new { id = Model.Id }, new { @class = "btn btn-default" })
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#accept-removing">Remove</button>
+                @if (User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Edit", "EditGame", "Admin", new { id = Model.Id }, new { @class = "btn btn-default" })
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#accept-removing">Remove</button>
+                }
             </div>
         </div>
         <div class="row mt-20 game-description">
@@ -91,27 +94,30 @@
     </div>
 </div>
 
-<div id="accept-removing" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Are you sure?</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure to remove this game?</p>
-            </div>
-            <div class="modal-footer">
-                @using (Html.BeginForm("Remove", "Product", FormMethod.Post, new { @class = "form-inline" }))
+@if (User.IsInRole("Admin"))
+{
+    <div id="accept-removing" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to remove this game?</p>
+                </div>
+                <div class="modal-footer">
+                    @using (Html.BeginForm("Remove", "Product", FormMethod.Post, new { @class = "form-inline" }))
                 {
-                    <div class="form-group">
-                        <input type="hidden" name="id" id="id" value="@Model.Id" />
-                        <button type="submit" class="btn btn-danger">Submit</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                }
+                        <div class="form-group">
+                            <input type="hidden" name="id" id="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    }
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
+}

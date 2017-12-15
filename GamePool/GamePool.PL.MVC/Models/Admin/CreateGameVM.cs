@@ -9,21 +9,26 @@ namespace GamePool.PL.MVC.Models.Admin
     {
         [Required]
         [MaxLength(200)]
+        [Display(Name = "Name:")]
         public string Name { get; set; }
         
         [Required]
         [MaxLength(2000)]
+        [Display(Name = "Description:")]
         public string Description { get; set; }
 
         [Required]
         [Range(0, double.MaxValue)]
+        [Display(Name = "Price:")]
         public decimal? Price { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name = "Release date:")]
         public DateTime? ReleaseDate { get; set; }
 
         [Required]
+        [Display(Name = "Genres:")]
         public IEnumerable<int> GenreIds { get; set; }
 
         [Required]

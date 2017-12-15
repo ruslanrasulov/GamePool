@@ -20,7 +20,10 @@
                     <li>
                         @Html.Action("SearchInput", "Search")
                     </li>
-                    <li>@Html.ActionLink("Cart", "Cart", "Product")</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Cart", "Cart", "Product")</li>
+                    }
                 </ul>
             </div>
         </div>

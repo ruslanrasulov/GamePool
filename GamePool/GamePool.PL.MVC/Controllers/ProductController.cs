@@ -53,6 +53,7 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Cart()
         {
             var orderedGames = Session["OrderedGames"] as IEnumerable<OrderedGameVM>;
@@ -89,12 +90,15 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Checkout()
         {
             return View();
         }
         
         [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Checkout(OrderVM orderVM)
         {
             if (orderVM == null)
@@ -132,6 +136,7 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Remove(int id)
         {
             if (this.gameLogic.Remove(id))

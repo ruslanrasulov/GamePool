@@ -32,6 +32,8 @@
 
 @using (Html.BeginForm("AddGame", "Admin", FormMethod.Post, new { @class = "form-horizontal game-form", enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
+
     <h3>Main info</h3>
     
     <div class="form-group">

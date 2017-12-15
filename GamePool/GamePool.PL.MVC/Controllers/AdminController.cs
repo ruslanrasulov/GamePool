@@ -15,6 +15,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace GamePool.PL.MVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IGameLogic gameLogic;
@@ -107,6 +108,7 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddGame(CreateGameVM createGameVM)
         {
             if (createGameVM == null)
@@ -206,6 +208,7 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditGame(EditGameVM editGameVM)
         {
             if (editGameVM == null)

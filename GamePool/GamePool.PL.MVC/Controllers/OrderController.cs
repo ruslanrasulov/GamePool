@@ -39,6 +39,7 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult AddGameToOrders(int gameId)
         {
             var game = this.gameLogic.GetById(gameId);
@@ -57,6 +58,7 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult RemoveGameFromOrders(int gameId)
         {
             var result = false;
@@ -67,6 +69,7 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult UpdateGameQuantity(int gameId, int quantity)
         {
             var result = false;
@@ -80,12 +83,6 @@ namespace GamePool.PL.MVC.Controllers
             }
             
             return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public ActionResult Checkout()
-        {
-            return View();
         }
     }
 }

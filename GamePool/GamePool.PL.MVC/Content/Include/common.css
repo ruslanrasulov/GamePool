@@ -36,8 +36,18 @@ a:active {
     width: 50%;
 }
 
+.padding-clear {
+    padding: 0;
+}
+
+.carousel-inner > .item > .panorama-image {
+    height: 600px;
+}
+
 .panorama-image {
     width: 100%;
+    object-fit: cover;
+    object-position: left top;
 }
 
 .footer {
@@ -84,6 +94,8 @@ a:active {
     width: 600px;
     height: 400px;
     float: left;
+    object-fit: cover;
+    object-position: center;
 }
 
 .game-small-img-preview {
