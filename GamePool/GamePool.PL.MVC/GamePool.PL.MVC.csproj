@@ -237,7 +237,9 @@
     <Compile Include="Models\Admin\CreateSystemRequirementsVM.cs" />
     <Compile Include="Models\Admin\EditGameVM.cs" />
     <Compile Include="Models\Admin\EditSystemRequirementsVM.cs" />
+    <Compile Include="Models\Admin\OrderListItemVM.cs" />
     <Compile Include="Models\Admin\Select2GenreVM.cs" />
+    <Compile Include="Models\Product\OrderVM.cs" />
     <Compile Include="Models\Product\DisplayGameVM.cs" />
     <Compile Include="Models\Product\DisplaySystemRequirementsVM.cs" />
     <Compile Include="Models\Product\GamePreviewVM.cs" />
@@ -267,6 +269,7 @@
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Shared\_SearchInputPartial.cshtml" />
     <Content Include="Views\Admin\EditGame.cshtml" />
+    <Content Include="Views\Product\Checkout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

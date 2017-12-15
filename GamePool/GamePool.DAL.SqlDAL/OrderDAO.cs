@@ -31,10 +31,12 @@ namespace GamePool.DAL.SqlDAL
                 DynamicParameters parameters = new DynamicParameters();
 
                 parameters.Add("@Id", order.Id, direction: ParameterDirection.Output);
-                parameters.Add("@Date", order.Date);
-                parameters.Add("@State", order.State);
+                parameters.Add("@Name", order.Name);
+                parameters.Add("@Surname", order.Surname);
+                parameters.Add("@Email", order.Email);
+                parameters.Add("@PhoneNumber", order.PhoneNumber);
                 parameters.Add("@GameId", order.GameId);
-                parameters.Add("@UserId", order.UserId);
+                parameters.Add("@Quantity", order.Quantity);
 
                 connection.Open();
 
@@ -49,7 +51,7 @@ namespace GamePool.DAL.SqlDAL
             }
         }
 
-        public bool Update(Order order)
+        public PagedData<Order> GetAll(int pageNumber, int pageSize)
         {
             using (IDbConnection connection = this.factory.CreateConnection())
             {
@@ -57,15 +59,21 @@ namespace GamePool.DAL.SqlDAL
 
                 DynamicParameters parameters = new DynamicParameters();
 
-                parameters.Add("@Id", order.Id);
-                parameters.Add("@State", order.State);
+                parameters.Add("@PageNumber", pageNumber);
+                parameters.Add("@PageSize", pageSize);
 
                 connection.Open();
 
-                return connection.Execute(
-                    sql: "Order_Update",
+                var query = connection.QueryMultiple(
+                    sql: "Order_GetAll",
                     param: parameters,
-                    commandType: CommandType.StoredProcedure) > 0;
+                    commandType: CommandType.StoredProcedure);
+
+                return new PagedData<Order>
+                {
+                    Data = query.Read<Order>().ToList(),
+                    Count = query.ReadFirst<int>()
+                };
             }
         }
     }

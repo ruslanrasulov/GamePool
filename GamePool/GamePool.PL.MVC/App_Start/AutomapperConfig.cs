@@ -77,6 +77,8 @@ namespace GamePool.PL.MVC.App_Start
 
                 cfg.CreateMap<GameEntity, OrderedGameVM>()
                     .ForMember(dest => dest.Quantity, opt => opt.Ignore());
+
+                cfg.CreateMap<Order, OrderListItemVM>();
             });
 
             Mapper.AssertConfigurationIsValid();

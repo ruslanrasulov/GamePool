@@ -30,14 +30,15 @@ namespace GamePool.BLL.Core
             }
         }
 
-        public bool Update(Order order)
+        public PagedData<Order> GetAll(int pageNumber, int pageSize)
         {
             try
             {
-                return this.orderDAO.Update(order);
+                return this.orderDAO.GetAll(pageNumber, pageSize);
             }
             catch (Exception)
-            { 
+            {
+
                 throw;
             }
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GamePool.Common.Entities;
+﻿using GamePool.Common.Entities;
 
 namespace GamePool.DAL.DALContracts
 {
@@ -11,6 +6,6 @@ namespace GamePool.DAL.DALContracts
     {
         bool Add(Order order);
 
-        bool Update(Order order);
+        PagedData<Order> GetAll(int pageNumber, int pageSize);
     }
 }

@@ -36,6 +36,10 @@ a:active {
     width: 50%;
 }
 
+.panorama-image {
+    width: 100%;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

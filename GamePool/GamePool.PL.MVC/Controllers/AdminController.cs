@@ -9,6 +9,7 @@ using AutoMapper;
 using GamePool.BLL.LogicContracts;
 using GamePool.Common.Entities;
 using GamePool.PL.MVC.Models.Admin;
+using GamePool.PL.MVC.Models.Shared;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -21,22 +22,30 @@ namespace GamePool.PL.MVC.Controllers
         private readonly IGenreLogic genreLogic;
         private readonly IAvatarLogic avatarLogic;
         private readonly IImageLogic imageLogic;
+        private readonly IOrderLogic orderLogic;
+
         private readonly string imagePath;
-        
+        private readonly int pageSize;
+        private readonly int maxPageSelectors;
+
         public AdminController(
             IGameLogic gameLogic,
             ISystemRequirementsLogic systemRequirementsLogic,
             IGenreLogic genreLogic,
             IAvatarLogic avatarLogic,
-            IImageLogic imageLogic)
+            IImageLogic imageLogic,
+            IOrderLogic orderLogic)
         {
             this.gameLogic = gameLogic;
             this.systemRequirementsLogic = systemRequirementsLogic;
             this.genreLogic = genreLogic;
             this.avatarLogic = avatarLogic;
             this.imageLogic = imageLogic;
+            this.orderLogic = orderLogic;
 
             this.imagePath = ConfigurationManager.AppSettings["VirtualImagePath"];
+            this.pageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
+            this.maxPageSelectors = int.Parse(ConfigurationManager.AppSettings["MaxPageSelectors"]);
         }
 
         [HttpGet]
@@ -52,9 +61,19 @@ namespace GamePool.PL.MVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult Orders()
+        public ActionResult Orders(int? pageNumber = 1)
         {
-            return View();
+            var pagedOrders = this.orderLogic.GetAll(pageNumber.Value, this.pageSize);
+
+            var pagedItems = new PagedItems<OrderListItemVM>
+            {
+                Data = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderListItemVM>>(pagedOrders.Data),
+                CurrentPage = pageNumber.Value,
+                MaxPageSelectors = this.maxPageSelectors,
+                TotalPages = pagedOrders.Count
+            };
+
+            return View(pagedItems);
         }
 
         [HttpGet]

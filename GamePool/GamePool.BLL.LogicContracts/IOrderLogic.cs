@@ -11,6 +11,6 @@ namespace GamePool.BLL.LogicContracts
     {
         bool Add(Order order);
 
-        bool Update(Order order);
+        PagedData<Order> GetAll(int pageNumber, int pageSize);
     }
 }
