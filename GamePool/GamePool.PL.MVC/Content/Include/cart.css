@@ -1,3 +1,17 @@
 ﻿.quantity-input {
     width: 65px;
 }
+
+.row-image-cell {
+    text-align: center;
+}
+
+.row-image-cell > img {
+    margin: 0 auto;
+}
+
+.row-image-cell > p {
+    margin-top: 5px;
+    font-size: 20px;
+    border-bottom: 1px solid #808080;
+}

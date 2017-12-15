@@ -35,3 +35,33 @@
     width: 150px;
     margin-top: 35px;
 }
+
+.id-col {
+    width: 10%:
+}
+
+.name-col {
+    width: 20%;
+}
+
+.email-col {
+    width: 20%;
+}
+
+.action-col {
+    width: 50%;
+}
+
+.add-role-select,
+.remove-role-select {
+    width: 30%;
+    display: inline-block;
+}
+
+.add-role-select {
+    margin-left: 10px;
+}
+
+.add-user-role {
+    margin-right: 40px;
+}

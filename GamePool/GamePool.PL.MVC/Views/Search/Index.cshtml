@@ -85,9 +85,9 @@
             @Html.Raw("<div class=\"row\">");
         }
 
-        <div class="col-lg-3" data-id="@game.Id">
+        <div class="col-lg-3 game-block">
             <a href="@Url.Action("Details", "Product", new { id = game.Id })">
-                <h3>@game.Name</h3>
+
                 @if (game.AvatarId != null)
                 {
                     <img src="@Url.Action("GetImageById", "Image", new { id = game.AvatarId.Value })" class="thumbnail game-small-img-preview" alt="Alternate Text" />
@@ -96,8 +96,10 @@
                 {
                     <img src="http://placehold.it/250x250" class="thumbnail game-small-img-preview" alt="Alternate Text" />
                 }
-                <p>@game.Description</p>
+                <h3>@game.Name</h3>
             </a>
+            <p>@game.Description</p>
+
             @if (User.Identity.IsAuthenticated)
             {
                 <button type="button" class="btn btn-default center-block buy-btn" data-game-id="@game.Id">Buy</button>

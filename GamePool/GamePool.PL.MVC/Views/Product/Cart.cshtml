@@ -28,7 +28,7 @@
             @foreach (var game in Model)
             {
                 <tr>
-                    <td>
+                    <td class="row-image-cell">
                         @if (game.AvatarId != null)
                         {
                             <img src="@Url.Action("GetImageById", "Image", new { id = game.AvatarId.Value })" alt="Alternate Text" class="thumbnail game-small-img-preview" />
@@ -39,7 +39,7 @@
                         }
                         <p>@game.Name</p>
 
-                        <button type="button" class="btn btn-danger remove-ordered-game" data-game-id="@game.Id">Remove</button>
+                        <button type="button" class="btn btn-danger remove-ordered-game btn-sm" data-game-id="@game.Id">Remove</button>
                     </td>
                     <td class="width-50-percent"><p>@game.Description</p></td>
                     <td><input type="number" class="form-control quantity-input" data-game-id="@game.Id" value="@game.Quantity" /></td>

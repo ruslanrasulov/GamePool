@@ -153,3 +153,31 @@ a:active {
 .system-requirements > dl {
     margin-left: 10px;
 }
+
+.game-block {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #808080;
+    border-radius: 8px;
+    text-align: center;
+    transition: 0.15s ease-in-out all;
+}
+
+.game-block:hover {
+    background-color: #0d0d0d;
+}
+
+.game-block img {
+    margin: 0 auto;
+}
+
+.game-block h3 {
+    font-size: 18px;
+}
+
+.game-block p {
+    word-wrap: normal;
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
