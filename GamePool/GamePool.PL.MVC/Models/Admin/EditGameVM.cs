@@ -10,6 +10,8 @@ namespace GamePool.PL.MVC.Models.Admin
         [Required]
         public int Id { get; set; }
 
+        public int? AvatarId { get; set; }
+
         [Required]
         [MaxLength(200)]
         [Display(Name = "Name:")]

@@ -7,6 +7,8 @@ namespace GamePool.PL.MVC.Models.Admin
 {
     public class CreateGameVM : IValidatableObject
     {
+        public int? AvatarId { get; set; }
+
         [Required]
         [MaxLength(200)]
         [Display(Name = "Name:")]

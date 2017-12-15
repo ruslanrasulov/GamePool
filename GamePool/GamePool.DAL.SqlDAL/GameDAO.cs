@@ -29,7 +29,6 @@ namespace GamePool.DAL.SqlDAL
                 DynamicParameters parameters = new DynamicParameters();
 
                 parameters.Add("@Id", gameEntity.Id, direction: ParameterDirection.Output);
-                parameters.Add("@AvatarId", gameEntity.AvatarId);
                 parameters.Add("@Name", gameEntity.Name);
                 parameters.Add("@Description", gameEntity.Description);
                 parameters.Add("@Price", gameEntity.Price);
@@ -262,7 +261,6 @@ namespace GamePool.DAL.SqlDAL
                 DynamicParameters parameters = new DynamicParameters();
 
                 parameters.Add("@Id", gameEntity.Id);
-                parameters.Add("@AvatarId", gameEntity.AvatarId);
                 parameters.Add("@Name", gameEntity.Name);
                 parameters.Add("@Description", gameEntity.Description);
                 parameters.Add("@Price", gameEntity.Price);
