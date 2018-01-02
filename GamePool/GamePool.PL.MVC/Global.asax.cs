@@ -16,6 +16,7 @@ namespace GamePool.PL.MVC
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             AutoMapperConfig.RegisterMaps();
+            FilterConfig.RegisterFilters(GlobalFilters.Filters);
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
