@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/normalize.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Include/common.css" rel="stylesheet" />
+    @RenderSection("styles", false)
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="~/" class="navbar-brand">Game Pool</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.Partial("_AccountInfoPartial")
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        @Html.Action("SearchInput", "Search")
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Cart", "Cart", "Product")</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @RenderBody()
+
+    <div class="footer">
+        <div class="container">
+            <span class="site-name">Game Pool © 2017</span>
+            <span class="developer-name">Developed by Ruslan Rasulov</span>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

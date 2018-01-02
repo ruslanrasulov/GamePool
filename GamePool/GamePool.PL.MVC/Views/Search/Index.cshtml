@@ -1,0 +1,79 @@
+﻿@model SearchResultsVm
+
+@{
+    ViewBag.Title = "Found games";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/Content/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/select2-bootstrap.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script>
+        var CFG = CFG || {},
+            i;
+
+        @if (Model.Parameters.GenreIds != null)
+        {
+            @:CFG.genreIds = [];
+
+            foreach (var genreId in Model.Parameters.GenreIds)
+            {
+                @:CFG.genreIds.push(@genreId);
+            }
+        }
+
+        CFG.action = "@Request.RawUrl";
+    </script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/Include/predicate-input.js"></script>
+    <script src="~/Scripts/Include/common.js"></script>
+    <script src="~/Scripts/Include/pagination.js"></script>
+}
+
+<div class="container mt-100 pb-100">
+    <div class="jumbotron">
+        <h3>Advanced search</h3>
+
+        @using (Html.BeginForm("Index", "Search", FormMethod.Get, new { @class = "form-horizontal" }))
+        {
+            <input type="hidden" id="Parameters.PageNumber" name="Parameters.PageNumber" value="1">
+            <div class="row mt-20">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Parameters.Name)
+                    @Html.EditorFor(model => model.Parameters.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name:" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Parameters.PriceFrom)
+                    @Html.EditorFor(model => model.Parameters.PriceFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "Price from:" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Parameters.PriceTo)
+                    @Html.EditorFor(model => model.Parameters.PriceTo, new { htmlAttributes = new { @class = "form-control", placeholder = "Price to:" } })
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Parameters.ReleaseDate)
+                    <input type="date" id="Parameters.ReleaseDate" name="Parameters.ReleaseDate" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row mt-20">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Parameters.GenreIds)
+                    @Html.DropDownListFor(model => model.Parameters.GenreIds, Enumerable.Empty<SelectListItem>(), new { @class = "form-control genres-input", multiple = "multiple"})
+                </div>
+            </div>
+
+            <div class="row mt-40">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-block btn-info">Search</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @Html.Partial("~/Views/Shared/_GameListPartial.cshtml", Model.Items)
+</div>
+

@@ -1,0 +1,20 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li>
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.ActionLink(User.Identity.Name, "Index", "Admin")
+            }
+            else
+            {
+                <a href="#">@User.Identity.Name</a>
+            }
+        </li>
+        <li>@Html.ActionLink("Sign out", "SignOut", "Account")</li>
+    }
+    else
+    {
+        <li>@Html.ActionLink("Sign in", "SignIn", "Account")</li>
+    }
+</ul>

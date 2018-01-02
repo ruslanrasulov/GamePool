@@ -1,0 +1,22 @@
+﻿@model GamePreviewVm
+
+<div class="col-lg-3 game-block">
+    <a href="@Url.Action("Details", "Product", new { id = Model.Id })">
+
+        @if (Model.AvatarId != null)
+        {
+            <img src="@Url.Action("GetImageById", "Image", new { id = Model.AvatarId.Value })" class="thumbnail game-small-img-preview" alt="Alternate Text" />
+        }
+        else
+        {
+            <img src="http://placehold.it/250x250" class="thumbnail game-small-img-preview" alt="Alternate Text" />
+        }
+        <h3>@Model.Name</h3>
+    </a>
+    <p>@Model.Description</p>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <button type="button" class="btn btn-default center-block buy-btn" data-game-id="@Model.Id">Buy</button>
+    }
+</div>

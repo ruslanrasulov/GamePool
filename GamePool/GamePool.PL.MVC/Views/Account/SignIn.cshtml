@@ -1,0 +1,42 @@
+﻿@model UserAggregatedVm
+
+@{ 
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Sign in";
+}
+
+@section styles {
+    <link href="~/Content/Include/login-form.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/Include/login-form.js"></script>
+}
+
+<div class="container mt-100 pb-100">
+    <div class="col-md-4 col-lg-offset-4">
+        <div class="panel panel-login">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-6"><a href="#" class="active" id="login-form-link">Login</a></div>
+                    <div class="col-xs-6"><a href="#" id="registration-form-link">Register</a></div>
+                </div>
+
+                <hr />
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.Action("SignInForm", "Account", Model.LoginVm)
+
+                            @Html.Action("SignUpForm", "Account", Model.RegisterVm)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

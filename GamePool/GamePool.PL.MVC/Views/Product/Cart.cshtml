@@ -1,0 +1,61 @@
+﻿@model IEnumerable<OrderedGameVm>
+
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link href="~/Content/Include/cart.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script src="~/Scripts/Include/common.js"></script>
+}
+
+<div class="container mt-100 pb-100">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <td>Image</td>
+                <td>Description</td>
+                <td>Quantity</td>
+                <td>Unit price</td>
+                <td>Total</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in Model)
+            {
+                <tr>
+                    <td class="row-image-cell">
+                        @if (game.AvatarId != null)
+                        {
+                            <img src="@Url.Action("GetImageById", "Image", new { id = game.AvatarId.Value })" alt="Alternate Text" class="thumbnail game-small-img-preview" />
+                        }
+                        else
+                        {
+                            <img src="http://placehold.it/250x250" alt="Alternate Text" class="thumbnail" />
+                        }
+                        <p>@game.Name</p>
+
+                        <button type="button" class="btn btn-danger remove-ordered-game btn-sm" data-game-id="@game.Id">Remove</button>
+                    </td>
+                    <td class="width-50-percent"><p>@game.Description</p></td>
+                    <td><input type="number" class="form-control quantity-input" data-game-id="@game.Id" value="@game.Quantity" /></td>
+                    <td class="ordered-game-price">@Math.Floor(game.Price)$</td>
+                    <td class="ordered-game-total-price"></td>
+                </tr>
+            }
+            <tr>
+                <td colspan="4" class="text-right">Total:</td>
+                <td id="order-total-price">0</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row text-right">
+        <div class="col-md-4 col-md-offset-8">
+            @Html.ActionLink("Checkout", "Checkout", "Product", null, new { @class = "btn btn-info" })
+        </div>
+    </div>
+</div>

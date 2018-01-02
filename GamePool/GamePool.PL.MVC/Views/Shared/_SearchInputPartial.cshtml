@@ -1,0 +1,10 @@
+﻿@model SearchResultsVm
+
+@using (Html.BeginForm("Index", "Search", FormMethod.Get, new { @class = "navbar-form navbar-right" }))
+{
+    <input type="hidden" id="Parameters.PageNumber" name="Parameters.PageNumber" value="1" />
+    <div class="form-group">
+        @Html.EditorFor(model => model.Parameters.Name, new { htmlAttributes = new { @class = "form-control search-input", placeholder = "Search..." } })
+        <button type="submit" class="search-button"><span class="glyphicon glyphicon-search"></span></button>
+    </div>
+}
