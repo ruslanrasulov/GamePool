@@ -1,9 +1,9 @@
 ﻿namespace GamePool.PL.MVC.Models.Account
 {
-    public class UserAggregatedVM
+    public class UserAggregatedVm
     {
-        public UserLoginVM LoginVM { get; set; }
+        public UserLoginVm LoginVm { get; set; }
 
-        public UserRegisterVM RegisterVM { get; set; }
+        public UserRegisterVm RegisterVm { get; set; }
     }
 }

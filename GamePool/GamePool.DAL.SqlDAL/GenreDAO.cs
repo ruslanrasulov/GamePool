@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using Dapper;
 using GamePool.Common.Entities;
 using GamePool.DAL.DALContracts;
@@ -8,24 +7,18 @@ using Newtonsoft.Json;
 
 namespace GamePool.DAL.SqlDAL
 {
-    public class GenreDAO : IGenreDAO
+    public class GenreDao : BaseDao, IGenreDao
     {
-        private readonly string connectionString;
-        private readonly DbProviderFactory factory;
-
-        public GenreDAO(string connectionString, string providerName)
+        public GenreDao(string connectionString, string providerName)
+            :base(connectionString, providerName)
         {
-            this.connectionString = connectionString;
-            this.factory = DbProviderFactories.GetFactory(providerName);
         }
 
         public bool Add(Genre genre)
         {
-            using (IDbConnection connection = this.factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Id", genre.Id, direction: ParameterDirection.Output);
                 parameters.Add("@Name", genre.Name);
@@ -33,8 +26,8 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 connection.Execute(
-                    sql: "Genre_Add",
-                    param: parameters,
+                    "Genre_Add",
+                    parameters,
                     commandType: CommandType.StoredProcedure);
 
                 genre.Id = parameters.Get<int>("@Id");
@@ -45,98 +38,86 @@ namespace GamePool.DAL.SqlDAL
 
         public bool AddGenresByGameId(int gameId, IEnumerable<int> ids)
         {
-            using (IDbConnection connection = this.factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
                 var json = JsonConvert.SerializeObject(ids);
 
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "GameGenre_AddGenresByGameId",
-                    param: new { GameId = gameId, Ids = json },
+                    "GameGenre_AddGenresByGameId",
+                    new { GameId = gameId, Ids = json },
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }
 
         public IEnumerable<Genre> GetByGameId(int gameId)
         {
-            using (IDbConnection connection = this.factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
                 connection.Open();
 
                 return connection.Query<Genre>(
-                    sql: "Genre_GetByGameId",
-                    param: new { GameId = gameId },
+                    "Genre_GetByGameId",
+                    new { GameId = gameId },
                     commandType: CommandType.StoredProcedure);
             }
         }
 
         public IEnumerable<Genre> GetByIds (IEnumerable<int> ids)
         {
-            using (IDbConnection connection = this.factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                var json = JsonConvert.SerializeObject(new { ids = ids });
+                var json = JsonConvert.SerializeObject(new { ids });
 
                 connection.Open();
 
                 return connection.Query<Genre>(
-                    sql: "Genre_GetByIds",
-                    param: new { Ids = json },
+                    "Genre_GetByIds",
+                    new { Ids = json },
                     commandType: CommandType.StoredProcedure);
             }
         }
 
         public IEnumerable<Genre> GetByNamePart(string keyWord)
         {
-            using (IDbConnection connection = this.factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
                 connection.Open();
 
                 return connection.Query<Genre>(
-                    sql: "Genre_GetByNamePart",
-                    param: new { KeyWord = keyWord },
+                    "Genre_GetByNamePart",
+                    new { KeyWord = keyWord },
                     commandType: CommandType.StoredProcedure);
             }
         }
 
         public bool RemoveGenresByGameId(int gameId, IEnumerable<int> ids)
         {
-            using (IDbConnection connection = this.factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
                 var json = JsonConvert.SerializeObject(ids);
 
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "GameGenre_RemoveGenresByGameId",
-                    param: new { GameId = gameId, @Ids = json },
+                    "GameGenre_RemoveGenresByGameId",
+                    new { GameId = gameId, @Ids = json },
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }
 
         public bool UpdateGenresByGameId(int gameId, IEnumerable<int> ids)
         {
-            using (IDbConnection connection = this.factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
                 var json = JsonConvert.SerializeObject(ids);
 
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "GameGenre_UpdateGenresByGameId",
-                    param: new { GameId = gameId, @Ids = json },
+                    "GameGenre_UpdateGenresByGameId",
+                    new { GameId = gameId, @Ids = json },
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }

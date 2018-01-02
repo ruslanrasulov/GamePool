@@ -6,20 +6,20 @@ using GamePool.DAL.DALContracts;
 
 namespace GamePool.BLL.Core
 {
-    public class GenreLogic : IGenreLogic
+    public sealed class GenreLogic : IGenreLogic
     {
-        private readonly IGenreDAO genreDAO;
+        private readonly IGenreDao _genreDao;
 
-        public GenreLogic(IGenreDAO genreDAO)
+        public GenreLogic(IGenreDao genreDao)
         {
-            this.genreDAO = genreDAO;
+            _genreDao = genreDao;
         }
 
         public bool Add(Genre genre)
         {
             try
             {
-                return this.genreDAO.Add(genre);
+                return _genreDao.Add(genre);
             }
             catch
             {
@@ -31,7 +31,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.genreDAO.AddGenresByGameId(gameId, ids);
+                return _genreDao.AddGenresByGameId(gameId, ids);
             }
             catch
             {
@@ -43,7 +43,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.genreDAO.GetByGameId(gameId);
+                return _genreDao.GetByGameId(gameId);
             }
             catch
             {
@@ -55,7 +55,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.genreDAO.GetByIds(ids).ToArray();
+                return _genreDao.GetByIds(ids).ToArray();
             }
             catch
             {
@@ -67,7 +67,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.genreDAO.GetByNamePart(keyWord).ToArray();
+                return _genreDao.GetByNamePart(keyWord).ToArray();
             }
             catch
             {
@@ -79,7 +79,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.genreDAO.RemoveGenresByGameId(gameId, ids);
+                return _genreDao.RemoveGenresByGameId(gameId, ids);
             }
             catch
             {
@@ -91,7 +91,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.genreDAO.UpdateGenresByGameId(gameId, ids);
+                return _genreDao.UpdateGenresByGameId(gameId, ids);
             }
             catch
             {

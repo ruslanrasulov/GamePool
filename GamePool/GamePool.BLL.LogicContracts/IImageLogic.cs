@@ -1,9 +1,4 @@
 ﻿using GamePool.Common.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamePool.BLL.LogicContracts
 {
@@ -14,5 +9,7 @@ namespace GamePool.BLL.LogicContracts
         bool Remove(int id);
 
         ImageEntity GetById(int id);
+
+        bool SetAvatarForGame(int gameId, int imageId);
     }
 }

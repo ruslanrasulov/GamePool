@@ -28,4 +28,4 @@
         $elementTwo.fadeIn(fadeTime);
         $elementTwo.removeClass('hidden');
     }
-})()
+})();

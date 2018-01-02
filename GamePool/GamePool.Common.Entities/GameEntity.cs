@@ -2,7 +2,7 @@
 
 namespace GamePool.Common.Entities
 {
-    public sealed class GameEntity
+    public class GameEntity
     {
         public int Id { get; set; }
 

@@ -1,32 +1,26 @@
-﻿using GamePool.DAL.DALContracts;
-using GamePool.Common.Entities;
+﻿using System.Collections.Generic;
 using System.Data;
-using Dapper;
-using System.Data.Common;
 using System.Linq;
+using Dapper;
+using GamePool.DAL.DALContracts;
+using GamePool.Common.Entities;
 using Newtonsoft.Json;
-using System.Collections.Generic;
+using GamePool.DAL.SqlDAL.Helpers;
 
 namespace GamePool.DAL.SqlDAL
 {
-    public sealed class GameDAO : IGameDAO
+    public sealed class GameDao : BaseDao, IGameDao
     {
-        private readonly string connectionString;
-        private readonly DbProviderFactory factory;
-
-        public GameDAO(string connectionString, string providerName)
+        public GameDao(string connectionString, string providerName)
+            :base(connectionString, providerName)
         {
-            this.connectionString = connectionString;
-            this.factory = DbProviderFactories.GetFactory(providerName);
         }
 
         public bool Add(GameEntity gameEntity)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Id", gameEntity.Id, direction: ParameterDirection.Output);
                 parameters.Add("@Name", gameEntity.Name);
@@ -37,8 +31,8 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 connection.Execute(
-                    sql: "Game_Add",
-                    param: parameters,
+                    "Game_Add",
+                    parameters,
                     commandType: CommandType.StoredProcedure);
 
                 gameEntity.Id = parameters.Get<int>("@Id");
@@ -49,48 +43,31 @@ namespace GamePool.DAL.SqlDAL
 
         public PagedData<GameEntity> GetAll(int pageNumber, int pageSize)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@PageNumber", pageNumber);
-                parameters.Add("@PageSize", pageSize);
-
                 connection.Open();
 
                 var multipleQuery = connection.QueryMultiple(
-                    sql: "Game_GetAll",
-                    param: parameters,
+                    "Game_GetAll",
+                    new { PageNumber = pageNumber, PageSize = pageSize},
                     commandType: CommandType.StoredProcedure);
 
                 var games = multipleQuery.Read<GameEntity>().ToList();
                 var count = multipleQuery.ReadFirst<int>();
 
-                return new PagedData<GameEntity>
-                {
-                    Data = games,
-                    Count = count
-                };
+                return DataHelper.GetPagedData(games, count);
             }
         }
 
         public GameEntity GetById(int id)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@Id", id);
-
                 connection.Open();
 
                 var game = connection.QuerySingleOrDefault<dynamic>(
-                    sql: "Game_GetById",
-                    param: parameters,
+                    "Game_GetById",
+                    new { Id = id },
                     commandType: CommandType.StoredProcedure);
 
                 if (game == null)
@@ -98,130 +75,48 @@ namespace GamePool.DAL.SqlDAL
                     return null;
                 }
 
-                return new GameEntity
-                {
-                    Id = game.Id,
-                    AvatarId = game.AvatarId,
-                    Name = game.Name,
-                    Description = game.Description,
-                    ReleaseDate = game.ReleaseDate,
-                    Price = game.Price,
-                    MinimalSystemRequirements = new SystemRequirements
-                    {
-                        Id = game.MinId,
-                        GameId = game.MinGameId,
-                        Processor = game.MinProcessor,
-                        OperationSystem = game.MinOperationSystem,
-                        Storage = game.MinStorage,
-                        Memory = game.MinMemory,
-                        Graphics = game.MinGraphics,
-                        DirectX = game.MinDirectX
-                    },
-                    RecommendedSystemRequirements = new SystemRequirements
-                    {
-                        Id = game.RecId,
-                        GameId = game.RecGameId,
-                        Processor = game.RecProcessor,
-                        OperationSystem = game.RecOperationSystem,
-                        Storage = game.RecStorage,
-                        Memory = game.RecMemory,
-                        Graphics = game.RecGraphics,
-                        DirectX = game.RecDirectX
-                    }
-                };
+                return GetGame(game);
             }
         }
 
         public PagedData<GameEntity> GetByIds(IEnumerable<int> ids)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
                 var json = JsonConvert.SerializeObject(ids);
 
                 connection.Open();
 
                 var query = connection.QueryMultiple(
-                    sql: "Game_GetByIds",
-                    param: new { Ids = json },
+                    "Game_GetByIds",
+                    new { Ids = json },
                     commandType: CommandType.StoredProcedure);
 
-                var games = query.Read<dynamic>();
-
-                List<GameEntity> gameEntities = new List<GameEntity>();
-
-                foreach (var game in games)
-                {
-                    gameEntities.Add(new GameEntity
-                    {
-                        Id = game.Id,
-                        AvatarId = game.AvatarId,
-                        Name = game.Name,
-                        Description = game.Description,
-                        ReleaseDate = game.ReleaseDate,
-                        Price = game.Price,
-                        MinimalSystemRequirements = new SystemRequirements
-                        {
-                            Id = game.MinId,
-                            GameId = game.MinGameId,
-                            Processor = game.MinProcessor,
-                            OperationSystem = game.MinOperationSystem,
-                            Storage = game.MinStorage,
-                            Memory = game.MinMemory,
-                            Graphics = game.MinGraphics,
-                            DirectX = game.MinDirectX
-                        },
-                        RecommendedSystemRequirements = new SystemRequirements
-                        {
-                            Id = game.RecId,
-                            GameId = game.RecGameId,
-                            Processor = game.RecProcessor,
-                            OperationSystem = game.RecOperationSystem,
-                            Storage = game.RecStorage,
-                            Memory = game.RecMemory,
-                            Graphics = game.RecGraphics,
-                            DirectX = game.RecDirectX
-                        }
-                    });
-                }
-
+                var gameEntities = MapGames(query);
                 var count = query.ReadSingle<int>();
 
-                return new PagedData<GameEntity>
-                {
-                    Data = gameEntities,
-                    Count = count
-                };
+                return DataHelper.GetPagedData(gameEntities, count);
             }
         }
 
         public bool Remove(int id)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@Id", id);
-
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "Game_Remove",
-                    param: parameters,
+                    "Game_Remove",
+                    new { Id = id },
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }
 
         public PagedData<GameEntity> Search(SearchParameters searchParameters)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Name", searchParameters.Name);
                 parameters.Add("@PriceFrom", searchParameters.PriceFrom);
@@ -237,28 +132,22 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 var multipleQuery = connection.QueryMultiple(
-                    sql: "Game_Search",
-                    param: parameters,
+                    "Game_Search",
+                    parameters,
                     commandType: CommandType.StoredProcedure);
 
                 var games = multipleQuery.Read<GameEntity>().ToList();
                 var count = multipleQuery.ReadFirst<int>();
 
-                return new PagedData<GameEntity>
-                {
-                    Data = games,
-                    Count = count
-                };
+                return DataHelper.GetPagedData(games, count);
             }
         }
 
         public bool Update(GameEntity gameEntity)
         {
-            using(IDbConnection connection = factory.CreateConnection())
+            using(var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Id", gameEntity.Id);
                 parameters.Add("@Name", gameEntity.Name);
@@ -269,10 +158,59 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "Game_Update",
-                    param: parameters,
+                    "Game_Update",
+                    parameters,
                     commandType: CommandType.StoredProcedure) > 0;
             }
+        }
+
+        private IEnumerable<GameEntity> MapGames(SqlMapper.GridReader query)
+        {
+            var games = query.Read<dynamic>();
+
+            ICollection<GameEntity> gameEntities = new List<GameEntity>();
+
+            foreach (var game in games)
+            {
+                gameEntities.Add(GetGame(game));
+            }
+
+            return gameEntities;
+        }
+
+        private static GameEntity GetGame(dynamic game)
+        {
+            return new GameEntity
+            {
+                Id = game.Id,
+                AvatarId = game.AvatarId,
+                Name = game.Name,
+                Description = game.Description,
+                ReleaseDate = game.ReleaseDate,
+                Price = game.Price,
+                MinimalSystemRequirements = new SystemRequirements
+                {
+                    Id = game.MinId,
+                    GameId = game.MinGameId,
+                    Processor = game.MinProcessor,
+                    OperationSystem = game.MinOperationSystem,
+                    Storage = game.MinStorage,
+                    Memory = game.MinMemory,
+                    Graphics = game.MinGraphics,
+                    DirectX = game.MinDirectX
+                },
+                RecommendedSystemRequirements = new SystemRequirements
+                {
+                    Id = game.RecId,
+                    GameId = game.RecGameId,
+                    Processor = game.RecProcessor,
+                    OperationSystem = game.RecOperationSystem,
+                    Storage = game.RecStorage,
+                    Memory = game.RecMemory,
+                    Graphics = game.RecGraphics,
+                    DirectX = game.RecDirectX
+                }
+            };
         }
     }
 }

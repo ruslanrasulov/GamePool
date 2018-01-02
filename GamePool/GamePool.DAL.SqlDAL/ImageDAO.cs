@@ -1,34 +1,22 @@
-﻿using GamePool.DAL.DALContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GamePool.Common.Entities;
-using System.Data;
+﻿using System.Data;
 using Dapper;
-using System.Data.Common;
+using GamePool.DAL.DALContracts;
+using GamePool.Common.Entities;
 
 namespace GamePool.DAL.SqlDAL
 {
-    public sealed class ImageDAO : IImageDAO
+    public sealed class ImageDao : BaseDao, IImageDao
     {
-        private readonly string connectionString;
-        private readonly DbProviderFactory factory;
-
-        public ImageDAO(string connectionString, string providerName)
+        public ImageDao(string connectionString, string providerName)
+            :base(connectionString, providerName)
         {
-            this.connectionString = connectionString;
-            this.factory = DbProviderFactories.GetFactory(providerName);
         }
 
         public bool Add(ImageEntity imageEntity)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Id", imageEntity.Id, direction: ParameterDirection.Output);
                 parameters.Add("@Path", imageEntity.Path);
@@ -38,8 +26,8 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 connection.Execute(
-                    sql: "Image_Add",
-                    param: parameters,
+                    "Image_Add",
+                    parameters,
                     commandType: CommandType.StoredProcedure);
 
                 imageEntity.Id = parameters.Get<int>("@Id");
@@ -50,38 +38,39 @@ namespace GamePool.DAL.SqlDAL
 
         public ImageEntity GetById(int id)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@Id", id);
-
                 connection.Open();
 
                 return connection.QuerySingleOrDefault<ImageEntity>(
-                    sql: "Image_GetById",
-                    param: parameters,
+                    "Image_GetById",
+                    new { Id = id },
                     commandType: CommandType.StoredProcedure);
             }
         }
 
         public bool Remove(int id)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@Id", id);
-
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "Image_Remove",
-                    param: parameters,
+                    "Image_Remove",
+                    new { Id = id },
+                    commandType: CommandType.StoredProcedure) > 0;
+            }
+        }
+
+        public bool SetAvatarForGame(int gameId, int imageId)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                return connection.Execute(
+                    "Image_SetAvatarForGame",
+                    new { GameId = gameId, ImageId = imageId},
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }

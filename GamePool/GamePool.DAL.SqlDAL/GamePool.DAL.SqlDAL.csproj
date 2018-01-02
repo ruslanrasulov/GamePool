@@ -46,17 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AvatarDAO.cs" />
-    <Compile Include="GameDAO.cs" />
-    <Compile Include="GenreDAO.cs" />
-    <Compile Include="ImageDAO.cs" />
-    <Compile Include="OrderDAO.cs" />
-    <Compile Include="RatingDAO.cs" />
-    <Compile Include="SystemRequirementsDAO.cs" />
+    <Compile Include="BaseDao.cs" />
+    <Compile Include="GameDao.cs" />
+    <Compile Include="GenreDao.cs" />
+    <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="ImageDao.cs" />
+    <Compile Include="OrderDao.cs" />
+    <Compile Include="SystemRequirementsDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenshotDAO.cs" />
-    <Compile Include="UserDAO.cs" />
-    <Compile Include="UserRoleDAO.cs" />
+    <Compile Include="UserDao.cs" />
+    <Compile Include="UserRoleDao.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GamePool.Common.Entities\GamePool.Common.Entities.csproj">

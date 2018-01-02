@@ -1,9 +1,9 @@
-﻿"use strict";
+﻿'use strict';
 
 var CFG = CFG || {};
 
 $(function () {
-    var $pageLinks = $(".page-link"),
+    var $pageLinks = $('.page-link'),
         currUrl;
 
     if (CFG && CFG.action) {
@@ -14,15 +14,15 @@ $(function () {
 
     $pageLinks.each(function () {
         var newUrl,
-            pageNumber = this.getAttribute("data-page");
+            pageNumber = this.getAttribute('data-page');
 
         if (currUrl.search(/PageNumber=\d*/i) === -1) {
-            newUrl = currUrl + "?PageNumber=" + pageNumber;
+            newUrl = currUrl + '?PageNumber=' + pageNumber;
         } else {
-            newUrl = currUrl.replace(/PageNumber=\d*/i, "PageNumber=" + pageNumber);
-            newUrl = newUrl.replace(/&amp;/g, "&");
+            newUrl = currUrl.replace(/PageNumber=\d*/i, 'PageNumber=' + pageNumber);
+            newUrl = newUrl.replace(/&amp;/g, '&');
         }
 
-        this.setAttribute("href", newUrl);
+        this.setAttribute('href', newUrl);
     });
 });

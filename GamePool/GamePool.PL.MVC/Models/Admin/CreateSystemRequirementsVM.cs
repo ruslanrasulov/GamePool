@@ -2,7 +2,7 @@
 
 namespace GamePool.PL.MVC.Models.Admin
 {
-    public class CreateSystemRequirementsVM
+    public class CreateSystemRequirementsVm
     {
         [Required]
         [MaxLength(50)]

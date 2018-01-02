@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using GamePool.BLL.LogicContracts;
@@ -15,41 +13,76 @@ namespace GamePool.PL.MVC.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly int PageSize;
-        private readonly int MaxPageSelectors;
-        private readonly IGameLogic gameLogic;
+        private readonly IGameLogic _gameLogic;
+
+        private readonly int _pageSize;
+        private readonly int _maxPageSelectors;
 
         public SearchController(IGameLogic gameLogic)
         {
-            this.PageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
-            this.MaxPageSelectors = int.Parse(ConfigurationManager.AppSettings["MaxPageSelectors"]);
-            this.gameLogic = gameLogic;
+            _pageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
+            _maxPageSelectors = int.Parse(ConfigurationManager.AppSettings["MaxPageSelectors"]);
+            _gameLogic = gameLogic;
         }
 
-        public ActionResult Index(SearchResultsVM searchResultsVM)
+        [HttpGet]
+        public ActionResult Index(SearchResultsVm searchResultsVm)
         {
-            var parameters = Mapper.Map<SearchParametersVM, SearchParameters>(searchResultsVM.Parameters);
-            parameters.PageSize = this.PageSize;
+            var parameters = Mapper.Map<SearchParametersVm, SearchParameters>(searchResultsVm.Parameters);
+            parameters.PageSize = _pageSize;
 
-            var foundGames = this.gameLogic.Search(parameters);
-            var mappedGames = Mapper.Map<IEnumerable<GameEntity>, IEnumerable<GamePreviewVM>>(foundGames.Data);
+            var foundGames = _gameLogic.Search(parameters);
+            var mappedGames = Mapper.Map<IEnumerable<GameEntity>, IEnumerable<GamePreviewVm>>(foundGames.Data);
 
-            if (searchResultsVM.Items == null)
+            var totalPages = (int)Math.Ceiling((double)foundGames.Count / _pageSize);
+
+            if (searchResultsVm.Items == null)
             {
-                searchResultsVM.Items = new PagedItems<GamePreviewVM>();
-                searchResultsVM.Items.MaxPageSelectors = this.MaxPageSelectors;
+                searchResultsVm.Items = new PagedItems<GamePreviewVm>()
+                {
+                    PageInfo = new PageInfo
+                    {
+                        PageLinksCount = (totalPages < _maxPageSelectors) ? totalPages : _maxPageSelectors,
+                        TotalPages = totalPages
+                    }
+                };
             }
 
-            searchResultsVM.Items.Data = mappedGames;
-            searchResultsVM.Items.TotalPages = (int)Math.Ceiling((double)foundGames.Count / this.PageSize);
-            searchResultsVM.Items.CurrentPage = searchResultsVM.Parameters.PageNumber;
-
-            return View(searchResultsVM);
+            searchResultsVm.Items.Data = mappedGames;
+            searchResultsVm.Items.PageInfo.CurrentPage = searchResultsVm.Parameters.PageNumber;
+            searchResultsVm.Items.PageInfo.StartIndex = GetStartIndex(searchResultsVm.Parameters.PageNumber, totalPages);
+            
+            return View(searchResultsVm);
         }
 
+        [HttpGet]
+        [ChildActionOnly]
         public ActionResult SearchInput()
         {
-            return PartialView("~/Views/Shared/_SearchInputPartial.cshtml", new SearchResultsVM { Parameters = new SearchParametersVM() });
+            return PartialView("~/Views/Shared/_SearchInputPartial.cshtml", new SearchResultsVm { Parameters = new SearchParametersVm() });
+        }
+
+        private int GetStartIndex(int currentPage, int totalPages)
+        {
+            if (totalPages <= _maxPageSelectors)
+            {
+                return 1;
+            }
+
+            var rightDifference = totalPages - currentPage;
+            var middle = _maxPageSelectors / 2;
+
+            if (currentPage < middle)
+            {
+                return 1;
+            }
+
+            if (rightDifference < middle)
+            {
+                return totalPages - _maxPageSelectors + 1;
+            }
+
+            return currentPage - middle;
         }
     }
 }

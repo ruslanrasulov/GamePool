@@ -1,6 +1,6 @@
 ﻿namespace GamePool.PL.MVC.Models.Product
 {
-    public class OrderedGameVM
+    public class OrderedGameVm
     {
         public int Id { get; set; }
 

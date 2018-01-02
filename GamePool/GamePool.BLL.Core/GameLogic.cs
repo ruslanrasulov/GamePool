@@ -1,27 +1,26 @@
-﻿using GamePool.BLL.LogicContracts;
-using System;
+﻿using System.Collections.Generic;
+using GamePool.BLL.LogicContracts;
 using GamePool.Common.Entities;
 using GamePool.DAL.DALContracts;
-using System.Collections.Generic;
 
 namespace GamePool.BLL.Core
 {
     public sealed class GameLogic : IGameLogic
     {
-        private IGameDAO gameDAO;
+        private readonly IGameDao _gameDao;
 
-        public GameLogic(IGameDAO gameDAO)
+        public GameLogic(IGameDao gameDao)
         {
-            this.gameDAO = gameDAO;
+            _gameDao = gameDao;
         }
 
         public bool Add(GameEntity gameEntity)
         {
             try
             {
-                return this.gameDAO.Add(gameEntity);
+                return _gameDao.Add(gameEntity);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -31,9 +30,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.gameDAO.GetAll(pageNumber, pageSize);
+                return _gameDao.GetAll(pageNumber, pageSize);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -43,9 +42,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.gameDAO.GetById(id);
+                return _gameDao.GetById(id);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -55,9 +54,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.gameDAO.GetByIds(ids);
+                return _gameDao.GetByIds(ids);
             }
-            catch (Exception)
+            catch
             { 
                 throw;
             }
@@ -67,9 +66,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.gameDAO.Remove(id);
+                return _gameDao.Remove(id);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -79,7 +78,7 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.gameDAO.Search(searchParameters);
+                return _gameDao.Search(searchParameters);
             }
             catch
             {
@@ -91,9 +90,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.gameDAO.Update(gameEntity);
+                return _gameDao.Update(gameEntity);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }

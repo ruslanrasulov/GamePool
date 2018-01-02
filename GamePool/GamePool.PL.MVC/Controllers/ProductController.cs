@@ -1,54 +1,60 @@
-﻿using GamePool.BLL.LogicContracts;
-using System.Web.Mvc;
-using System.Net;
-using System.Configuration;
-using AutoMapper;
-using GamePool.Common.Entities;
-using GamePool.PL.MVC.Models.Shared;
-using System;
-using GamePool.PL.MVC.Models.Product;
+﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Web.Mvc;
+using AutoMapper;
+using GamePool.BLL.LogicContracts;
+using GamePool.Common.Entities;
+using GamePool.PL.MVC.Models.Shared;
+using GamePool.PL.MVC.Models.Product;
 
 namespace GamePool.PL.MVC.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly int PageSize;
-        private readonly int MaxPageSelectors;
-        private readonly IGameLogic gameLogic;
-        private readonly IGenreLogic genreLogic;
-        private readonly IOrderLogic orderLogic;
+        private readonly IGameLogic _gameLogic;
+        private readonly IGenreLogic _genreLogic;
+        private readonly IOrderLogic _orderLogic;
 
-        private IEnumerable<OrderedGameVM> OrderList
-        {
-            get => Session["OrderedGames"] as IEnumerable<OrderedGameVM>;
-        }
-
-
+        private readonly int _pageSize;
+        private readonly int _maxPageSelectors;
+        private readonly string _cartKey = "OrderedGames";
+        
+        private IEnumerable<OrderedGameVm> OrderList 
+            => Session[_cartKey] as IEnumerable<OrderedGameVm>;
+        
         public ProductController(IGameLogic gameLogic, IGenreLogic genreLogic, IOrderLogic orderLogic)
         {
-            this.PageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
-            this.MaxPageSelectors = int.Parse(ConfigurationManager.AppSettings["MaxPageSelectors"]);
-            this.gameLogic = gameLogic;
-            this.genreLogic = genreLogic;
-            this.orderLogic = orderLogic;
+            _pageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
+            _maxPageSelectors = int.Parse(ConfigurationManager.AppSettings["MaxPageSelectors"]);
+
+            _gameLogic = gameLogic;
+            _genreLogic = genreLogic;
+            _orderLogic = orderLogic;
         }
 
         [HttpGet]
         public ActionResult Index(int? pageNumber = 1)
         {
-            var games = this.gameLogic.GetAll(pageNumber.Value, this.PageSize);
-            var gamePreviews = Mapper.Map<IEnumerable<GameEntity>, IEnumerable<GamePreviewVM>>(games.Data);
+            var games = _gameLogic.GetAll(pageNumber.Value, _pageSize);
+            var gamePreviews = Mapper.Map<IEnumerable<GameEntity>, IEnumerable<GamePreviewVm>>(games.Data);
 
-            return View(new PagedItems<GamePreviewVM>
+            var totalPages = (int)Math.Ceiling((double)games.Count / _pageSize);
+
+            return View(new PagedItems<GamePreviewVm>
             {
                 Data = gamePreviews,
-                CurrentPage = pageNumber.Value,
-                MaxPageSelectors = this.MaxPageSelectors,
-                TotalPages = (int)Math.Ceiling((double)games.Count / this.PageSize)
+                PageInfo = new PageInfo
+                {
+                    CurrentPage = pageNumber.Value,
+                    StartIndex = GetStartIndex(pageNumber.Value, totalPages),
+                    PageLinksCount = (totalPages < _maxPageSelectors) ? totalPages : _maxPageSelectors,
+                    TotalPages = totalPages
+                }
             });
         }
 
@@ -56,14 +62,12 @@ namespace GamePool.PL.MVC.Controllers
         [Authorize]
         public ActionResult Cart()
         {
-            var orderedGames = Session["OrderedGames"] as IEnumerable<OrderedGameVM>;
-
-            if (orderedGames == null)
+            if (OrderList == null)
             {
-                return View(Enumerable.Empty<OrderedGameVM>());
+                return View(Enumerable.Empty<OrderedGameVm>());
             }
 
-            return View(orderedGames);
+            return View(OrderList);
         }
 
         [HttpGet]
@@ -74,17 +78,19 @@ namespace GamePool.PL.MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var gameEntity = this.gameLogic.GetById(id.Value);
+            var gameEntity = _gameLogic.GetById(id.Value);
 
             if (gameEntity == null)
             {
                 return HttpNotFound();
             }
 
-            var game = Mapper.Map<GameEntity, DisplayGameVM>(gameEntity);
-            var genres = this.genreLogic.GetByGameId(game.Id);
+            var game = Mapper.Map<GameEntity, DisplayGameVm>(gameEntity);
+            var genres = _genreLogic.GetByGameId(game.Id);
 
-            game.Genres = genres != null ? string.Join(", ", genres.Select(g => g.Name)) : null;
+            game.Genres = genres != null ?
+                string.Join(", ", genres.Select(g => g.Name)) 
+                : null;
 
             return View(game);
         }
@@ -99,9 +105,9 @@ namespace GamePool.PL.MVC.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Checkout(OrderVM orderVM)
+        public ActionResult Checkout(OrderVm orderVm)
         {
-            if (orderVM == null)
+            if (orderVm == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -112,18 +118,18 @@ namespace GamePool.PL.MVC.Controllers
                 {
                     foreach (var order in OrderList)
                     {
-                        this.orderLogic.Add(new Order
+                        _orderLogic.Add(new Order
                         {
-                            Name = orderVM.Name,
-                            Surname = orderVM.Surname,
-                            Email = orderVM.Email,
-                            PhoneNumber = orderVM.PhoneNumber,
+                            Name = orderVm.Name,
+                            Surname = orderVm.Surname,
+                            Email = orderVm.Email,
+                            PhoneNumber = orderVm.PhoneNumber,
                             Quantity = order.Quantity,
                             GameId = order.Id
                         });
                     }
 
-                    SendEmail(OrderList, orderVM);
+                    SendEmail(OrderList, orderVm);
 
 
                     Session["OrderedGames"] = null;                    
@@ -132,39 +138,45 @@ namespace GamePool.PL.MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(orderVM);
+            return View(orderVm);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public ActionResult Remove(int id)
         {
-            if (this.gameLogic.Remove(id))
-            {
-                return RedirectToAction("Index");
-            }
-
-            return RedirectToAction("Details", new { id = id });
+            return _gameLogic.Remove(id) ? RedirectToAction("Index") : RedirectToAction("Details", new { id });
         }
 
-        private void SendEmail(IEnumerable<OrderedGameVM> orderedGames, OrderVM checkoutVM)
+        private void SendEmail(IEnumerable<OrderedGameVm> orderedGames, OrderVm checkoutVm)
         {
-            const string fromEmail = "qwertysakkal@gmail.com";
-            const string fromPassword = "ruslan1998";
+            var fromEmail = ConfigurationManager.AppSettings["EmailLogin"];
+            var fromPassword = ConfigurationManager.AppSettings["EmailPassword"];
 
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
                 Credentials = new NetworkCredential(fromEmail, fromPassword),
                 Timeout = 10000,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 EnableSsl = true,
+            };        
+
+            var mail = new MailMessage(fromEmail, checkoutVm.Email)
+            {
+                Subject = "Thanks for buying a games",
+                Body = BuildBody(orderedGames, checkoutVm)
             };
 
-            StringBuilder msgBody = new StringBuilder();
+            smtpClient.Send(mail);
+        }
 
-            msgBody.AppendFormat("Hello, {0} {1}.\nThanks for buying this games:\n", checkoutVM.Name, checkoutVM.Surname);
+        private string BuildBody(IEnumerable<OrderedGameVm> orderedGames, OrderVm checkoutVm)
+        {
+            var msgBody = new StringBuilder();
+            msgBody.AppendFormat("Hello, {0} {1}.\nThanks for buying this games:\n", checkoutVm.Name, checkoutVm.Surname);
 
-            int gameCount = 1;
+            var gameCount = 1;
+
             foreach (var game in orderedGames)
             {
                 msgBody.AppendFormat("\n\t{0}) Name: {1}, Price: {2}$, Quantity: {3}\n", gameCount++, game.Name, Math.Round(game.Price), game.Quantity);
@@ -174,13 +186,30 @@ namespace GamePool.PL.MVC.Controllers
                 "\nTotal price: {0}$",
                 Math.Round(orderedGames.Select(g => g.Quantity * g.Price).Aggregate((a, b) => a + b)));
 
-            MailMessage mail = new MailMessage(fromEmail, checkoutVM.Email)
-            {
-                Subject = "Thanks for buying a games",
-                Body = msgBody.ToString()
-            };
+            return msgBody.ToString();
+        }
 
-            smtpClient.Send(mail);
+        private int GetStartIndex(int currentPage, int totalPages)
+        {
+            if (totalPages <= _maxPageSelectors)
+            {
+                return 1;
+            }
+
+            var rightDifference = totalPages - currentPage;
+            var middle = _maxPageSelectors / 2;
+
+            if (currentPage < middle)
+            {
+                return 1;
+            }
+
+            if (rightDifference < middle)
+            {
+                return totalPages - _maxPageSelectors + 1;
+            }
+
+            return currentPage - middle;
         }
     }
 }

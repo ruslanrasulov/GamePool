@@ -3,85 +3,85 @@ using System.Web.Mvc;
 using System.Web.Security;
 using AutoMapper;
 using GamePool.BLL.LogicContracts;
+using GamePool.Common.Entities;
 using GamePool.PL.MVC.Models.Account;
-using UserEntity = GamePool.Common.Entities.User;
 
 namespace GamePool.PL.MVC.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserLogic userLogic;
+        private readonly IUserLogic _userLogic;
 
         public AccountController(IUserLogic userLogic)
         {
-            this.userLogic = userLogic;
+            _userLogic = userLogic;
         }
 
         [HttpGet]
         public ActionResult SignIn()
         {
-            return this.View(new UserAggregatedVM
+            return View(new UserAggregatedVm
             {
-                LoginVM = new UserLoginVM(),
-                RegisterVM = new UserRegisterVM()
+                LoginVm = new UserLoginVm(),
+                RegisterVm = new UserRegisterVm()
             });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(UserLoginVM userLoginVM)
+        public ActionResult SignIn(UserLoginVm userLoginVm)
         {
-            if (userLoginVM == null)
+            if (userLoginVm == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                UserEntity user = Mapper.Map<UserLoginVM, UserEntity>(userLoginVM);
+                UserEntity user = Mapper.Map<UserLoginVm, UserEntity>(userLoginVm);
 
-                if (this.userLogic.IsExists(user))
+                if (_userLogic.IsExists(user))
                 {
-                    FormsAuthentication.SetAuthCookie(user.Name, createPersistentCookie: userLoginVM.RememberMe);
+                    FormsAuthentication.SetAuthCookie(user.Name, userLoginVm.RememberMe);
 
-                    return this.RedirectToAction("Index", "Product");
+                    return RedirectToAction("Index", "Product");
                 }
                 else
                 {
-                    userLoginVM.IsExist = false;
+                    userLoginVm.IsExist = false;
                 }
             }
 
-            return this.View(new UserAggregatedVM
+            return View(new UserAggregatedVm
             {
-                LoginVM = userLoginVM
+                LoginVm = userLoginVm
             });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignUp(UserRegisterVM userRegisterVM)
+        public ActionResult SignUp(UserRegisterVm userRegisterVm)
         {
-            if (userRegisterVM == null)
+            if (userRegisterVm == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                UserEntity user = Mapper.Map<UserRegisterVM, UserEntity>(userRegisterVM);
+                UserEntity user = Mapper.Map<UserRegisterVm, UserEntity>(userRegisterVm);
 
-                if (this.userLogic.Add(user))
+                if (_userLogic.Add(user))
                 {
-                    FormsAuthentication.SetAuthCookie(user.Name, createPersistentCookie: true);
+                    FormsAuthentication.SetAuthCookie(user.Name, true);
 
-                    return this.RedirectToAction("Index", "Product");
+                    return RedirectToAction("Index", "Product");
                 }
             }
 
-            return this.View("SignIn", new UserAggregatedVM
+            return View("SignIn", new UserAggregatedVm
             {
-                RegisterVM = userRegisterVM
+                RegisterVm = userRegisterVm
             });
         }
 
@@ -90,36 +90,36 @@ namespace GamePool.PL.MVC.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return this.RedirectToAction("Index", "Product");
+            return RedirectToAction("Index", "Product");
         }
 
         [HttpGet]
         public ActionResult IsUsernameNotExist(string username)
         {
-            bool isExist = this.userLogic.IsLoginExists(username);
+            bool isExist = _userLogic.IsLoginExists(username);
 
-            return this.Json(!isExist, JsonRequestBehavior.AllowGet);
+            return Json(!isExist, JsonRequestBehavior.AllowGet);
         }
 
         [ChildActionOnly]
-        public ActionResult SignInForm(UserLoginVM userLoginVM)
+        public ActionResult SignInForm(UserLoginVm userLoginVm)
         {
-            this.ModelState.Clear();
+            ModelState.Clear();
 
-            if (userLoginVM.IsExist.HasValue && !userLoginVM.IsExist.Value)
+            if (userLoginVm.IsExist.HasValue && !userLoginVm.IsExist.Value)
             {
-                this.ModelState.AddModelError(string.Empty, "Incorrect login or password");
+                ModelState.AddModelError(string.Empty, "Incorrect login or password");
             }
 
-            return this.View("_SignInPartial", userLoginVM);
+            return View("_SignInPartial", userLoginVm);
         }
 
         [ChildActionOnly]
-        public ActionResult SignUpForm(UserRegisterVM userRegisterVM)
+        public ActionResult SignUpForm(UserRegisterVm userRegisterVm)
         {
-            this.ModelState.Clear();
+            ModelState.Clear();
 
-            return this.View("_SignUpPartial", userRegisterVM);
+            return View("_SignUpPartial", userRegisterVm);
         }
     }
 }

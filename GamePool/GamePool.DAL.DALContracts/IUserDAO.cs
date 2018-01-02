@@ -2,9 +2,9 @@
 
 namespace GamePool.DAL.DALContracts
 {
-    public interface IUserDAO
+    public interface IUserDao
     {
-        bool Add(User user);
+        bool Add(UserEntity user);
 
         bool RemoveById(int id);
 
@@ -12,8 +12,8 @@ namespace GamePool.DAL.DALContracts
 
         bool IsLoginExists(string name);
 
-        bool IsExists(User user);
+        bool IsExists(UserEntity user);
 
-        PagedData<User> GetAll(int pageNumber, int pageSize);
+        PagedData<UserEntity> GetAll(int pageNumber, int pageSize);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace GamePool.PL.MVC.Models.Product
 {
-    public class OrderVM
+    public class OrderVm
     {
         [Required]
         [MaxLength(50)]

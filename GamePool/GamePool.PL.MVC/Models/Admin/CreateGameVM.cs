@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace GamePool.PL.MVC.Models.Admin
 {
-    public class CreateGameVM : IValidatableObject
+    public class CreateGameVm : IValidatableObject
     {
         public int? AvatarId { get; set; }
 
@@ -34,10 +34,10 @@ namespace GamePool.PL.MVC.Models.Admin
         public IEnumerable<int> GenreIds { get; set; }
 
         [Required]
-        public CreateSystemRequirementsVM MinimalSystemRequirements { get; set; }
+        public CreateSystemRequirementsVm MinimalSystemRequirements { get; set; }
 
         [Required]
-        public CreateSystemRequirementsVM RecommendedSystemRequirements { get; set; }
+        public CreateSystemRequirementsVm RecommendedSystemRequirements { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -46,7 +46,7 @@ namespace GamePool.PL.MVC.Models.Admin
                 yield return new ValidationResult("Date must me less than current date");
             }
 
-            if (GenreIds.Count() == 0)
+            if (!GenreIds.Any())
             {
                 yield return new ValidationResult("Game must have at least one genre");
             }

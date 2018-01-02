@@ -1,59 +1,54 @@
-﻿using GamePool.BLL.LogicContracts;
-using GamePool.DAL.DALContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GamePool.BLL.Core.Helpers;
+using GamePool.BLL.LogicContracts;
 using GamePool.Common.Entities;
-using GamePool.BLL.Core.Helpers;
+using GamePool.DAL.DALContracts;
 
 namespace GamePool.BLL.Core
 {
     public sealed class UserLogic : IUserLogic
     {
-        private IUserDAO userDAO;
-
-        public UserLogic(IUserDAO userDAO)
+        private readonly IUserDao _userDao;
+        
+        public UserLogic(IUserDao userDao)
         {
-            this.userDAO = userDAO;
+            _userDao = userDao;
         }
 
-        public bool Add(User user)
+        public bool Add(UserEntity user)
         {
             try
             {
-                user.Password = user.Password.ComputeSHA512Hash();
+                user.Password = user.Password.ComputeSha512Hash();
 
-                return this.userDAO.Add(user);
+                return _userDao.Add(user);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
         }
 
-        public PagedData<User> GetAll(int pageNumber, int pageSize)
+        public PagedData<UserEntity> GetAll(int pageNumber, int pageSize)
         {
             try
             {
-                return this.userDAO.GetAll(pageNumber, pageSize);
+                return _userDao.GetAll(pageNumber, pageSize);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
         }
 
-        public bool IsExists(User user)
+        public bool IsExists(UserEntity user)
         {
             try
             {
-                user.Password = user.Password.ComputeSHA512Hash();
+                user.Password = user.Password.ComputeSha512Hash();
 
-                return this.userDAO.IsExists(user);
+                return _userDao.IsExists(user);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -63,9 +58,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.userDAO.IsLoginExists(name);
+                return _userDao.IsLoginExists(name);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -75,9 +70,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.userDAO.RemoveById(id);
+                return _userDao.RemoveById(id);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -87,9 +82,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.userDAO.RemoveByName(name);
+                return _userDao.RemoveByName(name);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }

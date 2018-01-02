@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamePool.PL.MVC.Models.Search
 {
-    public class SearchParametersVM
+    public class SearchParametersVm
     {
         [Display(Name = "Name:")]
         public string Name { get; set; }

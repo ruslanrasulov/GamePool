@@ -4,7 +4,6 @@ using GamePool.PL.MVC.Models.Account;
 using GamePool.PL.MVC.Models.Admin;
 using GamePool.PL.MVC.Models.Product;
 using GamePool.PL.MVC.Models.Search;
-using UserEntity = GamePool.Common.Entities.User;
 
 namespace GamePool.PL.MVC.App_Start
 {
@@ -14,71 +13,71 @@ namespace GamePool.PL.MVC.App_Start
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<UserLoginVM, UserEntity>()
+                cfg.CreateMap<UserLoginVm, UserEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Name, opt => opt.ResolveUsing(src => src.Username));
 
-                cfg.CreateMap<UserRegisterVM, UserEntity>()
+                cfg.CreateMap<UserRegisterVm, UserEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Name, opt => opt.ResolveUsing(src => src.Username));
 
-                cfg.CreateMap<CreateGameVM, GameEntity>()
+                cfg.CreateMap<CreateGameVm, GameEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.AvatarId, opt => opt.Ignore())
                     .ForMember(dest => dest.MinimalSystemRequirements, opt => opt.Ignore())
                     .ForMember(dest => dest.RecommendedSystemRequirements, opt => opt.Ignore())
                     .ForMember(dest => dest.Rating, opt => opt.Ignore());
 
-                cfg.CreateMap<CreateSystemRequirementsVM, SystemRequirements>()
+                cfg.CreateMap<CreateSystemRequirementsVm, SystemRequirements>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.GameId, opt => opt.Ignore());
 
-                cfg.CreateMap<Genre, Select2GenreVM>()
+                cfg.CreateMap<Genre, Select2GenreVm>()
                     .ForMember(dest => dest.Text, opt => opt.ResolveUsing(src => src.Name));
 
-                cfg.CreateMap<GameEntity, GamePreviewVM>();
+                cfg.CreateMap<GameEntity, GamePreviewVm>();
 
-                cfg.CreateMap<SearchParametersVM, SearchParameters>()
+                cfg.CreateMap<SearchParametersVm, SearchParameters>()
                     .ForMember(dest => dest.PageSize, opt => opt.Ignore());
 
-                cfg.CreateMap<SystemRequirements, DisplaySystemRequirementsVM>();
+                cfg.CreateMap<SystemRequirements, DisplaySystemRequirementsVm>();
 
-                cfg.CreateMap<GameEntity, DisplayGameVM>()
+                cfg.CreateMap<GameEntity, DisplayGameVm>()
                     .ForMember(dest => dest.Genres, opt => opt.Ignore())
                     .AfterMap((src, dest, context) =>
                     {
-                        dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVM>(src.MinimalSystemRequirements);
-                        dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVM>(src.RecommendedSystemRequirements);
+                        dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVm>(src.MinimalSystemRequirements);
+                        dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, DisplaySystemRequirementsVm>(src.RecommendedSystemRequirements);
                     });
 
-                cfg.CreateMap<EditSystemRequirementsVM, SystemRequirements>()
+                cfg.CreateMap<EditSystemRequirementsVm, SystemRequirements>()
                     .ForMember(dest => dest.GameId, opt => opt.Ignore());
 
-                cfg.CreateMap<EditGameVM, GameEntity>()
+                cfg.CreateMap<EditGameVm, GameEntity>()
                     .ForMember(dest => dest.AvatarId, opt => opt.Ignore())
                     .ForMember(dest => dest.Rating, opt => opt.Ignore())
                     .AfterMap((src, dest, context) =>
                      {
-                         dest.MinimalSystemRequirements = context.Mapper.Map<EditSystemRequirementsVM, SystemRequirements>(src.MinimalSystemRequirements);
-                         dest.RecommendedSystemRequirements = context.Mapper.Map<EditSystemRequirementsVM, SystemRequirements>(src.RecommendedSystemRequirements);
+                         dest.MinimalSystemRequirements = context.Mapper.Map<EditSystemRequirementsVm, SystemRequirements>(src.MinimalSystemRequirements);
+                         dest.RecommendedSystemRequirements = context.Mapper.Map<EditSystemRequirementsVm, SystemRequirements>(src.RecommendedSystemRequirements);
                      });
 
-                cfg.CreateMap<SystemRequirements, EditSystemRequirementsVM>();
+                cfg.CreateMap<SystemRequirements, EditSystemRequirementsVm>();
 
-                cfg.CreateMap<GameEntity, EditGameVM>()
+                cfg.CreateMap<GameEntity, EditGameVm>()
                     .ForMember(dest => dest.GenreIds, opt => opt.Ignore())
                     .AfterMap((src, dest, context) =>
                     {
-                        dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVM>(src.MinimalSystemRequirements);
-                        dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVM>(src.RecommendedSystemRequirements);
+                        dest.MinimalSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVm>(src.MinimalSystemRequirements);
+                        dest.RecommendedSystemRequirements = context.Mapper.Map<SystemRequirements, EditSystemRequirementsVm>(src.RecommendedSystemRequirements);
                     });
 
-                cfg.CreateMap<GameEntity, OrderedGameVM>()
+                cfg.CreateMap<GameEntity, OrderedGameVm>()
                     .ForMember(dest => dest.Quantity, opt => opt.Ignore());
 
-                cfg.CreateMap<Order, OrderListItemVM>();
+                cfg.CreateMap<Order, OrderListItemVm>();
 
-                cfg.CreateMap<UserEntity, UserListItemVM>()
+                cfg.CreateMap<UserEntity, UserListItemVm>()
                     .ForMember(dest => dest.CurrentRoles, opt => opt.Ignore())
                     .ForMember(dest => dest.AvailableRoles, opt => opt.Ignore());
             });

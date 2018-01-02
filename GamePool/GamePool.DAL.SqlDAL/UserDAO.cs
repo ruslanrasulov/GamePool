@@ -1,34 +1,23 @@
-﻿using GamePool.DAL.DALContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GamePool.Common.Entities;
-using System.Data;
+﻿using System.Data;
 using Dapper;
-using System.Data.Common;
+using GamePool.Common.Entities;
+using GamePool.DAL.DALContracts;
+using GamePool.DAL.SqlDAL.Helpers;
 
 namespace GamePool.DAL.SqlDAL
 {
-    public sealed class UserDAO : IUserDAO
+    public sealed class UserDao : BaseDao, IUserDao
     {
-        private readonly string connectionString;
-        private readonly DbProviderFactory factory;
-
-        public UserDAO(string connectionString, string providerName)
+        public UserDao(string connectionString, string providerName)
+            :base(connectionString, providerName)
         {
-            this.connectionString = connectionString;
-            this.factory = DbProviderFactories.GetFactory(providerName);
         }
 
-        public bool Add(User user)
+        public bool Add(UserEntity user)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Id", user.Id, direction: ParameterDirection.Output);
                 parameters.Add("@Name", user.Name);
@@ -37,102 +26,78 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "User_Add",
-                    param: parameters,
+                    "User_Add",
+                    parameters,
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }
 
-        public PagedData<User> GetAll(int pageNumber, int pageSize)
+        public PagedData<UserEntity> GetAll(int pageNumber, int pageSize)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@PageNumber", pageNumber);
-                parameters.Add("@PageSize", pageSize);
-
                 connection.Open();
 
                 var query = connection.QueryMultiple(
-                    sql: "User_GetAll",
-                    param: parameters,
+                    "User_GetAll",
+                    new { PageNumber = pageNumber, PageSize = pageSize},
                     commandType: CommandType.StoredProcedure);
 
-                return new PagedData<User>
-                {
-                    Data = query.Read<User>(),
-                    Count = query.ReadFirst<int>()
-                };
+                var users = query.Read<UserEntity>();
+                var count = query.ReadFirst<int>();
+
+                return DataHelper.GetPagedData(users, count);
             }
         }
 
-        public bool IsExists(User user)
+        public bool IsExists(UserEntity user)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@Name", user.Name);
-                parameters.Add("@Password", user.Password);
-
                 connection.Open();
 
                 return connection.ExecuteScalar(
-                    sql: "User_IsExist",
-                    param: parameters,
+                    "User_IsExist",
+                    new { user.Name, user.Password},
                     commandType: CommandType.StoredProcedure) != null;
             }
         }
 
         public bool IsLoginExists(string name)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@Name", name);
-
                 connection.Open();
 
                 return connection.ExecuteScalar(
-                    sql: "User_IsLoginExists",
-                    param: parameters,
+                    "User_IsLoginExists",
+                    new { Name = name},
                     commandType: CommandType.StoredProcedure) != null;
             }
         }
 
         public bool RemoveById(int id)
         {
-            return this.Remove("@Id", id);
+            return Remove("@Id", id);
         }
 
         public bool RemoveByName(string name)
         {
-            return this.Remove("@Name", name);
+            return Remove("@Name", name);
         }
 
         private bool Remove(string parameterName, object value)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
+                var parameters = new DynamicParameters();
                 parameters.Add(parameterName, value);
 
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "User_Remove",
-                    param: parameters,
+                    "User_Remove",
+                    parameters,
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }

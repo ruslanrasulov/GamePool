@@ -1,9 +1,5 @@
-﻿using GamePool.Common.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using GamePool.Common.Entities;
 
 namespace GamePool.BLL.LogicContracts
 {

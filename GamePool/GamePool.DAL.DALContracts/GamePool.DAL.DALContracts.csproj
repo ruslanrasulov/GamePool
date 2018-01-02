@@ -40,16 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAvatarDAO.cs" />
-    <Compile Include="IGameDAO.cs" />
-    <Compile Include="IGenreDAO.cs" />
-    <Compile Include="IImageDAO.cs" />
-    <Compile Include="IOrderDAO.cs" />
-    <Compile Include="IRatingDAO.cs" />
-    <Compile Include="IScreenshotDAO.cs" />
-    <Compile Include="ISystemRequirementsDAO.cs" />
-    <Compile Include="IUserDAO.cs" />
-    <Compile Include="IUserRoleDAO.cs" />
+    <Compile Include="IGameDao.cs" />
+    <Compile Include="IGenreDao.cs" />
+    <Compile Include="IImageDao.cs" />
+    <Compile Include="IOrderDao.cs" />
+    <Compile Include="ISystemRequirementsDao.cs" />
+    <Compile Include="IUserDao.cs" />
+    <Compile Include="IUserRoleDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

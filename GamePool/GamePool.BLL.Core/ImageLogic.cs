@@ -1,9 +1,4 @@
 ﻿using GamePool.BLL.LogicContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GamePool.Common.Entities;
 using GamePool.DAL.DALContracts;
 
@@ -11,20 +6,20 @@ namespace GamePool.BLL.Core
 {
     public sealed class ImageLogic : IImageLogic
     {
-        private IImageDAO imageDAO;
+        private readonly IImageDao _imageDao;
 
-        public ImageLogic(IImageDAO imageDAO)
+        public ImageLogic(IImageDao imageDao)
         {
-            this.imageDAO = imageDAO;
+            _imageDao = imageDao;
         }
 
         public bool Add(ImageEntity imageEntity)
         {
             try
             {
-                return this.imageDAO.Add(imageEntity);
+                return _imageDao.Add(imageEntity);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -34,9 +29,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.imageDAO.GetById(id);
+                return _imageDao.GetById(id);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -46,9 +41,21 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.imageDAO.Remove(id);
+                return _imageDao.Remove(id);
             }
-            catch (Exception)
+            catch
+            {
+                throw;
+            }
+        }
+
+        public bool SetAvatarForGame(int gameId, int imageId)
+        {
+            try
+            {
+                return _imageDao.SetAvatarForGame(gameId, imageId);
+            }
+            catch
             {
                 throw;
             }

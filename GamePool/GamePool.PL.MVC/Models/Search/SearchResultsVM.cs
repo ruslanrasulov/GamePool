@@ -3,10 +3,10 @@ using GamePool.PL.MVC.Models.Shared;
 
 namespace GamePool.PL.MVC.Models.Search
 {
-    public class SearchResultsVM
+    public class SearchResultsVm
     {
-        public SearchParametersVM Parameters { get; set; }
+        public SearchParametersVm Parameters { get; set; }
 
-        public PagedItems<GamePreviewVM> Items { get; set; }
+        public PagedItems<GamePreviewVm> Items { get; set; }
     }
 }

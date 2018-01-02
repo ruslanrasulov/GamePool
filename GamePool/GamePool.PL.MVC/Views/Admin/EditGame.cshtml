@@ -1,7 +1,7 @@
-﻿@model EditGameVM
+﻿@model EditGameVm
 
 @{
-    ViewBag.Title = "EditGame";
+    ViewBag.Title = "Edit game";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -37,7 +37,7 @@
 }
 else
 {
-<img src="http://placehold.it/600x400" , alt="AlternateText" class="game-img-preview img-thumbnail" />
+<img src="http://placehold.it/600x400" , alt="AlternateText" class="game-img-preview img-thumbnail" id="preview-image"/>
 }
 
 @using (Html.BeginForm("EditGame", "Admin", FormMethod.Post, new { @class = "form-horizontal game-form", enctype = "multipart/form-data" }))
@@ -76,7 +76,14 @@ else
 
     <div class="form-group">
         @Html.LabelFor(model => model.ReleaseDate)
-        @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "form-control" } })
+        @if (Model.ReleaseDate != null)
+        {
+            <input type="date" name="ReleaseDate" id="ReleaseDate" value="@Model.ReleaseDate.Value.ToString("yyyy-MM-dd")" class="form-control"/>
+        }
+        else
+        {
+            @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "form-control" } })
+        }
         @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
     </div>
 

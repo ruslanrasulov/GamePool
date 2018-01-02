@@ -1,9 +1,4 @@
 ﻿using GamePool.BLL.LogicContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GamePool.Common.Entities;
 using GamePool.DAL.DALContracts;
 
@@ -11,20 +6,20 @@ namespace GamePool.BLL.Core
 {
     public sealed class SystemRequirementsLogic : ISystemRequirementsLogic
     {
-        private ISystemRequirementsDAO systemRequirementsDAO;
+        private readonly ISystemRequirementsDao _systemRequirementsDao;
 
-        public SystemRequirementsLogic(ISystemRequirementsDAO systemRequirementsDAO)
+        public SystemRequirementsLogic(ISystemRequirementsDao systemRequirementsDao)
         {
-            this.systemRequirementsDAO = systemRequirementsDAO;
+            _systemRequirementsDao = systemRequirementsDao;
         }
 
         public bool Add(SystemRequirements systemRequirements)
         {
             try
             {
-                return this.systemRequirementsDAO.Add(systemRequirements);
+                return _systemRequirementsDao.Add(systemRequirements);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -34,9 +29,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.systemRequirementsDAO.GetById(id);
+                return _systemRequirementsDao.GetById(id);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -46,9 +41,9 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.systemRequirementsDAO.Update(systemRequirements);
+                return _systemRequirementsDao.Update(systemRequirements);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }

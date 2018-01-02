@@ -10,40 +10,38 @@ namespace GamePool.PL.MVC.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IGameLogic gameLogic;
-        private readonly IOrderLogic orderLogic;
+        private readonly IGameLogic _gameLogic;
 
         private readonly string CartKey = "OrderedGames";
 
-        private List<OrderedGameVM> OrderList {
+        private List<OrderedGameVm> OrderList {
             get
             {
-                if (Session[this.CartKey] == null)
+                if (!(Session[CartKey] is List<OrderedGameVm>) || Session[CartKey] == null)
                 {
-                    var orderedList = new List<OrderedGameVM>();
+                    var orderedList = new List<OrderedGameVm>();
 
-                    Session[this.CartKey] = orderedList;
+                    Session[CartKey] = orderedList;
 
                     return orderedList;
                 }
                 else
                 {
-                    return Session[this.CartKey] as List<OrderedGameVM>;
+                    return Session[CartKey] as List<OrderedGameVm>;
                 }
             }}
 
-        public OrderController(IGameLogic gameLogic, IOrderLogic orderLogic)
+        public OrderController(IGameLogic gameLogic)
         {
-            this.gameLogic = gameLogic;
-            this.orderLogic = orderLogic;
+            _gameLogic = gameLogic;
         }
 
         [HttpGet]
         [Authorize]
         public ActionResult AddGameToOrders(int gameId)
         {
-            var game = this.gameLogic.GetById(gameId);
-            var orderedGame = Mapper.Map<GameEntity, OrderedGameVM>(game);
+            var game = _gameLogic.GetById(gameId);
+            var orderedGame = Mapper.Map<GameEntity, OrderedGameVm>(game);
             var result = false;
 
             orderedGame.Quantity = 1;
@@ -61,9 +59,7 @@ namespace GamePool.PL.MVC.Controllers
         [Authorize]
         public ActionResult RemoveGameFromOrders(int gameId)
         {
-            var result = false;
-
-            result = OrderList?.RemoveAll(x => x.Id == gameId) > 0;
+            var result = OrderList?.RemoveAll(x => x.Id == gameId) > 0;
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

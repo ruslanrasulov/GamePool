@@ -1,108 +1,77 @@
-﻿using GamePool.BLL.Core;
+﻿using System.Configuration;
+using GamePool.BLL.Core;
 using GamePool.BLL.LogicContracts;
 using GamePool.DAL.DALContracts;
 using GamePool.DAL.SqlDAL;
 using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamePool.Common.NinjectApp
 {
     public sealed class NinjectConfig
     {
-        private static readonly string connectionString;
-        private static readonly string providerName;
+        private static readonly string ConnectionString;
+        private static readonly string ProviderName;
 
         static NinjectConfig()
         {
-            connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            providerName = ConfigurationManager.ConnectionStrings["ConnectionString"].ProviderName;
+            ConnectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            ProviderName = ConfigurationManager.ConnectionStrings["ConnectionString"].ProviderName;
         }
 
         public static void RegisterServices(IKernel kernel)
         {
             #region DALContracts
             kernel
-                .Bind<IAvatarDAO>()
-                .To<AvatarDAO>()
+                .Bind<IGameDao>()
+                .To<GameDao>()
                 .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
+                .WithConstructorArgument("connectionString", ConnectionString)
+                .WithConstructorArgument("providerName", ProviderName);
 
             kernel
-                .Bind<IGameDAO>()
-                .To<GameDAO>()
+                .Bind<IImageDao>()
+                .To<ImageDao>()
                 .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
+                .WithConstructorArgument("connectionString", ConnectionString)
+                .WithConstructorArgument("providerName", ProviderName);
 
             kernel
-                .Bind<IImageDAO>()
-                .To<ImageDAO>()
+                .Bind<ISystemRequirementsDao>()
+                .To<SystemRequirementsDao>()
                 .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
+                .WithConstructorArgument("connectionString", ConnectionString)
+                .WithConstructorArgument("providerName", ProviderName);
 
             kernel
-                .Bind<IScreenshotDAO>()
-                .To<ScreenshotDAO>()
+                .Bind<IUserDao>()
+                .To<UserDao>()
                 .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
+                .WithConstructorArgument("connectionString", ConnectionString)
+                .WithConstructorArgument("providerName", ProviderName);
 
             kernel
-                .Bind<ISystemRequirementsDAO>()
-                .To<SystemRequirementsDAO>()
+                .Bind<IUserRoleDao>()
+                .To<UserRoleDao>()
                 .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
+                .WithConstructorArgument("connectionString", ConnectionString)
+                .WithConstructorArgument("providerName", ProviderName);
 
             kernel
-                .Bind<IUserDAO>()
-                .To<UserDAO>()
+                .Bind<IOrderDao>()
+                .To<OrderDao>()
                 .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
+                .WithConstructorArgument("connectionString", ConnectionString)
+                .WithConstructorArgument("providerName", ProviderName);
 
             kernel
-                .Bind<IUserRoleDAO>()
-                .To<UserRoleDAO>()
+                .Bind<IGenreDao>()
+                .To<GenreDao>()
                 .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
-
-            kernel
-                .Bind<IOrderDAO>()
-                .To<OrderDAO>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
-
-            kernel
-                .Bind<IRatingDAO>()
-                .To<RatingDAO>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
-
-            kernel
-                .Bind<IGenreDAO>()
-                .To<GenreDAO>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", connectionString)
-                .WithConstructorArgument("providerName", providerName);
+                .WithConstructorArgument("connectionString", ConnectionString)
+                .WithConstructorArgument("providerName", ProviderName);
             #endregion
 
             #region LogicContracts
-            kernel
-                .Bind<IAvatarLogic>()
-                .To<AvatarLogic>()
-                .InSingletonScope();
-
             kernel
                 .Bind<IGameLogic>()
                 .To<GameLogic>()
@@ -111,11 +80,6 @@ namespace GamePool.Common.NinjectApp
             kernel
                 .Bind<IImageLogic>()
                 .To<ImageLogic>()
-                .InSingletonScope();
-
-            kernel
-                .Bind<IScreenshotLogic>()
-                .To<ScreenshotLogic>()
                 .InSingletonScope();
 
             kernel
@@ -136,11 +100,6 @@ namespace GamePool.Common.NinjectApp
             kernel
                 .Bind<IOrderLogic>()
                 .To<OrderLogic>()
-                .InSingletonScope();
-
-            kernel
-                .Bind<IRatingLogic>()
-                .To<RatingLogic>()
                 .InSingletonScope();
 
             kernel

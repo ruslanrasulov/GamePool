@@ -2,7 +2,7 @@
 
 namespace GamePool.DAL.DALContracts
 {
-    public interface IOrderDAO
+    public interface IOrderDao
     {
         bool Add(Order order);
 

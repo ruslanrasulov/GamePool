@@ -2,7 +2,7 @@
 
 namespace GamePool.PL.MVC.Models.Account
 {
-    public class UserLoginVM
+    public class UserLoginVm
     {
         [Required]
         public string Username { get; set; }

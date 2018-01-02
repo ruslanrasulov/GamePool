@@ -1,20 +1,18 @@
-﻿using GamePool.BLL.LogicContracts;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using GamePool.BLL.LogicContracts;
 
 namespace GamePool.PL.MVC.App_Start
 {
     public class CommonRoleProvider : RoleProvider
     {
-        private IUserRoleLogic userRoleLogic;
+        private readonly IUserRoleLogic _userRoleLogic;
 
         public CommonRoleProvider()
         {
-            this.userRoleLogic = DependencyResolver.Current.GetService<IUserRoleLogic>();
+            _userRoleLogic = DependencyResolver.Current.GetService<IUserRoleLogic>();
         }
 
         #region NotImplemented
@@ -64,7 +62,7 @@ namespace GamePool.PL.MVC.App_Start
 
         public override string[] GetRolesForUser(string username)
         {
-            return this.userRoleLogic
+            return _userRoleLogic
                 .GetByUserLogin(username)
                 .Select(x => x.Name)
                 .ToArray();
@@ -72,7 +70,7 @@ namespace GamePool.PL.MVC.App_Start
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            return this.userRoleLogic.IsUserInRole(username, roleName);
+            return _userRoleLogic.IsUserInRole(username, roleName);
         }
 
     }

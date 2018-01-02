@@ -2,7 +2,7 @@
 
 namespace GamePool.PL.MVC.Models.Admin
 {
-    public class UserListItemVM
+    public class UserListItemVm
     {
         public int Id { get; set; }
 

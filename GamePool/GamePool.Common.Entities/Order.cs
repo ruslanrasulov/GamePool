@@ -1,6 +1,6 @@
 ﻿namespace GamePool.Common.Entities
 {
-    public sealed class Order
+    public class Order
     {
         public int Id { get; set; }
 

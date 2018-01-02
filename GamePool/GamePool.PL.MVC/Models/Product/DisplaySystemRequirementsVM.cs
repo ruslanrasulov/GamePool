@@ -2,7 +2,7 @@
 
 namespace GamePool.PL.MVC.Models.Product
 {
-    public class DisplaySystemRequirementsVM
+    public class DisplaySystemRequirementsVm
     {
         public int Id { get; set; }
 

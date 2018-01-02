@@ -1,6 +1,6 @@
 ﻿namespace GamePool.Common.Entities
 {
-    public sealed class SystemRequirements
+    public class SystemRequirements
     {
         public int Id { get; set; }
 

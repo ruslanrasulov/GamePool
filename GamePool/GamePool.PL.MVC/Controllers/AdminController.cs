@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -18,41 +19,38 @@ namespace GamePool.PL.MVC.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private readonly IGameLogic gameLogic;
-        private readonly ISystemRequirementsLogic systemRequirementsLogic;
-        private readonly IGenreLogic genreLogic;
-        private readonly IAvatarLogic avatarLogic;
-        private readonly IImageLogic imageLogic;
-        private readonly IOrderLogic orderLogic;
-        private readonly IUserLogic userLogic;
-        private readonly IUserRoleLogic userRoleLogic;
+        private readonly IGameLogic _gameLogic;
+        private readonly ISystemRequirementsLogic _systemRequirementsLogic;
+        private readonly IGenreLogic _genreLogic;
+        private readonly IImageLogic _imageLogic;
+        private readonly IOrderLogic _orderLogic;
+        private readonly IUserLogic _userLogic;
+        private readonly IUserRoleLogic _userRoleLogic;
 
-        private readonly string imagePath;
-        private readonly int pageSize;
-        private readonly int maxPageSelectors;
+        private readonly string _imagePath;
+        private readonly int _pageSize;
+        private readonly int _maxPageSelectors;
 
         public AdminController(
             IGameLogic gameLogic,
             ISystemRequirementsLogic systemRequirementsLogic,
             IGenreLogic genreLogic,
-            IAvatarLogic avatarLogic,
             IImageLogic imageLogic,
             IOrderLogic orderLogic,
             IUserLogic userLogic,
             IUserRoleLogic userRoleLogic)
         {
-            this.gameLogic = gameLogic;
-            this.systemRequirementsLogic = systemRequirementsLogic;
-            this.genreLogic = genreLogic;
-            this.avatarLogic = avatarLogic;
-            this.imageLogic = imageLogic;
-            this.orderLogic = orderLogic;
-            this.userLogic = userLogic;
-            this.userRoleLogic = userRoleLogic;
+            _gameLogic = gameLogic;
+            _systemRequirementsLogic = systemRequirementsLogic;
+            _genreLogic = genreLogic;
+            _imageLogic = imageLogic;
+            _orderLogic = orderLogic;
+            _userLogic = userLogic;
+            _userRoleLogic = userRoleLogic;
 
-            this.imagePath = ConfigurationManager.AppSettings["VirtualImagePath"];
-            this.pageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
-            this.maxPageSelectors = int.Parse(ConfigurationManager.AppSettings["MaxPageSelectors"]);
+            _imagePath = ConfigurationManager.AppSettings["VirtualImagePath"];
+            _pageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
+            _maxPageSelectors = int.Parse(ConfigurationManager.AppSettings["MaxPageSelectors"]);
         }
 
         [HttpGet]
@@ -64,18 +62,24 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult UserList(int? pageNumber = 1)
         {
-            var pagedUsers = this.userLogic.GetAll(pageNumber.Value, this.pageSize);
-            var allRoles = this.userRoleLogic.GetAll().Select(r => r.Name);
+            var pagedUsers = _userLogic.GetAll(pageNumber.Value, _pageSize);
+            var allRoles = _userRoleLogic.GetAll().Select(r => r.Name);
 
-            var userListItems = Mapper.Map<IEnumerable<User>, IEnumerable<UserListItemVM>>(
-                pagedUsers.Data.Where(u => u.Name != User.Identity.Name));
+            var userListItems = Mapper.Map<IEnumerable<UserEntity>, IEnumerable<UserListItemVm>>(
+                pagedUsers.Data.Where(u => !string.Equals(u.Name, User.Identity.Name, StringComparison.InvariantCultureIgnoreCase)));
 
-            var pagedItems = new PagedItems<UserListItemVM>
+            var totalPages = (int)Math.Ceiling((double)pagedUsers.Count / _pageSize);
+
+            var pagedItems = new PagedItems<UserListItemVm>
             {
                 Data = FillRolesIntoUser(userListItems, allRoles),
-                CurrentPage = pageNumber.Value,
-                MaxPageSelectors = this.maxPageSelectors,
-                TotalPages = pagedUsers.Count
+                PageInfo = new PageInfo
+                {
+                    CurrentPage = pageNumber.Value,
+                    StartIndex = GetStartIndex(pageNumber.Value, totalPages),
+                    PageLinksCount = (totalPages < _maxPageSelectors) ? totalPages : _maxPageSelectors,
+                    TotalPages = totalPages
+                }
             };
 
             return View(pagedItems);
@@ -84,14 +88,19 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult Orders(int? pageNumber = 1)
         {
-            var pagedOrders = this.orderLogic.GetAll(pageNumber.Value, this.pageSize);
+            var pagedOrders = _orderLogic.GetAll(pageNumber.Value, _pageSize);
+            var totalPages = (int)Math.Ceiling((double)pagedOrders.Count / _pageSize);
 
-            var pagedItems = new PagedItems<OrderListItemVM>
+            var pagedItems = new PagedItems<OrderListItemVm>
             {
-                Data = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderListItemVM>>(pagedOrders.Data),
-                CurrentPage = pageNumber.Value,
-                MaxPageSelectors = this.maxPageSelectors,
-                TotalPages = pagedOrders.Count
+                Data = Mapper.Map<IEnumerable<Order>, IEnumerable<OrderListItemVm>>(pagedOrders.Data),
+                PageInfo = new PageInfo
+                {
+                    CurrentPage = pageNumber.Value,
+                    StartIndex = GetStartIndex(pageNumber.Value, totalPages),
+                    PageLinksCount = (totalPages < _maxPageSelectors) ? totalPages : _maxPageSelectors,
+                    TotalPages = totalPages
+                }
             };
 
             return View(pagedItems);
@@ -100,36 +109,36 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult AddGame()
         {
-            return View(new CreateGameVM
+            return View(new CreateGameVm
             {
-                MinimalSystemRequirements = new CreateSystemRequirementsVM(),
-                RecommendedSystemRequirements = new CreateSystemRequirementsVM()
+                MinimalSystemRequirements = new CreateSystemRequirementsVm(),
+                RecommendedSystemRequirements = new CreateSystemRequirementsVm()
             });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddGame(CreateGameVM createGameVM)
+        public ActionResult AddGame(CreateGameVm createGameVm)
         {
-            if (createGameVM == null)
+            if (createGameVm == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (ModelState.IsValid)
             {
-                var gameEntity = Mapper.Map<CreateGameVM, GameEntity>(createGameVM);
-                var minimalSystemReq = Mapper.Map<CreateSystemRequirementsVM, SystemRequirements>(createGameVM.MinimalSystemRequirements);
-                var recommendedSystemReq = Mapper.Map<CreateSystemRequirementsVM, SystemRequirements>(createGameVM.RecommendedSystemRequirements);
+                var gameEntity = Mapper.Map<CreateGameVm, GameEntity>(createGameVm);
+                var minimalSystemReq = Mapper.Map<CreateSystemRequirementsVm, SystemRequirements>(createGameVm.MinimalSystemRequirements);
+                var recommendedSystemReq = Mapper.Map<CreateSystemRequirementsVm, SystemRequirements>(createGameVm.RecommendedSystemRequirements);
 
-                if (gameLogic.Add(gameEntity))
+                if (_gameLogic.Add(gameEntity))
                 {
                     minimalSystemReq.GameId = gameEntity.Id;
                     recommendedSystemReq.GameId = gameEntity.Id;
 
-                    if (systemRequirementsLogic.Add(minimalSystemReq) && 
-                        systemRequirementsLogic.Add(recommendedSystemReq) &&
-                        genreLogic.AddGenresByGameId(gameEntity.Id, createGameVM.GenreIds))
+                    if (_systemRequirementsLogic.Add(minimalSystemReq) && 
+                        _systemRequirementsLogic.Add(recommendedSystemReq) &&
+                        _genreLogic.AddGenresByGameId(gameEntity.Id, createGameVm.GenreIds))
                     {
                         var image = WebImage.GetImageFromRequest("game-avatar");
 
@@ -142,13 +151,13 @@ namespace GamePool.PL.MVC.Controllers
                                 AlternativeText = "Game Avatar"
                             };
 
-                            if (this.imageLogic.Add(newImage))
+                            if (_imageLogic.Add(newImage))
                             {
-                                var path = Path.Combine(Server.MapPath(this.imagePath), image.FileName);
+                                var path = Path.Combine(Server.MapPath(_imagePath), image.FileName);
 
                                 image.Save(path);
 
-                                this.avatarLogic.SetForGame(gameEntity.Id, newImage.Id);
+                                _imageLogic.SetAvatarForGame(gameEntity.Id, newImage.Id);
                             }
                         }
 
@@ -159,15 +168,15 @@ namespace GamePool.PL.MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
 
-            return View(createGameVM);
+            return View(createGameVm);
         }
 
         [HttpGet]
         public ActionResult GetGenresByNamePart(string name)
         {
-            var genreEntities = this.genreLogic.GetByNamePart(name);
+            var genreEntities = _genreLogic.GetByNamePart(name);
 
-            var genres = Mapper.Map<IEnumerable<Genre>, IEnumerable<Select2GenreVM>>(genreEntities);
+            var genres = Mapper.Map<IEnumerable<Genre>, IEnumerable<Select2GenreVm>>(genreEntities);
 
             var json = JsonConvert.SerializeObject(
                 genres,
@@ -180,8 +189,8 @@ namespace GamePool.PL.MVC.Controllers
         [HttpPost]
         public ActionResult GetGenresByIds(IEnumerable<int> ids)
         {
-            var genreEntities = this.genreLogic.GetByIds(ids);
-            var genres = Mapper.Map<IEnumerable<Genre>, IEnumerable<Select2GenreVM>>(genreEntities);
+            var genreEntities = _genreLogic.GetByIds(ids);
+            var genres = Mapper.Map<IEnumerable<Genre>, IEnumerable<Select2GenreVm>>(genreEntities);
 
             var json = JsonConvert.SerializeObject(
                 new { Genres = genres },
@@ -194,36 +203,36 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult EditGame(int id)
         {
-            var gameEntity = this.gameLogic.GetById(id);
+            var gameEntity = _gameLogic.GetById(id);
 
             if (gameEntity == null)
             {
                 return HttpNotFound();
             }
 
-            var gameForEdit = Mapper.Map<GameEntity, EditGameVM>(gameEntity);
-            gameForEdit.GenreIds = this.genreLogic.GetByGameId(gameForEdit.Id).Select(g => g.Id);
+            var gameForEdit = Mapper.Map<GameEntity, EditGameVm>(gameEntity);
+            gameForEdit.GenreIds = _genreLogic.GetByGameId(gameForEdit.Id).Select(g => g.Id);
 
             return View(gameForEdit);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditGame(EditGameVM editGameVM)
+        public ActionResult EditGame(EditGameVm editGameVm)
         {
-            if (editGameVM == null)
+            if (editGameVm == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (ModelState.IsValid)
             {
-                var gameEntity = Mapper.Map<EditGameVM, GameEntity>(editGameVM);
+                var gameEntity = Mapper.Map<EditGameVm, GameEntity>(editGameVm);
 
-                if (this.gameLogic.Update(gameEntity) &&
-                    this.genreLogic.UpdateGenresByGameId(gameEntity.Id, editGameVM.GenreIds) &&
-                    this.systemRequirementsLogic.Update(gameEntity.MinimalSystemRequirements) &&
-                    this.systemRequirementsLogic.Update(gameEntity.RecommendedSystemRequirements))
+                if (_gameLogic.Update(gameEntity) &&
+                    _genreLogic.UpdateGenresByGameId(gameEntity.Id, editGameVm.GenreIds) &&
+                    _systemRequirementsLogic.Update(gameEntity.MinimalSystemRequirements) &&
+                    _systemRequirementsLogic.Update(gameEntity.RecommendedSystemRequirements))
                 {
                     var image = WebImage.GetImageFromRequest("game-avatar");
 
@@ -236,13 +245,13 @@ namespace GamePool.PL.MVC.Controllers
                             AlternativeText = "Game Avatar"
                         };
                         
-                        if (this.imageLogic.Add(newImage))
+                        if (_imageLogic.Add(newImage))
                         {
-                            var path = Path.Combine(Server.MapPath(this.imagePath), image.FileName);
+                            var path = Path.Combine(Server.MapPath(_imagePath), image.FileName);
 
                             image.Save(path);
 
-                            this.avatarLogic.SetForGame(gameEntity.Id, newImage.Id);
+                            _imageLogic.SetAvatarForGame(gameEntity.Id, newImage.Id);
                         }                     
                     }
 
@@ -250,13 +259,13 @@ namespace GamePool.PL.MVC.Controllers
                 }
             }
 
-            return View(editGameVM);
+            return View(editGameVm);
         }
         
         [HttpGet]
         public ActionResult AddRoleToUser(string username, string roleName)
         {
-            var result = this.userRoleLogic.AddRoleToUser(username, roleName);
+            var result = _userRoleLogic.AddRoleToUser(username, roleName);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -264,20 +273,43 @@ namespace GamePool.PL.MVC.Controllers
         [HttpGet]
         public ActionResult RemoveRoleFromUser(string username, string roleName)
         {
-            var result = this.userRoleLogic.RemoveRoleFromUser(username, roleName);
+            var result = _userRoleLogic.RemoveRoleFromUser(username, roleName);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        private IEnumerable<UserListItemVM> FillRolesIntoUser(IEnumerable<UserListItemVM> userListItemsVM, IEnumerable<string> allRoles)
+        private IEnumerable<UserListItemVm> FillRolesIntoUser(IEnumerable<UserListItemVm> userListItemsVm, IEnumerable<string> allRoles)
         {
-            foreach (var user in userListItemsVM)
+            foreach (var user in userListItemsVm)
             {
-                user.CurrentRoles = this.userRoleLogic.GetByUserLogin(user.Name).Select(r => r.Name);
+                user.CurrentRoles = _userRoleLogic.GetByUserLogin(user.Name).Select(r => r.Name);
                 user.AvailableRoles = allRoles.Except(user.CurrentRoles);
 
                 yield return user;
             }
+        }
+
+        private int GetStartIndex(int currentPage, int totalPages)
+        {
+            if (totalPages <= _maxPageSelectors)
+            {
+                return 1;
+            }
+
+            var rightDifference = totalPages - currentPage;
+            var middle = _maxPageSelectors / 2;
+
+            if (currentPage < middle)
+            {
+                return 1;
+            }
+
+            if (rightDifference < middle)
+            {
+                return totalPages - _maxPageSelectors + 1;
+            }
+
+            return currentPage - middle;
         }
     }
 }

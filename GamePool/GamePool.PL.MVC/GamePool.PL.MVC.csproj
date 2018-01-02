@@ -196,6 +196,7 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Scripts\Include\admin-panel.js" />
     <Content Include="Scripts\Include\common.js" />
     <Content Include="Scripts\Include\login-form.js" />
     <Content Include="Scripts\Include\pagination.js" />
@@ -215,7 +216,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfig.cs" />
@@ -231,24 +234,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account\UserAggregatedVM.cs" />
-    <Compile Include="Models\Account\UserLoginVM.cs" />
-    <Compile Include="Models\Account\UserRegisterVM.cs" />
-    <Compile Include="Models\Admin\CreateGameVM.cs" />
-    <Compile Include="Models\Admin\CreateSystemRequirementsVM.cs" />
-    <Compile Include="Models\Admin\EditGameVM.cs" />
-    <Compile Include="Models\Admin\EditSystemRequirementsVM.cs" />
-    <Compile Include="Models\Admin\OrderListItemVM.cs" />
-    <Compile Include="Models\Admin\Select2GenreVM.cs" />
-    <Compile Include="Models\Admin\UserListItemVM.cs" />
-    <Compile Include="Models\Product\OrderVM.cs" />
-    <Compile Include="Models\Product\DisplayGameVM.cs" />
-    <Compile Include="Models\Product\DisplaySystemRequirementsVM.cs" />
-    <Compile Include="Models\Product\GamePreviewVM.cs" />
-    <Compile Include="Models\Product\OrderedGameVM.cs" />
-    <Compile Include="Models\Search\SearchParametersVM.cs" />
-    <Compile Include="Models\Search\SearchResultsVM.cs" />
+    <Compile Include="Models\Account\UserAggregatedVm.cs" />
+    <Compile Include="Models\Account\UserLoginVm.cs" />
+    <Compile Include="Models\Account\UserRegisterVm.cs" />
+    <Compile Include="Models\Admin\CreateGameVm.cs" />
+    <Compile Include="Models\Admin\CreateSystemRequirementsVm.cs" />
+    <Compile Include="Models\Admin\EditGameVm.cs" />
+    <Compile Include="Models\Admin\EditSystemRequirementsVm.cs" />
+    <Compile Include="Models\Admin\OrderListItemVm.cs" />
+    <Compile Include="Models\Admin\Select2GenreVm.cs" />
+    <Compile Include="Models\Admin\UserListItemVm.cs" />
+    <Compile Include="Models\Product\OrderVm.cs" />
+    <Compile Include="Models\Product\DisplayGameVm.cs" />
+    <Compile Include="Models\Product\DisplaySystemRequirementsVm.cs" />
+    <Compile Include="Models\Product\GamePreviewVm.cs" />
+    <Compile Include="Models\Product\OrderedGameVm.cs" />
+    <Compile Include="Models\Search\SearchParametersVm.cs" />
+    <Compile Include="Models\Search\SearchResultsVm.cs" />
     <Compile Include="Models\Shared\PagedItems.cs" />
+    <Compile Include="Models\Shared\PageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +276,9 @@
     <Content Include="Views\Shared\_SearchInputPartial.cshtml" />
     <Content Include="Views\Admin\EditGame.cshtml" />
     <Content Include="Views\Product\Checkout.cshtml" />
+    <Content Include="Views\Shared\_GamePartial.cshtml" />
+    <Content Include="Views\Shared\_PaginationPartial.cshtml" />
+    <Content Include="Views\Shared\_GameListPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -281,8 +288,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Image\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GamePool.BLL.LogicContracts\GamePool.BLL.LogicContracts.csproj">

@@ -1,0 +1,31 @@
+﻿@model PagedItems<GamePreviewVm>
+
+@{
+    int rowCount = 0;
+}
+
+@foreach (var game in Model.Data)
+{
+    if (rowCount == 0)
+    {
+        @Html.Raw("<div class=\"row\">");
+    }
+
+    @Html.Partial("~/Views/Shared/_GamePartial.cshtml", game)
+
+    rowCount++;
+
+    if (rowCount == 4)
+    {
+        @Html.Raw("</div>")
+
+        rowCount = 0;
+    }
+}
+
+@if (rowCount != 4 && rowCount != 0)
+{
+    @Html.Raw("</div>")
+}
+
+@Html.Partial("~/Views/Shared/_PaginationPartial.cshtml", Model.PageInfo)

@@ -40,15 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AvatarLogic.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="GenreLogic.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="ImageLogic.cs" />
     <Compile Include="OrderLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RatingLogic.cs" />
-    <Compile Include="ScreenshotLogic.cs" />
     <Compile Include="SystemRequirementsLogic.cs" />
     <Compile Include="UserLogic.cs" />
     <Compile Include="UserRoleLogic.cs" />

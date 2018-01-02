@@ -1,29 +1,22 @@
-﻿using GamePool.DAL.DALContracts;
-using GamePool.Common.Entities;
-using System.Data;
+﻿using System.Data;
 using Dapper;
-using System.Data.Common;
+using GamePool.Common.Entities;
+using GamePool.DAL.DALContracts;
 
 namespace GamePool.DAL.SqlDAL
 {
-    public sealed class SystemRequirementsDAO : ISystemRequirementsDAO
+    public sealed class SystemRequirementsDao : BaseDao, ISystemRequirementsDao
     {
-        private readonly string connectionString;
-        private readonly DbProviderFactory factory;
-
-        public SystemRequirementsDAO(string connectionString, string providerName)
+        public SystemRequirementsDao(string connectionString, string providerName)
+            :base(connectionString, providerName)
         {
-            this.connectionString = connectionString;
-            this.factory = DbProviderFactories.GetFactory(providerName);
         }
 
         public bool Add(SystemRequirements systemRequirements)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Id", systemRequirements.Id, direction: ParameterDirection.Output);
                 parameters.Add("@GameId", systemRequirements.GameId);
@@ -38,8 +31,8 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 connection.Execute(
-                    sql: "SystemRequirements_Add",
-                    param: parameters,
+                    "SystemRequirements_Add",
+                    parameters,
                     commandType: CommandType.StoredProcedure);
 
                 systemRequirements.Id = parameters.Get<int>("@Id");
@@ -50,11 +43,9 @@ namespace GamePool.DAL.SqlDAL
 
         public bool Update(SystemRequirements systemRequirements)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
+                var parameters = new DynamicParameters();
 
                 parameters.Add("@Id", systemRequirements.Id);
                 parameters.Add("@Processor", systemRequirements.Processor);
@@ -67,27 +58,21 @@ namespace GamePool.DAL.SqlDAL
                 connection.Open();
 
                 return connection.Execute(
-                    sql: "SystemRequirements_Update",
-                    param: parameters,
+                    "SystemRequirements_Update",
+                    parameters,
                     commandType: CommandType.StoredProcedure) > 0;
             }
         }
 
         public SystemRequirements GetById(int id)
         {
-            using (IDbConnection connection = factory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.ConnectionString = this.connectionString;
-
-                DynamicParameters parameters = new DynamicParameters();
-
-                parameters.Add("@Id", id);
-
                 connection.Open();
 
                 return connection.QueryFirstOrDefault<SystemRequirements>(
-                    sql: "SystemRequirements_GetById",
-                    param: parameters,
+                    "SystemRequirements_GetById",
+                    new { Id = id },
                     commandType: CommandType.StoredProcedure);
             }
         }

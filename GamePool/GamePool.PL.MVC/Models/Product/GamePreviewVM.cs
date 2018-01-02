@@ -1,6 +1,6 @@
 ﻿namespace GamePool.PL.MVC.Models.Product
 {
-    public class GamePreviewVM
+    public class GamePreviewVm
     {
         public int Id { get; set; }
 

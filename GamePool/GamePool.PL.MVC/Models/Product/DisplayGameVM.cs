@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GamePool.PL.MVC.Models.Product
 {
-    public class DisplayGameVM
+    public class DisplayGameVm
     {
         public int Id { get; set; }
 
@@ -27,8 +27,8 @@ namespace GamePool.PL.MVC.Models.Product
 
         public decimal? Rating { get; set; }
 
-        public DisplaySystemRequirementsVM MinimalSystemRequirements { get; set; }
+        public DisplaySystemRequirementsVm MinimalSystemRequirements { get; set; }
 
-        public DisplaySystemRequirementsVM RecommendedSystemRequirements { get; set; }
+        public DisplaySystemRequirementsVm RecommendedSystemRequirements { get; set; }
     }
 }

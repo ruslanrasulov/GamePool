@@ -1,8 +1,8 @@
-﻿;"use strict;";
+﻿'use strict';
 
 (function () {
-    var $previewImage = $("#preview-image"),
-        $fileInput = $("#game-avatar");
+    var $previewImage = $('#preview-image'),
+        $fileInput = $('#game-avatar');
 
     $fileInput.change(function () {
         readURL(this);
@@ -14,7 +14,7 @@
 
             reader.onload = function (e) {
                 $previewImage.attr('src', e.target.result);
-            }
+            };
 
             reader.readAsDataURL(input.files[0]);
         }

@@ -46,11 +46,10 @@
     <Compile Include="Order.cs" />
     <Compile Include="PagedData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rating.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="SearchParameters.cs" />
     <Compile Include="SystemRequirements.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="UserEntity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

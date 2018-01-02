@@ -4,7 +4,7 @@ using CompareAttr = System.ComponentModel.DataAnnotations.CompareAttribute;
 
 namespace GamePool.PL.MVC.Models.Account
 {
-    public class UserRegisterVM
+    public class UserRegisterVm
     {
         [Required]
         [Remote("IsUsernameNotExist", "Account", ErrorMessage = "User with that login is exist")]

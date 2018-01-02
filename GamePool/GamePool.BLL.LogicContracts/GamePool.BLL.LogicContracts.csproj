@@ -40,13 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAvatarLogic.cs" />
     <Compile Include="IGameLogic.cs" />
     <Compile Include="IGenreLogic.cs" />
     <Compile Include="IImageLogic.cs" />
     <Compile Include="IOrderLogic.cs" />
-    <Compile Include="IRatingLogic.cs" />
-    <Compile Include="IScreenshotLogic.cs" />
     <Compile Include="ISystemRequirementsLogic.cs" />
     <Compile Include="IUserLogic.cs" />
     <Compile Include="IUserRoleLogic.cs" />

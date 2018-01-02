@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GamePool.BLL.LogicContracts;
+﻿using GamePool.BLL.LogicContracts;
 using GamePool.Common.Entities;
 using GamePool.DAL.DALContracts;
 
@@ -11,20 +6,20 @@ namespace GamePool.BLL.Core
 {
     public sealed class OrderLogic : IOrderLogic
     {
-        private IOrderDAO orderDAO;
+        private readonly IOrderDao _orderDao;
 
-        public OrderLogic(IOrderDAO orderDAO)
+        public OrderLogic(IOrderDao orderDao)
         {
-            this.orderDAO = orderDAO;
+            _orderDao = orderDao;
         }
 
         public bool Add(Order order)
         {
             try
             {
-                return this.orderDAO.Add(order);
+                return _orderDao.Add(order);
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
@@ -34,11 +29,10 @@ namespace GamePool.BLL.Core
         {
             try
             {
-                return this.orderDAO.GetAll(pageNumber, pageSize);
+                return _orderDao.GetAll(pageNumber, pageSize);
             }
-            catch (Exception)
+            catch
             {
-
                 throw;
             }
         }

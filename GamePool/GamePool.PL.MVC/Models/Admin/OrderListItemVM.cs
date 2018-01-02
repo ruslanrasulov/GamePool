@@ -1,6 +1,6 @@
 ﻿namespace GamePool.PL.MVC.Models.Admin
 {
-    public class OrderListItemVM
+    public class OrderListItemVm
     {
         public int Id { get; set; }
 

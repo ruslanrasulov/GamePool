@@ -3,7 +3,7 @@ using GamePool.Common.Entities;
 
 namespace GamePool.DAL.DALContracts
 {
-    public interface IGenreDAO
+    public interface IGenreDao
     {
         IEnumerable<Genre> GetByNamePart(string keyWord);
 

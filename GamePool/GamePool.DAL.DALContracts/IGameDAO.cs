@@ -3,7 +3,7 @@ using GamePool.Common.Entities;
 
 namespace GamePool.DAL.DALContracts
 {
-    public interface IGameDAO
+    public interface IGameDao
     {
         bool Add(GameEntity gameEntity);
 

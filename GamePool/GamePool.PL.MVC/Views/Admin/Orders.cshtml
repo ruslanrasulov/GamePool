@@ -1,4 +1,4 @@
-﻿@model PagedItems<OrderListItemVM>
+﻿@model PagedItems<OrderListItemVm>
 
 @{
     ViewBag.Title = "Orders";
@@ -37,51 +37,4 @@
     </tbody>
 </table>
 
-@{
-    int difference = Model.MaxPageSelectors - Model.TotalPages;
-    int count = (difference < 0) ? Model.MaxPageSelectors : Model.TotalPages;
-
-    int startIndex;
-
-    if (Model.TotalPages > Model.MaxPageSelectors)
-    {
-        int rightDifference = Model.TotalPages - Model.CurrentPage;
-        int middle = Model.MaxPageSelectors / 2;
-        if (Model.CurrentPage < middle)
-        {
-            startIndex = 1;
-        }
-        else if (rightDifference < middle)
-        {
-            startIndex = Model.TotalPages - Model.MaxPageSelectors + 1;
-        }
-        else
-        {
-            startIndex = Model.CurrentPage - middle;
-        }
-    }
-    else
-    {
-        startIndex = 1;
-    }
-}
-<div class="row text-center">
-    @if (Model.TotalPages > 0)
-    {
-        <ul class="pagination">
-            <li><a class="page-link" data-page="1"><<</a></li>
-            @for (int i = 0; i < count; i++, startIndex++)
-            {
-                if (startIndex == Model.CurrentPage)
-                {
-                    <li class="active"><a class="page-link" data-page="@startIndex">@startIndex</a></li>
-                }
-                else
-                {
-                    <li><a class="page-link" data-page="@startIndex">@startIndex</a></li>
-                }
-            }
-            <li><a class="page-link" data-page="@Model.TotalPages">>></a></li>
-        </ul>
-    }
-</div>
+@Html.Partial("~/Views/Shared/_PaginationPartial.cshtml", Model.PageInfo)

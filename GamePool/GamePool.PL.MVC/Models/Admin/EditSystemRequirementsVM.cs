@@ -2,7 +2,7 @@
 
 namespace GamePool.PL.MVC.Models.Admin
 {
-    public class EditSystemRequirementsVM
+    public class EditSystemRequirementsVm
     {
         [Required]
         public int Id { get; set; }

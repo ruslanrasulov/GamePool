@@ -1,7 +1,7 @@
-﻿@model SearchResultsVM
+﻿@model SearchResultsVm
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Found games";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -74,100 +74,6 @@
         }
     </div>
 
-    @{
-        int rowCount = 0;
-    }
-
-    @foreach (var game in Model.Items.Data)
-    {
-        if (rowCount == 0)
-        {
-            @Html.Raw("<div class=\"row\">");
-        }
-
-        <div class="col-lg-3 game-block">
-            <a href="@Url.Action("Details", "Product", new { id = game.Id })">
-
-                @if (game.AvatarId != null)
-                {
-                    <img src="@Url.Action("GetImageById", "Image", new { id = game.AvatarId.Value })" class="thumbnail game-small-img-preview" alt="Alternate Text" />
-                }
-                else
-                {
-                    <img src="http://placehold.it/250x250" class="thumbnail game-small-img-preview" alt="Alternate Text" />
-                }
-                <h3>@game.Name</h3>
-            </a>
-            <p>@game.Description</p>
-
-            @if (User.Identity.IsAuthenticated)
-            {
-                <button type="button" class="btn btn-default center-block buy-btn" data-game-id="@game.Id">Buy</button>
-            }
-        </div>
-
-        rowCount++;
-
-        if (rowCount == 4)
-        {
-            @Html.Raw("</div>")
-
-            rowCount = 0;
-        }
-    }
-
-    @if (rowCount != 4 && rowCount != 0)
-    {
-        @Html.Raw("</div>")
-    }
-
-    @{
-        int difference = Model.Items.MaxPageSelectors - Model.Items.TotalPages;
-        int count = (difference < 0) ? Model.Items.MaxPageSelectors : Model.Items.TotalPages;
-
-        int startIndex;
-
-        if (Model.Items.TotalPages > Model.Items.MaxPageSelectors)
-        {
-            int rightDifference = Model.Items.TotalPages - Model.Items.CurrentPage;
-            int middle = Model.Items.MaxPageSelectors / 2;
-            if (Model.Items.CurrentPage < middle)
-            {
-                startIndex = 1;
-            }
-            else if (rightDifference < middle)
-            {
-                startIndex = Model.Items.TotalPages - Model.Items.MaxPageSelectors + 1;
-            }
-            else
-            {
-                startIndex = Model.Items.CurrentPage - middle;
-            }
-        }
-        else
-        {
-            startIndex = 1;
-        }
-    }
-    <div class="row text-center">
-        @if (Model.Items.TotalPages > 0)
-        {
-            <ul class="pagination">
-                <li><a class="page-link" data-page="1"><<</a></li>
-                @for (int i = 0; i < count; i++, startIndex++)
-                {
-                    if (startIndex == Model.Items.CurrentPage)
-                    {
-                        <li class="active"><a class="page-link" data-page="@startIndex">@startIndex</a></li>
-                    }
-                    else
-                    {
-                        <li><a class="page-link" data-page="@startIndex">@startIndex</a></li>
-                    }
-                }
-                <li><a class="page-link" data-page="@Model.Items.TotalPages">>></a></li>
-            </ul>
-        }
-    </div>
+    @Html.Partial("~/Views/Shared/_GameListPartial.cshtml", Model.Items)
 </div>
 
